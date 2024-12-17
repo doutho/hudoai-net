@@ -11,7 +11,7 @@ import { Globe } from "lucide-react";
 export type Language = 'en' | 'de' | 'sv';
 export type Country = 'US' | 'DE' | 'UK' | 'SE';
 
-interface LanguageOption {
+export interface LanguageOption {
   code: Language;
   label: string;
   country: Country;
