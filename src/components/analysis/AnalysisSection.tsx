@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '@/components/ImageUpload';
 import { type LanguageOption } from '@/components/LanguageSelector';
+import { translations } from '@/utils/translations';
 
 interface AnalysisSectionProps {
   images: string[];
