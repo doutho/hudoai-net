@@ -2,49 +2,53 @@ import { useState, useEffect } from 'react';
 import ImageUpload from '@/components/ImageUpload';
 import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import LanguageSelector, { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
 import AnalysisDialog from '@/components/AnalysisDialog';
 import { translations } from '@/utils/translations';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [showDialog, setShowDialog] = useState(false);
+  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
 
   useEffect(() => {
-    const detectUserLocation = async () => {
-      try {
-        const response = await fetch('https://api.ipapi.com/api/check?access_key=YOUR_IPAPI_KEY');
-        const data = await response.json();
-        
-        const countryToLanguage: { [key: string]: LanguageOption } = {
-          'US': languageOptions[0], // English (US)
-          'GB': languageOptions[1], // English (UK)
-          'DE': languageOptions[2], // German
-          'SE': languageOptions[3], // Swedish
-        };
-        
-        const detectedLanguage = countryToLanguage[data.country_code] || languageOptions[0];
-        setCurrentLanguage(detectedLanguage);
-        
-        const t = translations[detectedLanguage.code];
-        toast({
-          title: t.locationDetected,
-          description: t.locationSetTo.replace('{language}', detectedLanguage.label),
-        });
-      } catch (error) {
-        console.error('Error detecting location:', error);
-        setCurrentLanguage(languageOptions[0]);
+    const hasSelectedLanguage = localStorage.getItem('selectedLanguage');
+    if (!hasSelectedLanguage) {
+      setShowLanguageDialog(true);
+    } else {
+      const savedLanguage = JSON.parse(hasSelectedLanguage);
+      const foundLanguage = languageOptions.find(
+        option => option.code === savedLanguage.code && option.country === savedLanguage.country
+      );
+      if (foundLanguage) {
+        setCurrentLanguage(foundLanguage);
       }
-    };
-
-    detectUserLocation();
+    }
   }, []);
+
+  const handleLanguageSelect = (option: LanguageOption) => {
+    setCurrentLanguage(option);
+    localStorage.setItem('selectedLanguage', JSON.stringify(option));
+    setShowLanguageDialog(false);
+    const t = translations[option.code];
+    toast({
+      title: t.languageChanged,
+      description: t.changedTo.replace('{language}', option.label),
+    });
+  };
 
   const handleImageUpload = (index: number, file: File) => {
     const reader = new FileReader();
@@ -54,15 +58,6 @@ const Index = () => {
       setImages(newImages);
     };
     reader.readAsDataURL(file);
-  };
-
-  const handleLanguageChange = (option: LanguageOption) => {
-    setCurrentLanguage(option);
-    const t = translations[option.code];
-    toast({
-      title: t.languageChanged,
-      description: t.changedTo.replace('{language}', option.label),
-    });
   };
 
   const handleAnalyze = async () => {
@@ -81,7 +76,6 @@ const Index = () => {
     setShowDialog(true);
     
     try {
-      console.log('Calling analyze-skin function with image data...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { 
           image: images[0],
@@ -98,8 +92,6 @@ const Index = () => {
         throw new Error('No data received from analysis');
       }
 
-      console.log('Analysis response:', data);
-      
       let parsedData;
       try {
         parsedData = typeof data === 'string' ? JSON.parse(data) : data;
@@ -144,7 +136,7 @@ const Index = () => {
           />
           <LanguageSelector
             currentLanguage={currentLanguage}
-            onLanguageChange={handleLanguageChange}
+            onLanguageChange={handleLanguageSelect}
           />
         </div>
 
@@ -186,6 +178,29 @@ const Index = () => {
             language={currentLanguage.code}
           />
         )}
+
+        <Dialog open={showLanguageDialog} onOpenChange={setShowLanguageDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Select Your Location</DialogTitle>
+              <DialogDescription>
+                Please select your location to get personalized recommendations
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              {languageOptions.map((option) => (
+                <Button
+                  key={`${option.code}-${option.country}`}
+                  onClick={() => handleLanguageSelect(option)}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
