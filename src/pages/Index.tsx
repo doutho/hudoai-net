@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageUpload from '@/components/ImageUpload';
 import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,37 @@ const Index = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const detectUserLocation = async () => {
+      try {
+        const response = await fetch('https://api.ipapi.com/api/check?access_key=YOUR_IPAPI_KEY');
+        const data = await response.json();
+        
+        // Map country code to language option
+        const countryToLanguage: { [key: string]: LanguageOption } = {
+          'US': languageOptions[0], // English (US)
+          'GB': languageOptions[1], // English (UK)
+          'DE': languageOptions[2], // German
+          'SE': languageOptions[3], // Swedish
+        };
+        
+        const detectedLanguage = countryToLanguage[data.country_code] || languageOptions[0];
+        setCurrentLanguage(detectedLanguage);
+        
+        toast({
+          title: "Location Detected",
+          description: `Set to ${detectedLanguage.label} based on your location`,
+        });
+      } catch (error) {
+        console.error('Error detecting location:', error);
+        // Fallback to default language (English US)
+        setCurrentLanguage(languageOptions[0]);
+      }
+    };
+
+    detectUserLocation();
+  }, []);
 
   const handleImageUpload = (index: number, file: File) => {
     const reader = new FileReader();
@@ -51,7 +82,10 @@ const Index = () => {
     try {
       console.log('Calling analyze-skin function with image data...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
-        body: { image: images[0] }
+        body: { 
+          image: images[0],
+          language: currentLanguage.code
+        }
       });
 
       if (error) {

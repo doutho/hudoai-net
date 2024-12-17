@@ -2,7 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { analyzeSkinImage } from "./gemini.ts";
 import { searchAmazonProducts } from "./amazon.ts";
-import type { AnalysisResponse } from "./types.ts";
+import type { AnalysisResponse, Language } from "./types.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,7 +11,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
       headers: corsHeaders,
@@ -29,20 +28,17 @@ serve(async (req) => {
       throw new Error('Content-Type must be application/json');
     }
 
-    const { image } = await req.json();
+    const { image, language = 'en' } = await req.json();
     
     if (!image) {
       throw new Error('No image data received');
     }
 
     console.log('Processing image data...');
-
-    // Extract base64 data
     const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image;
     
-    // Analyze image with Gemini
     console.log('Calling Gemini API...');
-    const analysisText = await analyzeSkinImage(base64Data);
+    const analysisText = await analyzeSkinImage(base64Data, language as Language);
     console.log('Gemini API response:', analysisText);
 
     // Extract product types from recommendations
@@ -114,8 +110,6 @@ serve(async (req) => {
         }
       ]
     };
-
-    console.log('Sending response:', response);
 
     return new Response(
       JSON.stringify(response),
