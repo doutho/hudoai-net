@@ -21,40 +21,48 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
       .trim();
     
     // Fix the number formatting by ensuring numbers are next to their headers
-    const fixedNumbers = decodedText.replace(/(\d+)\.\s*\n([A-ZÅÄÖa-zåäö])/g, '$1. $2');
+    const fixedNumbers = decodedText
+      .replace(/(\d+)\.\s*([A-ZÅÄÖa-zåäö])/g, '$1.\n$2')
+      .replace(/(Morgon|Kväll)/g, '\n**$1**\n');
     
     // Replace # text with h2 headers (main sections)
     const textWithHeaders = fixedNumbers.replace(
       /^#\s*(.*?)$/gm, 
-      '<h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">$1</h2>'
+      '<h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">$1</h2>'
     );
     
     // Replace **text** with bold text for subtitles
     const textWithBold = textWithHeaders.replace(
       /\*\*([^*]+)\*\*/g, 
-      '<h3 class="text-xl font-semibold text-gray-700 mt-4 mb-2">$1</h3>'
+      '<h3 class="text-xl font-semibold text-gray-700 mt-6 mb-3">$1</h3>'
     );
     
-    // Split into paragraphs and format them
+    // Split into paragraphs and format them with more spacing
     const sections = textWithBold.split('\n\n');
     
     return sections.map((section, index) => {
       if (!section.trim()) return null;
       
+      // Add extra spacing for numbered items
+      const formattedSection = section.replace(
+        /(\d+)\.\s*/g,
+        '<div class="mt-4">$1. </div>'
+      );
+      
       return (
         <div 
           key={index} 
-          className="text-gray-700 mb-4 leading-relaxed" 
-          dangerouslySetInnerHTML={{ __html: section }}
+          className="text-gray-700 mb-6 leading-relaxed" 
+          dangerouslySetInnerHTML={{ __html: formattedSection }}
         />
       );
     });
   };
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm">
-      <h3 className="text-xl font-semibold mb-4 font-roboto text-gray-800">{title}</h3>
-      <div className="space-y-2">
+    <div className="bg-white rounded-lg p-8 shadow-sm">
+      <h3 className="text-2xl font-semibold mb-6 font-roboto text-gray-800">{title}</h3>
+      <div className="space-y-4">
         {formatText(condition)}
       </div>
     </div>
