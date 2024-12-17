@@ -7,17 +7,16 @@ export async function analyzeSkinImage(base64Image: string): Promise<string> {
   const prompt = `
     As a dermatologist, analyze this skin image and provide a concise analysis in the following format:
 
-    [Skin Analysis]
     Brief description of visible skin conditions (2-3 sentences max).
 
     Based on your skin condition, I recommend:
-    - **Cleanser**: [specific type needed]
-    - **Moisturizer**: [specific type needed]
-    - **Exfoliant**: [specific type needed]
-    - **SPF**: [specific type/strength needed]
-    ${Math.random() > 0.5 ? '- **Retinol**: [specific strength needed]' : ''}
+    - **Cleanser**: [specific type needed] - I recommend the CeraVe Hydrating Facial Cleanser
+    - **Moisturizer**: [specific type needed] - I recommend the La Roche-Posay Double Repair Face Moisturizer
+    - **Exfoliant**: [specific type needed] - I recommend the Paula's Choice 2% BHA Liquid Exfoliant
+    - **SPF**: [specific type/strength needed] - I recommend the EltaMD UV Clear Facial Sunscreen SPF 46
+    ${Math.random() > 0.5 ? '- **Retinol**: [specific strength needed] - I recommend The Ordinary Retinol 1% in Squalane' : ''}
 
-    Please keep the analysis concise and maintain the exact formatting with the bold product categories.
+    Please keep the analysis concise and maintain the exact formatting with the bold product categories and specific product recommendations.
   `;
 
   try {
