@@ -5,13 +5,16 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import LanguageSelector, { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
+import { CheckCircle2 } from 'lucide-react';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [showDialog, setShowDialog] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
 
   const handleImageUpload = (index: number, file: File) => {
@@ -22,6 +25,14 @@ const Index = () => {
       setImages(newImages);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleLanguageChange = (option: LanguageOption) => {
+    setCurrentLanguage(option);
+    toast({
+      title: "Language Changed",
+      description: `Changed to ${option.label}`,
+    });
   };
 
   const handleAnalyze = async () => {
@@ -88,11 +99,15 @@ const Index = () => {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-start mb-12 animate-fade-in">
+        <div className="flex items-center justify-between mb-12 animate-fade-in">
           <img 
             src="/lovable-uploads/869792b2-0779-487f-a7fc-74c4425c1134.png" 
             alt="hudo" 
             className="h-12 md:h-16 hover-scale"
+          />
+          <LanguageSelector
+            currentLanguage={currentLanguage}
+            onLanguageChange={handleLanguageChange}
           />
         </div>
 
@@ -120,10 +135,12 @@ const Index = () => {
 
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogContent className="sm:max-w-[425px]">
-            <DialogTitle>Skin Analysis</DialogTitle>
-            <DialogDescription>
-              {isAnalyzing ? "Processing your skin analysis..." : "Results"}
-            </DialogDescription>
+            <DialogHeader>
+              <DialogTitle>Skin Analysis</DialogTitle>
+              <DialogDescription>
+                {isAnalyzing ? "Processing your skin analysis..." : "Analysis Complete"}
+              </DialogDescription>
+            </DialogHeader>
             {isAnalyzing ? (
               <div className="space-y-4 p-4">
                 <Skeleton className="h-4 w-3/4" />
@@ -131,17 +148,20 @@ const Index = () => {
                 <Skeleton className="h-32 w-full" />
               </div>
             ) : (
-              analysisResult && (
-                <div className="p-4">
-                  <p className="text-gray-600 mb-4">{analysisResult.condition}</p>
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
-                    onClick={() => setShowDialog(false)}
-                  >
-                    View Detailed Results
-                  </Button>
-                </div>
-              )
+              <div className="p-4 text-center">
+                <CheckCircle2 className="mx-auto h-12 w-12 text-green-500 mb-4" />
+                <p className="text-gray-600 mb-4">
+                  {images.length > 1 
+                    ? "Your images have been analyzed successfully!" 
+                    : "Your image has been analyzed successfully!"}
+                </p>
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={() => setShowDialog(false)}
+                >
+                  View Detailed Results
+                </Button>
+              </div>
             )}
           </DialogContent>
         </Dialog>
@@ -150,6 +170,7 @@ const Index = () => {
           <AnalysisResult
             condition={analysisResult.condition}
             recommendations={analysisResult.recommendations}
+            country={currentLanguage.country}
           />
         )}
       </div>
