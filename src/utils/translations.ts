@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     uploadText: "Upload an image to receive a personalized skincare routine powered by AI",
-    analyzeButton: "Analyze Images",
+    analyzeButton: "Analyze Image",
     analyzing: "Analyzing...",
     analysisTitle: "Skin Analysis",
     analysisProcessing: "Processing your skin analysis...",
@@ -20,7 +20,7 @@ export const translations = {
   },
   de: {
     uploadText: "Laden Sie ein Bild hoch, um eine personalisierte Hautpflegeroutine mit KI zu erhalten",
-    analyzeButton: "Bilder analysieren",
+    analyzeButton: "Bild analysieren",
     analyzing: "Analysiere...",
     analysisTitle: "Hautanalyse",
     analysisProcessing: "Ihre Hautanalyse wird verarbeitet...",
@@ -39,7 +39,7 @@ export const translations = {
   },
   sv: {
     uploadText: "Ladda upp en bild för att få en personlig hudvårdsrutin med hjälp av AI",
-    analyzeButton: "Analysera bilder",
+    analyzeButton: "Analysera bild",
     analyzing: "Analyserar...",
     analysisTitle: "Hudanalys",
     analysisProcessing: "Din hudanalys bearbetas...",
@@ -58,7 +58,7 @@ export const translations = {
   },
   fr: {
     uploadText: "Téléchargez une image pour recevoir une routine de soins personnalisée alimentée par l'IA",
-    analyzeButton: "Analyser les images",
+    analyzeButton: "Analyser l'image",
     analyzing: "Analyse en cours...",
     analysisTitle: "Analyse de la peau",
     analysisProcessing: "Traitement de votre analyse de peau...",
