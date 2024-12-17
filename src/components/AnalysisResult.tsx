@@ -27,13 +27,17 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
 }) => {
   const t = translations[language];
 
-  const mapAmazonProductToProduct = (product: AmazonProduct) => ({
-    asin: product.name.split(' ')[0],
-    title: product.name,
-    url: product.link,
-    image: '',
-    price: '',
-  });
+  const mapAmazonProductToProduct = (product: AmazonProduct) => {
+    if (!product) return null;
+    
+    return {
+      asin: product.asin || product.name?.split(' ')[0] || '',
+      title: product.name || '',
+      url: product.link || '',
+      image: product.image || '',
+      price: product.price || '',
+    };
+  };
 
   return (
     <Card className="w-full mt-8 overflow-hidden font-roboto">
@@ -56,31 +60,31 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
             <div className="space-y-4">
               <ProductSection
                 title="Moisturizers"
-                products={recommendations.moisturizers.map(mapAmazonProductToProduct)}
+                products={recommendations.moisturizers.map(mapAmazonProductToProduct).filter(Boolean)}
                 country={country}
                 viewOnAmazonText={t.viewOnAmazon}
               />
               <ProductSection
                 title="Cleansers"
-                products={recommendations.cleansers.map(mapAmazonProductToProduct)}
+                products={recommendations.cleansers.map(mapAmazonProductToProduct).filter(Boolean)}
                 country={country}
                 viewOnAmazonText={t.viewOnAmazon}
               />
               <ProductSection
                 title="Exfoliants"
-                products={recommendations.exfoliants.map(mapAmazonProductToProduct)}
+                products={recommendations.exfoliants.map(mapAmazonProductToProduct).filter(Boolean)}
                 country={country}
                 viewOnAmazonText={t.viewOnAmazon}
               />
               <ProductSection
                 title="Sunscreens"
-                products={recommendations.sunscreens.map(mapAmazonProductToProduct)}
+                products={recommendations.sunscreens.map(mapAmazonProductToProduct).filter(Boolean)}
                 country={country}
                 viewOnAmazonText={t.viewOnAmazon}
               />
               <ProductSection
                 title="Retinols"
-                products={recommendations.retinols.map(mapAmazonProductToProduct)}
+                products={recommendations.retinols.map(mapAmazonProductToProduct).filter(Boolean)}
                 country={country}
                 viewOnAmazonText={t.viewOnAmazon}
               />
