@@ -1,7 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { analyzeSkinImage } from "./gemini.ts";
-import { searchAmazonProducts } from "./amazon.ts";
 import type { AnalysisResponse, Language } from "./types.ts";
 
 const corsHeaders = {
@@ -13,28 +12,28 @@ const corsHeaders = {
 const defaultProducts = {
   moisturizers: [{
     name: "CeraVe Moisturizing Cream",
-    description: "Daily Face and Body Moisturizer for Dry Skin",
-    link: "https://www.amazon.com/dp/B00TTD9BRC"
+    description: "Daily Face and Body Moisturizer | Contains Hyaluronic Acid and Essential Ceramides for Deep Hydration",
+    link: "https://www.amazon.com/dp/B00TTD9BRC?tag=skinai0d-20"
   }],
   cleansers: [{
-    name: "La Roche-Posay Toleriane",
-    description: "Gentle Hydrating Facial Cleanser",
-    link: "https://www.amazon.com/dp/B01N7T7JKJ"
+    name: "La Roche-Posay Toleriane Hydrating Gentle Cleanser",
+    description: "Daily Face Wash with Ceramides | Non-Irritating Formula for Sensitive Skin",
+    link: "https://www.amazon.com/dp/B01N7T7JKJ?tag=skinai0d-20"
   }],
   exfoliants: [{
-    name: "Paula's Choice 2% BHA",
-    description: "Liquid Salicylic Acid Exfoliant",
-    link: "https://www.amazon.com/dp/B00949CTQQ"
+    name: "Paula's Choice 2% BHA Liquid Exfoliant",
+    description: "Gentle Leave-On Exfoliator | Unclogs & Diminishes Enlarged Pores with Salicylic Acid",
+    link: "https://www.amazon.com/dp/B00949CTQQ?tag=skinai0d-20"
   }],
   sunscreens: [{
-    name: "EltaMD UV Clear",
-    description: "Facial Sunscreen Broad-Spectrum SPF 46",
-    link: "https://www.amazon.com/dp/B002MSN3QQ"
+    name: "EltaMD UV Clear Facial Sunscreen SPF 46",
+    description: "Oil-Free Face Sunscreen | Broad Spectrum Protection for Sensitive & Acne-Prone Skin",
+    link: "https://www.amazon.com/dp/B002MSN3QQ?tag=skinai0d-20"
   }],
   retinols: [{
-    name: "The Ordinary Retinol 1%",
-    description: "Pure Retinol Anti-Aging Serum",
-    link: "https://www.amazon.com/dp/B07L8MFZW7"
+    name: "The Ordinary Retinol 1% in Squalane",
+    description: "Pure Retinol Anti-Aging Serum | Targets Fine Lines & Uneven Skin Tone",
+    link: "https://www.amazon.com/dp/B07L8MFZW7?tag=skinai0d-20"
   }]
 };
 

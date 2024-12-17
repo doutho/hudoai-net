@@ -7,9 +7,12 @@ interface SkinConditionSectionProps {
 
 const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, title }) => {
   const formatText = (text: string) => {
-    const cleanedText = text.replace(/^Ja.*ser\.\n\n/, '');
+    // Remove any potential Gemini API artifacts from the beginning
+    const cleanedText = text.replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '').trim();
     
     return cleanedText.split('\n').map((line, index) => {
+      if (!line.trim()) return null;
+      
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const formattedParts = parts.map((part, i) => {
         if (part.startsWith('**') && part.endsWith('**')) {
@@ -23,7 +26,7 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
           {formattedParts}
         </p>
       );
-    });
+    }).filter(Boolean);
   };
 
   return (
