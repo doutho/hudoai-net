@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { analyzeSkinImage } from "./gemini.ts";
-import { productDatabase } from "./products.ts";
+import { productDatabase, findBestProductMatch } from "./products.ts";
 import type { AnalysisResponse } from "./types.ts";
 
 const corsHeaders = {
@@ -8,13 +8,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-function getProductRecommendations() {
+function getProductRecommendations(condition: string) {
   return {
-    moisturizers: productDatabase.moisturizers,
-    cleansers: productDatabase.cleansers,
-    exfoliants: productDatabase.exfoliants,
-    sunscreens: productDatabase.sunscreens,
-    retinols: productDatabase.retinols
+    moisturizers: [findBestProductMatch(productDatabase.moisturizers, condition)],
+    cleansers: [findBestProductMatch(productDatabase.cleansers, condition)],
+    exfoliants: [findBestProductMatch(productDatabase.exfoliants, condition)],
+    sunscreens: [findBestProductMatch(productDatabase.sunscreens, condition)],
+    retinols: [findBestProductMatch(productDatabase.retinols, condition)]
   };
 }
 
@@ -41,8 +41,8 @@ serve(async (req) => {
     }
     console.log('Gemini API response:', analysisText);
 
-    console.log('Getting product recommendations...');
-    const recommendations = getProductRecommendations();
+    console.log('Getting product recommendations based on skin condition...');
+    const recommendations = getProductRecommendations(analysisText);
 
     const response: AnalysisResponse = {
       condition: analysisText,
