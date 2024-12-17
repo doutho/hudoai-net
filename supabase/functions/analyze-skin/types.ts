@@ -26,3 +26,16 @@ export interface AnalysisResponse {
   condition: string;
   recommendations: ProductRecommendations;
 }
+
+export interface AmazonProduct {
+  ASIN: string;
+  DetailPageURL: string;
+  ItemInfo: {
+    Title: {
+      DisplayValue: string;
+    };
+    Features?: {
+      DisplayValues: string[];
+    };
+  };
+}

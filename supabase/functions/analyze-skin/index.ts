@@ -14,85 +14,35 @@ const defaultProducts = {
   moisturizers: [
     {
       name: "CeraVe Moisturizing Cream",
-      description: "Daily face and body moisturizer for dry skin with hyaluronic acid and ceramides",
+      description: "Daily Face and Body Moisturizer | Contains Hyaluronic Acid and Essential Ceramides for Deep Hydration",
       link: "https://www.amazon.com/dp/B00TTD9BRC"
-    },
-    {
-      name: "La Roche-Posay Double Repair Face Moisturizer",
-      description: "Daily moisturizer with ceramides and niacinamide",
-      link: "https://www.amazon.com/dp/B01N9SPQHQ"
-    },
-    {
-      name: "Neutrogena Hydro Boost Water Gel",
-      description: "Lightweight gel moisturizer with hyaluronic acid",
-      link: "https://www.amazon.com/dp/B00AQ7FL6E"
     }
   ],
   cleansers: [
     {
-      name: "CeraVe Hydrating Facial Cleanser",
-      description: "Gentle, non-foaming cleanser for normal to dry skin",
-      link: "https://www.amazon.com/dp/B01MSSDEPK"
-    },
-    {
       name: "La Roche-Posay Toleriane Hydrating Gentle Cleanser",
-      description: "Daily face wash for sensitive skin",
+      description: "Daily Face Wash with Ceramides | Non-Irritating Formula for Sensitive Skin",
       link: "https://www.amazon.com/dp/B01N7T7JKJ"
-    },
-    {
-      name: "Vanicream Gentle Facial Cleanser",
-      description: "Non-comedogenic cleanser for sensitive skin",
-      link: "https://www.amazon.com/dp/B00QY1XZ4W"
     }
   ],
   exfoliants: [
     {
       name: "Paula's Choice 2% BHA Liquid Exfoliant",
-      description: "Gentle leave-on exfoliant for unclogging pores",
+      description: "Gentle Leave-On Exfoliator | Unclogs & Diminishes Enlarged Pores with Salicylic Acid",
       link: "https://www.amazon.com/dp/B00949CTQQ"
-    },
-    {
-      name: "The Ordinary Lactic Acid 5% + HA",
-      description: "Mild exfoliating serum for sensitive skin",
-      link: "https://www.amazon.com/dp/B071Z5C37J"
-    },
-    {
-      name: "CosRx BHA Blackhead Power Liquid",
-      description: "Gentle BHA treatment for blackheads and enlarged pores",
-      link: "https://www.amazon.com/dp/B00OZEJ8R8"
     }
   ],
   sunscreens: [
     {
       name: "EltaMD UV Clear Facial Sunscreen SPF 46",
-      description: "Oil-free sunscreen for sensitive and acne-prone skin",
+      description: "Oil-Free Face Sunscreen | Broad Spectrum Protection for Sensitive & Acne-Prone Skin",
       link: "https://www.amazon.com/dp/B002MSN3QQ"
-    },
-    {
-      name: "La Roche-Posay Anthelios Melt-In Sunscreen SPF 60",
-      description: "Fast-absorbing sunscreen for face and body",
-      link: "https://www.amazon.com/dp/B002CML1XE"
-    },
-    {
-      name: "Supergoop! Play Everyday Lotion SPF 50",
-      description: "Lightweight, everyday sunscreen for all skin types",
-      link: "https://www.amazon.com/dp/B08P5F28G9"
     }
   ],
   retinols: [
     {
-      name: "CeraVe Resurfacing Retinol Serum",
-      description: "Gentle retinol serum for post-acne marks",
-      link: "https://www.amazon.com/dp/B07VWSN95S"
-    },
-    {
-      name: "The Ordinary Retinol 0.5% in Squalane",
-      description: "Moderate-strength retinol for anti-aging",
-      link: "https://www.amazon.com/dp/B07L8MFZW7"
-    },
-    {
-      name: "La Roche-Posay Retinol B3 Serum",
-      description: "Pure retinol with vitamin B3 for visible aging",
+      name: "The Ordinary Retinol 1% in Squalane",
+      description: "Pure Retinol Anti-Aging Serum | Targets Fine Lines & Uneven Skin Tone",
       link: "https://www.amazon.com/dp/B07L8MFZW7"
     }
   ]
@@ -131,13 +81,7 @@ serve(async (req) => {
 
     const response: AnalysisResponse = {
       condition: analysisText,
-      recommendations: {
-        moisturizers: defaultProducts.moisturizers,
-        cleansers: defaultProducts.cleansers,
-        exfoliants: defaultProducts.exfoliants,
-        sunscreens: defaultProducts.sunscreens,
-        retinols: defaultProducts.retinols
-      }
+      recommendations: defaultProducts
     };
 
     console.log('Sending response:', JSON.stringify(response, null, 2));
