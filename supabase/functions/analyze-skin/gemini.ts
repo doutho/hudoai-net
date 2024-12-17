@@ -11,37 +11,37 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
   'en': `Analyze the skin photo and provide a brief, concise overview in one paragraph. Focus on:
-1. Main skin concerns
-2. Product recommendations, using placeholders:
-   - [MOISTURIZER] for hydration
-   - [CLEANSER] for cleansing
-   - [EXFOLIANT] if needed
-   - [SUNSCREEN] for protection
-   - [RETINOL] if appropriate
+1. Main skin concerns and conditions
+2. Recommended treatments:
+   - Moisturizing needs
+   - Cleansing routine
+   - Exfoliation if needed
+   - Sun protection
+   - Retinol if appropriate
 
-Keep it brief and factual. Use ** for emphasis. Integrate product recommendations naturally using [PRODUCT] placeholders.`,
+Keep it brief and factual. Use ** for emphasis.`,
 
   'de': `Analysiere das Hautfoto und gib einen kurzen, prägnanten Überblick in einem Absatz. Konzentriere dich auf:
 1. Hauptprobleme der Haut
-2. Produktempfehlungen mit Platzhaltern:
-   - [MOISTURIZER] für Hydration
-   - [CLEANSER] zur Reinigung
-   - [EXFOLIANT] bei Bedarf
-   - [SUNSCREEN] für Schutz
-   - [RETINOL] falls angebracht
+2. Empfohlene Behandlungen:
+   - Feuchtigkeitsbedarf
+   - Reinigungsroutine
+   - Peeling bei Bedarf
+   - Sonnenschutz
+   - Retinol falls angebracht
 
-Halte es kurz und sachlich. Verwende ** für Betonung. Integriere Produktempfehlungen natürlich mit [PRODUCT] Platzhaltern.`,
+Halte es kurz und sachlich. Verwende ** für Betonung.`,
 
   'sv': `Analysera hudfotot och ge en kort, koncis översikt i ett stycke. Fokusera på:
 1. Huvudsakliga hudproblem
-2. Produktrekommendationer med platshållare:
-   - [MOISTURIZER] för fukt
-   - [CLEANSER] för rengöring
-   - [EXFOLIANT] vid behov
-   - [SUNSCREEN] för skydd
-   - [RETINOL] om lämpligt
+2. Rekommenderade behandlingar:
+   - Fuktbehov
+   - Rengöringsrutin
+   - Exfoliering vid behov
+   - Solskydd
+   - Retinol om lämpligt
 
-Håll det kort och faktabaserat. Använd ** för betoning. Integrera produktrekommendationer naturligt med [PRODUCT] platshållare.`
+Håll det kort och faktabaserat. Använd ** för betoning.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
