@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.3";
 
 export async function analyzeSkinImage(base64Image: string): Promise<string> {
   const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY") || '');
-  const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
     As a dermatologist, analyze this skin image and provide:
@@ -26,6 +26,8 @@ export async function analyzeSkinImage(base64Image: string): Promise<string> {
   `;
 
   try {
+    console.log('Calling Gemini API with image...');
+    
     const result = await model.generateContent([
       prompt,
       {
