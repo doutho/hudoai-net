@@ -1,4 +1,4 @@
-import { AmazonProduct } from './types.ts';
+import { type AmazonProduct } from './types.ts';
 
 export async function searchAmazonProducts(keywords: string): Promise<AmazonProduct[]> {
   const accessKeyId = Deno.env.get("AMAZON_ACCESS_KEY_ID");
@@ -24,12 +24,15 @@ export async function searchAmazonProducts(keywords: string): Promise<AmazonProd
       "Images.Primary.Large",
       "ItemInfo.Title",
       "Offers.Listings.Price",
-      "ItemInfo.Features"
+      "ItemInfo.Features",
+      "ItemInfo.ByLineInfo"
     ],
     "PartnerTag": partnerTag,
     "PartnerType": "Associates",
     "Marketplace": "www.amazon.com",
-    "Operation": "SearchItems"
+    "Operation": "SearchItems",
+    "SearchIndex": "Beauty",
+    "ItemCount": 5
   };
 
   const canonicalHeaders = [
@@ -133,7 +136,16 @@ export async function searchAmazonProducts(keywords: string): Promise<AmazonProd
     }
 
     const data = await response.json();
-    return data.SearchResult?.Items || [];
+    const items = data.SearchResult?.Items || [];
+
+    // Transform the items into our product format
+    return items.map((item: any) => ({
+      name: item.ItemInfo.Title.DisplayValue,
+      description: item.ItemInfo.Features?.[0] || '',
+      link: item.DetailPageURL,
+      image: item.Images.Primary.Large.URL,
+      price: item.Offers?.Listings?.[0]?.Price?.DisplayAmount || 'Price not available'
+    }));
   } catch (error) {
     console.error('Error fetching Amazon products:', error);
     throw error;

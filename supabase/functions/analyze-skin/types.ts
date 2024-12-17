@@ -1,18 +1,21 @@
 export type Language = 'en' | 'de' | 'sv';
 export type Country = 'US' | 'DE' | 'UK' | 'SE';
 
-export interface Product {
+export interface AmazonProduct {
   name: string;
   description: string;
   link: string;
+  image: string;
+  price: string;
 }
 
 export interface ProductRecommendations {
-  moisturizers: Product[];
-  cleansers: Product[];
-  exfoliants: Product[];
-  sunscreens: Product[];
-  retinols: Product[];
+  moisturizers: AmazonProduct[];
+  cleansers: AmazonProduct[];
+  exfoliants: AmazonProduct[];
+  sunscreens: AmazonProduct[];
+  retinols: AmazonProduct[];
+  treatments: AmazonProduct[];
 }
 
 export interface AnalysisResponse {

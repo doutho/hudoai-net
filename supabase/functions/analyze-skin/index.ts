@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { analyzeSkinImage } from "./gemini.ts";
+import { searchAmazonProducts } from "./amazon.ts";
 import type { AnalysisResponse, Language } from "./types.ts";
 
 const corsHeaders = {
@@ -8,33 +9,61 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const defaultProducts = {
-  moisturizers: [{
-    name: "CeraVe Moisturizing Cream",
-    description: "Daily Face and Body Moisturizer | Contains Hyaluronic Acid and Essential Ceramides for Deep Hydration",
-    link: "https://www.amazon.com/dp/B00TTD9BRC?tag=skinai0d-20"
-  }],
-  cleansers: [{
-    name: "La Roche-Posay Toleriane Hydrating Gentle Cleanser",
-    description: "Daily Face Wash with Ceramides | Non-Irritating Formula for Sensitive Skin",
-    link: "https://www.amazon.com/dp/B01N7T7JKJ?tag=skinai0d-20"
-  }],
-  exfoliants: [{
-    name: "Paula's Choice 2% BHA Liquid Exfoliant",
-    description: "Gentle Leave-On Exfoliator | Unclogs & Diminishes Enlarged Pores with Salicylic Acid",
-    link: "https://www.amazon.com/dp/B00949CTQQ?tag=skinai0d-20"
-  }],
-  sunscreens: [{
-    name: "EltaMD UV Clear Facial Sunscreen SPF 46",
-    description: "Oil-Free Face Sunscreen | Broad Spectrum Protection for Sensitive & Acne-Prone Skin",
-    link: "https://www.amazon.com/dp/B002MSN3QQ?tag=skinai0d-20"
-  }],
-  retinols: [{
-    name: "The Ordinary Retinol 1% in Squalane",
-    description: "Pure Retinol Anti-Aging Serum | Targets Fine Lines & Uneven Skin Tone",
-    link: "https://www.amazon.com/dp/B07L8MFZW7?tag=skinai0d-20"
-  }]
-};
+async function getProductRecommendations(condition: string) {
+  console.log('Getting product recommendations for condition:', condition);
+  
+  try {
+    // Extract key skin concerns from the analysis
+    const concerns = extractSkinConcerns(condition.toLowerCase());
+    console.log('Extracted skin concerns:', concerns);
+
+    // Search for products based on concerns
+    const recommendations = {
+      moisturizers: await searchAmazonProducts(`moisturizer for ${concerns.join(' ')} skin`),
+      cleansers: await searchAmazonProducts(`cleanser for ${concerns.join(' ')} skin`),
+      exfoliants: await searchAmazonProducts(`exfoliant for ${concerns.join(' ')} skin`),
+      sunscreens: await searchAmazonProducts(`sunscreen for ${concerns.join(' ')} skin`),
+      retinols: await searchAmazonProducts(`retinol for ${concerns.join(' ')} skin`),
+      treatments: await searchAmazonProducts(`treatment for ${concerns.join(' ')} skin`)
+    };
+
+    console.log('Found recommendations:', recommendations);
+    return recommendations;
+  } catch (error) {
+    console.error('Error getting product recommendations:', error);
+    throw error;
+  }
+}
+
+function extractSkinConcerns(analysis: string): string[] {
+  const concerns = new Set<string>();
+  
+  // Common skin conditions to look for
+  const conditionMap = {
+    'acne': ['acne', 'pimples', 'breakouts'],
+    'dry': ['dry', 'dehydrated', 'flaky'],
+    'oily': ['oily', 'greasy'],
+    'sensitive': ['sensitive', 'irritated'],
+    'aging': ['aging', 'wrinkles', 'fine lines'],
+    'hyperpigmentation': ['dark spots', 'hyperpigmentation', 'uneven tone'],
+    'rosacea': ['rosacea', 'redness'],
+    'combination': ['combination'],
+  };
+
+  // Check for each condition in the analysis
+  for (const [condition, keywords] of Object.entries(conditionMap)) {
+    if (keywords.some(keyword => analysis.includes(keyword))) {
+      concerns.add(condition);
+    }
+  }
+
+  // If no specific concerns found, default to 'normal'
+  if (concerns.size === 0) {
+    concerns.add('normal');
+  }
+
+  return Array.from(concerns);
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -67,13 +96,16 @@ serve(async (req) => {
     const analysisText = await analyzeSkinImage(base64Data, language as Language);
     console.log('Gemini API response:', analysisText);
 
-    // Create a properly structured response
+    // Get personalized product recommendations based on the analysis
+    console.log('Getting product recommendations...');
+    const recommendations = await getProductRecommendations(analysisText);
+
+    // Create response
     const response: AnalysisResponse = {
-      condition: analysisText || "Unable to analyze skin condition",
-      recommendations: defaultProducts
+      condition: analysisText,
+      recommendations
     };
 
-    // Log the final response for debugging
     console.log('Final response structure:', JSON.stringify(response, null, 2));
 
     return new Response(
