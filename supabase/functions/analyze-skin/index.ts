@@ -131,13 +131,7 @@ serve(async (req) => {
 
     const response: AnalysisResponse = {
       condition: analysisText,
-      recommendations: {
-        moisturizers: defaultProducts.moisturizers,
-        cleansers: defaultProducts.cleansers,
-        exfoliants: defaultProducts.exfoliants,
-        sunscreens: defaultProducts.sunscreens,
-        retinols: defaultProducts.retinols
-      }
+      recommendations: defaultProducts
     };
 
     return new Response(
