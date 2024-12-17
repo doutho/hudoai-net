@@ -10,13 +10,13 @@ export async function analyzeSkinImage(base64Image: string): Promise<string> {
     Brief description of visible skin conditions (2-3 sentences max).
 
     Based on your skin condition, I recommend:
-    - **Cleanser**: [specific type needed] - I recommend the CeraVe Hydrating Facial Cleanser
-    - **Moisturizer**: [specific type needed] - I recommend the La Roche-Posay Double Repair Face Moisturizer
-    - **Exfoliant**: [specific type needed] - I recommend the Paula's Choice 2% BHA Liquid Exfoliant
-    - **SPF**: [specific type/strength needed] - I recommend the EltaMD UV Clear Facial Sunscreen SPF 46
-    ${Math.random() > 0.5 ? '- **Retinol**: [specific strength needed] - I recommend The Ordinary Retinol 1% in Squalane' : ''}
+    - **Cleanser**: [specific type needed] - I recommend the CeraVe Hydrating Facial Cleanser because it's gentle, non-stripping, and contains essential ceramides to maintain skin barrier health
+    - **Moisturizer**: [specific type needed] - I recommend the La Roche-Posay Double Repair Face Moisturizer as it provides balanced hydration with ceramides and niacinamide
+    - **Exfoliant**: [specific type needed] - I recommend the Paula's Choice 2% BHA Liquid Exfoliant which gently removes dead skin cells and unclogs pores
+    - **SPF**: [specific type/strength needed] - I recommend the EltaMD UV Clear Facial Sunscreen SPF 46 because it's lightweight, non-comedogenic, and provides excellent protection
+    ${Math.random() > 0.5 ? '- **Retinol**: [specific strength needed] - I recommend The Ordinary Retinol 1% in Squalane as it\'s an effective yet gentle formulation for skin renewal' : ''}
 
-    Please keep the analysis concise and maintain the exact formatting with the bold product categories and specific product recommendations.
+    Please keep the analysis concise and maintain the exact formatting with the bold product categories and specific product recommendations with their benefits.
   `;
 
   try {

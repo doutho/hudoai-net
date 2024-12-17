@@ -68,11 +68,12 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendati
                           <ExternalLink className="w-4 h-4 text-gray-400" />
                         </div>
                         {product.image && (
-                          <div className="relative h-48 w-full">
+                          <div className="relative h-48">
                             <img
                               src={product.image}
                               alt={product.name}
-                              className="object-contain w-full h-full rounded-md"
+                              className="absolute inset-0 w-full h-full object-contain"
+                              loading="lazy"
                             />
                           </div>
                         )}
