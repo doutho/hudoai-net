@@ -10,18 +10,31 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
     // Remove any potential Gemini API artifacts from the beginning
     const cleanedText = text.replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '').trim();
     
-    // Replace #text with h3 headers
-    const textWithHeaders = cleanedText.replace(/^#\s*(.*?)$/gm, '<h3 class="text-xl font-semibold text-gray-800 mt-4 mb-2">$1</h3>');
+    // Replace #text with h2 headers (main sections)
+    const textWithHeaders = cleanedText.replace(/^#\s*(.*?)$/gm, '<h2 class="text-2xl font-bold text-gray-800 mt-6 mb-4">$1</h2>');
     
-    // Replace *text* with italics, but not **text**
-    const formattedText = textWithHeaders.replace(/(?<!\*)\*([^\*]+)\*(?!\*)/g, '<em class="text-gray-700 italic">$1</em>');
+    // Replace single asterisk items with list items
+    const formattedText = textWithHeaders.replace(/\*\s([^*]+)\*/g, '<li class="mb-2">$1</li>');
+    
+    // Replace **text** with bold text
+    const textWithBold = formattedText.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>');
     
     // Split into sections
-    const sections = formattedText.split('\n\n');
+    const sections = textWithBold.split('\n\n');
+    
     return sections.map((section, index) => {
       if (!section.trim()) return null;
       
-      // Return a div containing the formatted HTML
+      // Check if the section starts with a list item
+      if (section.includes('<li')) {
+        return (
+          <ul key={index} className="list-none space-y-2 ml-4 mb-4">
+            <div dangerouslySetInnerHTML={{ __html: section }} />
+          </ul>
+        );
+      }
+      
+      // Return regular sections
       return (
         <div 
           key={index} 
