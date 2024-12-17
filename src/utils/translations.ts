@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    uploadText: "Upload up to 3 images to evaluate your skin condition",
+    uploadText: "Upload up to 3 images to evaluate your skin condition using AI",
     analyzeButton: "Analyze Images",
     analyzing: "Analyzing...",
     analysisTitle: "Skin Analysis",
@@ -21,7 +21,7 @@ export const translations = {
     changedTo: "Changed to {language}"
   },
   de: {
-    uploadText: "Laden Sie bis zu 3 Bilder hoch, um Ihren Hautzustand zu bewerten",
+    uploadText: "Laden Sie bis zu 3 Bilder hoch, um Ihren Hautzustand mit KI zu bewerten",
     analyzeButton: "Bilder analysieren",
     analyzing: "Analysiere...",
     analysisTitle: "Hautanalyse",
@@ -42,7 +42,7 @@ export const translations = {
     changedTo: "Geändert zu {language}"
   },
   sv: {
-    uploadText: "Ladda upp max 3 bilder för att utvärdera ditt hudtillstånd",
+    uploadText: "Ladda upp max 3 bilder för att utvärdera ditt hudtillstånd med AI",
     analyzeButton: "Analysera bilder",
     analyzing: "Analyserar...",
     analysisTitle: "Hudanalys",

@@ -52,14 +52,6 @@ const Index = () => {
       const newImages = [...images];
       newImages[index] = e.target?.result as string;
       setImages(newImages);
-      
-      // Show toast when images are uploaded
-      if (newImages.filter(Boolean).length > 0) {
-        toast({
-          title: "Images Added",
-          description: "Add up to 3 images to evaluate your skin condition using the latest AI technologies",
-        });
-      }
     };
     reader.readAsDataURL(file);
   };
@@ -80,7 +72,6 @@ const Index = () => {
     setShowDialog(true);
     
     try {
-      // Remove data URL prefix if present
       const imageData = images[0].includes('base64,') 
         ? images[0]
         : `data:image/jpeg;base64,${images[0]}`;
@@ -101,10 +92,8 @@ const Index = () => {
         throw new Error('No data received from analysis');
       }
 
-      // Log the raw response for debugging
       console.log('Raw response from Edge Function:', data);
 
-      // Ensure we have a valid response structure
       if (!data.condition || !data.recommendations) {
         console.error('Invalid response structure:', data);
         throw new Error('Invalid response structure');
