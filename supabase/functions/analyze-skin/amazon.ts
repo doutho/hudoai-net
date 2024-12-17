@@ -1,5 +1,4 @@
 import { AmazonProduct } from './types.ts';
-import { createHmac } from "https://deno.land/std@0.208.0/crypto/mod.ts";
 
 export async function searchAmazonProducts(keywords: string): Promise<AmazonProduct[]> {
   const accessKeyId = Deno.env.get("AMAZON_ACCESS_KEY_ID");
@@ -48,32 +47,70 @@ export async function searchAmazonProducts(keywords: string): Promise<AmazonProd
     canonicalHeaders,
     '',
     'content-encoding;content-type;host;x-amz-date;x-amz-target',
-    await createHmac('sha256', '')
-      .update(JSON.stringify(payload))
-      .digest('hex'),
+    await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(JSON.stringify(payload))
+    ).then(hash => Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('')),
   ].join('\n');
 
   const stringToSign = [
     'AWS4-HMAC-SHA256',
     timestamp,
     `${date}/${region}/${service}/aws4_request`,
-    await createHmac('sha256', '')
-      .update(canonicalRequest)
-      .digest('hex'),
+    await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(canonicalRequest)
+    ).then(hash => Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('')),
   ].join('\n');
 
-  const getSignatureKey = async (key: string, dateStamp: string, regionName: string, serviceName: string) => {
-    const kDate = await createHmac('sha256', `AWS4${key}`).update(dateStamp).digest();
-    const kRegion = await createHmac('sha256', kDate).update(regionName).digest();
-    const kService = await createHmac('sha256', kRegion).update(serviceName).digest();
-    const kSigning = await createHmac('sha256', kService).update('aws4_request').digest();
-    return kSigning;
-  };
+  async function getSignatureKey(key: string, dateStamp: string, regionName: string, serviceName: string) {
+    const kDate = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(`AWS4${key}`),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    
+    const kRegion = await crypto.subtle.importKey(
+      "raw",
+      await crypto.subtle.sign(
+        "HMAC",
+        kDate,
+        new TextEncoder().encode(dateStamp)
+      ),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    
+    const kService = await crypto.subtle.importKey(
+      "raw",
+      await crypto.subtle.sign(
+        "HMAC",
+        kRegion,
+        new TextEncoder().encode(regionName)
+      ),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    
+    return await crypto.subtle.sign(
+      "HMAC",
+      kService,
+      new TextEncoder().encode("aws4_request")
+    );
+  }
 
   const signatureKey = await getSignatureKey(secretKey, date, region, service);
-  const signature = await createHmac('sha256', signatureKey)
-    .update(stringToSign)
-    .digest('hex');
+  const signature = Array.from(new Uint8Array(signatureKey))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 
   const headers = {
     'content-encoding': 'amz-1.0',

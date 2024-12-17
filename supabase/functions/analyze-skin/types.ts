@@ -1,4 +1,6 @@
 export interface AmazonProduct {
+  ASIN?: string;
+  DetailPageURL?: string;
   ItemInfo?: {
     Title?: {
       DisplayValue?: string;
@@ -7,7 +9,6 @@ export interface AmazonProduct {
       DisplayValues?: string[];
     };
   };
-  DetailPageURL?: string;
   Images?: {
     Primary?: {
       Large?: {

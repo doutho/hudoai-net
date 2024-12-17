@@ -11,6 +11,8 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('Received request:', req.method);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
@@ -35,42 +37,40 @@ serve(async (req) => {
       throw new Error('No image data received');
     }
 
-    console.log('Received request with image data');
+    console.log('Processing image data...');
 
-    // Extract base64 data and validate size
+    // Extract base64 data
     const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image;
-    const sizeInBytes = (base64Data.length * 3) / 4;
-    if (sizeInBytes > 10 * 1024 * 1024) { // 10MB limit
-      throw new Error('Image size too large. Please use an image under 10MB.');
-    }
-
-    console.log('Analyzing image with Gemini API...');
+    
+    // Analyze image with Gemini
+    console.log('Calling Gemini API...');
     const analysisText = await analyzeSkinImage(base64Data);
-    console.log('Analysis text:', analysisText);
+    console.log('Gemini API response:', analysisText);
 
-    // Split the analysis into condition and product suggestions
-    const [condition, productSuggestions] = analysisText.split('\n\n').filter(Boolean);
-
-    // Extract product keywords from suggestions
-    const productKeywords = productSuggestions
+    // Parse analysis text to extract product recommendations
+    const [condition, recommendationsText] = analysisText.split('\n\n');
+    
+    // Extract product types from recommendations
+    const productTypes = recommendationsText
       .split('\n')
-      .map(suggestion => suggestion.replace(/^\d+\.\s*/, ''))
-      .map(suggestion => `skincare ${suggestion}`);
+      .filter(line => line.startsWith('-'))
+      .map(line => line.replace(/^-\s*([^:]+):.*$/, '$1').trim());
 
-    console.log('Searching for products:', productKeywords);
+    console.log('Searching for products:', productTypes);
 
     // Search Amazon for each product type
-    const amazonProducts = await Promise.all(
-      productKeywords.map(async (keyword) => {
-        try {
-          const items = await searchAmazonProducts(keyword);
-          return items[0]; // Get the first (most relevant) product
-        } catch (error) {
-          console.error(`Error fetching Amazon product for ${keyword}:`, error);
-          return null;
-        }
-      })
-    );
+    const productPromises = productTypes.map(async (productType) => {
+      try {
+        const searchTerm = `skincare ${productType}`;
+        const items = await searchAmazonProducts(searchTerm);
+        return items[0]; // Get the first (most relevant) product
+      } catch (error) {
+        console.error(`Error fetching Amazon product for ${productType}:`, error);
+        return null;
+      }
+    });
+
+    const amazonProducts = await Promise.all(productPromises);
 
     // Format the recommendations
     const recommendations = amazonProducts
@@ -83,9 +83,8 @@ serve(async (req) => {
         price: product?.Offers?.Listings?.[0]?.Price?.DisplayAmount || 'Price not available'
       }));
 
-    // Prepare the final response
-    const finalResponse: AnalysisResponse = {
-      condition: condition || 'Based on the image analysis, your skin appears healthy with some areas that could benefit from targeted care.',
+    const response: AnalysisResponse = {
+      condition: condition || 'Analysis not available',
       recommendations: recommendations.length > 0 ? recommendations : [
         {
           name: "CeraVe Hydrating Facial Cleanser",
@@ -100,21 +99,14 @@ serve(async (req) => {
           link: "https://www.amazon.com/dp/B00IRLMAOI",
           image: "https://m.media-amazon.com/images/I/61yTGqZGkIL._SL1500_.jpg",
           price: "$29.99"
-        },
-        {
-          name: "The Ordinary Niacinamide 10% + Zinc 1%",
-          description: "High-strength vitamin and mineral blemish formula",
-          link: "https://www.amazon.com/dp/B06VW9L89J",
-          image: "https://m.media-amazon.com/images/I/51INPbrnz+L._SL1000_.jpg",
-          price: "$11.99"
         }
       ]
     };
 
-    console.log('Sending response:', finalResponse);
+    console.log('Sending response:', response);
 
     return new Response(
-      JSON.stringify(finalResponse),
+      JSON.stringify(response),
       { 
         headers: { 
           ...corsHeaders,
