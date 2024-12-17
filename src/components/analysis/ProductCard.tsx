@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div className="flex flex-col space-y-2">
               <h4 className="text-lg font-semibold text-primary">{product.title}</h4>
               <a
-                href={product.url}
+                href={`https://${product.url}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-sm text-purple-500 hover:text-purple-700 transition-colors"
