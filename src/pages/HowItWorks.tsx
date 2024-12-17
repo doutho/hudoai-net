@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { type LanguageOption } from '@/components/LanguageSelector';
+import { translations } from '@/utils/translations';
 
 interface HowItWorksProps {
   currentLanguage: LanguageOption;
@@ -11,18 +12,20 @@ interface HowItWorksProps {
 }
 
 const HowItWorks: React.FC<HowItWorksProps> = ({ currentLanguage, onLanguageChange }) => {
+  const t = translations[currentLanguage.code];
+
   const steps = [
     {
-      title: "Upload Your Images",
-      description: "Take clear photos of your skin concerns and upload them to our platform."
+      title: t.uploadImages,
+      description: t.uploadDescription
     },
     {
-      title: "AI Analysis",
-      description: "Our advanced AI technology analyzes your skin condition and identifies potential concerns."
+      title: t.aiAnalysis,
+      description: t.aiDescription
     },
     {
-      title: "Get Personalized Recommendations",
-      description: "Receive tailored product recommendations and skincare advice based on your analysis."
+      title: t.recommendations,
+      description: t.recommendationsDescription
     }
   ];
 
@@ -36,7 +39,7 @@ const HowItWorks: React.FC<HowItWorksProps> = ({ currentLanguage, onLanguageChan
         
         <div className="space-y-8 mt-12">
           <h1 className="text-3xl font-bold text-center text-white mb-12">
-            How It Works
+            {t.howItWorks}
           </h1>
           
           <div className="grid gap-8 md:grid-cols-3">
@@ -70,7 +73,7 @@ const HowItWorks: React.FC<HowItWorksProps> = ({ currentLanguage, onLanguageChan
               to="/" 
               className="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
             >
-              Try It Now
+              {t.tryItNow}
             </Link>
           </div>
         </div>
