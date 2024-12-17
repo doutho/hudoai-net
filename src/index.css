@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,7 +43,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-br from-pink-200 via-pink-300 to-pink-200 text-foreground antialiased min-h-screen;
+    @apply bg-gradient-to-br from-pink-200 via-pink-300 to-pink-200 text-foreground antialiased min-h-screen font-roboto;
   }
 }
 

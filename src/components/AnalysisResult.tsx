@@ -17,19 +17,41 @@ interface AnalysisResultProps {
 }
 
 const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendations }) => {
+  // Function to convert markdown-style bold text to JSX
+  const formatText = (text: string) => {
+    return text.split('\n').map((line, index) => {
+      // Replace **text** with bold elements
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      const formattedParts = parts.map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={i} className="text-purple-600">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+      
+      return (
+        <p key={index} className="mb-2">
+          {formattedParts}
+        </p>
+      );
+    });
+  };
+
   return (
-    <Card className="w-full mt-8 overflow-hidden">
+    <Card className="w-full mt-8 overflow-hidden font-roboto">
       <CardHeader className="bg-gradient-to-r from-purple-100 to-pink-100">
         <CardTitle className="text-2xl">Your Skin Analysis Results</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
         <div>
           <h3 className="text-xl font-semibold mb-3">Skin Condition</h3>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{condition}</p>
+          <div className="text-gray-700 leading-relaxed">
+            {formatText(condition)}
+          </div>
         </div>
         <div>
           <h3 className="text-xl font-semibold mb-3">Recommended Products</h3>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {recommendations.map((product, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
@@ -40,23 +62,23 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendati
                       rel="noopener noreferrer"
                       className="block p-4 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-1"
                     >
-                      <div className="flex flex-col space-y-3">
+                      <div className="flex flex-col space-y-4">
                         <div className="flex justify-between items-start">
-                          <h4 className="font-medium text-purple-600">{product.name}</h4>
+                          <h4 className="font-medium text-purple-600 text-lg">{product.name}</h4>
                           <ExternalLink className="w-4 h-4 text-gray-400" />
                         </div>
                         {product.image && (
-                          <div className="relative h-40 w-full">
+                          <div className="relative h-48 w-full">
                             <img
                               src={product.image}
                               alt={product.name}
-                              className="object-contain w-full h-full"
+                              className="object-contain w-full h-full rounded-md"
                             />
                           </div>
                         )}
                         <p className="text-sm text-gray-600">{product.description}</p>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-purple-500">View on Amazon</span>
+                        <div className="flex justify-between items-center pt-2">
+                          <span className="text-sm text-purple-500 hover:text-purple-700">View on Amazon</span>
                           <span className="text-sm font-semibold text-gray-700">{product.price}</span>
                         </div>
                       </div>
