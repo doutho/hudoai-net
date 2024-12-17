@@ -3,6 +3,7 @@ import ImageUpload from '@/components/ImageUpload';
 import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -32,29 +33,32 @@ const Index = () => {
 
     setIsAnalyzing(true);
     try {
-      // Mock analysis result for now - will be replaced with actual API call
-      const mockResult = {
-        condition: "Mild dryness with slight redness",
-        recommendations: [
-          {
-            name: "CeraVe Moisturizing Cream",
-            description: "Rich, non-irritating moisturizer for dry skin",
-            link: "#"
-          },
-          {
-            name: "La Roche-Posay Cicaplast",
-            description: "Soothing balm for irritated skin",
-            link: "#"
-          }
-        ]
-      };
+      const { data: { url: functionUrl } } = await supabase.functions.invoke('analyze-skin', {
+        body: { image: images[0] }
+      });
+
+      const response = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ image: images[0] })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to analyze image');
+      }
+
+      const result = await response.json();
+      setAnalysisResult(result);
       
-      setAnalysisResult(mockResult);
       toast({
         title: "Analysis complete",
         description: "Your skin analysis results are ready",
       });
     } catch (error) {
+      console.error('Error:', error);
       toast({
         title: "Error",
         description: "Failed to analyze images. Please try again.",
