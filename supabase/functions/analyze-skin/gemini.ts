@@ -5,24 +5,19 @@ export async function analyzeSkinImage(base64Image: string): Promise<string> {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
-    As a dermatologist, analyze this skin image and provide:
-    1. A brief description of visible skin conditions and concerns (2-3 sentences)
-    2. Recommend specific product types needed, focusing on:
-       - Cleanser
-       - Moisturizer
-       - Exfoliant
-       - SPF
-       - Retinol (if needed)
-    
-    Format your response as:
+    As a dermatologist, analyze this skin image and provide a concise analysis in the following format:
+
     [Skin Analysis]
-    
-    [Product Recommendations]
-    - Cleanser: [type/ingredients needed]
-    - Moisturizer: [type/ingredients needed]
-    - Exfoliant: [type/ingredients needed]
-    - SPF: [type needed]
-    - Retinol: [if needed, type/strength]
+    Brief description of visible skin conditions (2-3 sentences max).
+
+    Based on your skin condition, I recommend:
+    - **Cleanser**: [specific type needed]
+    - **Moisturizer**: [specific type needed]
+    - **Exfoliant**: [specific type needed]
+    - **SPF**: [specific type/strength needed]
+    ${Math.random() > 0.5 ? '- **Retinol**: [specific strength needed]' : ''}
+
+    Please keep the analysis concise and maintain the exact formatting with the bold product categories.
   `;
 
   try {

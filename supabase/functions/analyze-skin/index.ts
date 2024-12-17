@@ -11,8 +11,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log('Received request:', req.method);
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
@@ -47,25 +45,25 @@ serve(async (req) => {
     const analysisText = await analyzeSkinImage(base64Data);
     console.log('Gemini API response:', analysisText);
 
-    // Parse analysis text to extract product recommendations
-    const [condition, recommendationsText] = analysisText.split('\n\n');
-    
     // Extract product types from recommendations
-    const productTypes = recommendationsText
+    const productTypes = analysisText
       .split('\n')
-      .filter(line => line.startsWith('-'))
-      .map(line => line.replace(/^-\s*([^:]+):.*$/, '$1').trim());
+      .filter(line => line.includes('**'))
+      .map(line => {
+        const match = line.match(/\*\*(.*?)\*\*:\s*(.*)/);
+        return match ? `skincare ${match[1]} ${match[2]}` : null;
+      })
+      .filter(Boolean);
 
     console.log('Searching for products:', productTypes);
 
     // Search Amazon for each product type
-    const productPromises = productTypes.map(async (productType) => {
+    const productPromises = productTypes.slice(0, 4).map(async (searchTerm) => {
       try {
-        const searchTerm = `skincare ${productType}`;
         const items = await searchAmazonProducts(searchTerm);
         return items[0]; // Get the first (most relevant) product
       } catch (error) {
-        console.error(`Error fetching Amazon product for ${productType}:`, error);
+        console.error(`Error fetching Amazon product for ${searchTerm}:`, error);
         return null;
       }
     });
@@ -84,7 +82,7 @@ serve(async (req) => {
       }));
 
     const response: AnalysisResponse = {
-      condition: condition || 'Analysis not available',
+      condition: analysisText,
       recommendations: recommendations.length > 0 ? recommendations : [
         {
           name: "CeraVe Hydrating Facial Cleanser",
@@ -94,11 +92,25 @@ serve(async (req) => {
           price: "$15.99"
         },
         {
-          name: "La Roche-Posay Effaclar Duo",
-          description: "Dual action acne treatment with benzoyl peroxide",
-          link: "https://www.amazon.com/dp/B00IRLMAOI",
-          image: "https://m.media-amazon.com/images/I/61yTGqZGkIL._SL1500_.jpg",
-          price: "$29.99"
+          name: "La Roche-Posay Double Repair Face Moisturizer",
+          description: "Daily moisturizer with ceramides and niacinamide",
+          link: "https://www.amazon.com/dp/B01N9SPQHQ",
+          image: "https://m.media-amazon.com/images/I/71nqr8t36BL._SL1500_.jpg",
+          price: "$19.99"
+        },
+        {
+          name: "Paula's Choice 2% BHA Liquid Exfoliant",
+          description: "Gentle leave-on exfoliant for unclogging pores",
+          link: "https://www.amazon.com/dp/B00949CTQQ",
+          image: "https://m.media-amazon.com/images/I/61d6JpHiuVL._SL1500_.jpg",
+          price: "$32.00"
+        },
+        {
+          name: "EltaMD UV Clear Facial Sunscreen SPF 46",
+          description: "Oil-free sunscreen for sensitive and acne-prone skin",
+          link: "https://www.amazon.com/dp/B002MSN3QQ",
+          image: "https://m.media-amazon.com/images/I/71KaWB+hJvL._SL1500_.jpg",
+          price: "$39.00"
         }
       ]
     };
