@@ -25,7 +25,7 @@ serve(async (req) => {
 
     console.log('Initializing Gemini API');
     const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY"));
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
       Analyze this skin image and provide:
