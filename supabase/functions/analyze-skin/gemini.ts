@@ -10,38 +10,59 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `Analyze the skin photo and provide a brief, concise overview in one paragraph. Focus on:
-1. Main skin concerns and conditions
-2. Recommended treatments:
-   - Moisturizing needs
-   - Cleansing routine
-   - Exfoliation if needed
-   - Sun protection
-   - Retinol if appropriate
+  'en': `Analyze the skin photo and provide a comprehensive yet concise analysis in two sections:
 
-Keep it brief and factual. Use ** for emphasis.`,
+1. **Skin Analysis**:
+   - Main skin concerns and conditions
+   - Current skin state
+   - Areas needing attention
 
-  'de': `Analysiere das Hautfoto und gib einen kurzen, prägnanten Überblick in einem Absatz. Konzentriere dich auf:
-1. Hauptprobleme der Haut
-2. Empfohlene Behandlungen:
-   - Feuchtigkeitsbedarf
-   - Reinigungsroutine
-   - Peeling bei Bedarf
-   - Sonnenschutz
-   - Retinol falls angebracht
+2. **Recommended Routine**:
+   Provide a brief, step-by-step daily routine explaining when to use:
+   - Cleanser (AM/PM)
+   - Exfoliant (frequency)
+   - Treatment products
+   - Moisturizer
+   - Sunscreen (AM)
+   - Retinol (PM, if appropriate)
 
-Halte es kurz und sachlich. Verwende ** für Betonung.`,
+Keep the analysis factual and concise. Use ** for emphasis on key points.`,
 
-  'sv': `Analysera hudfotot och ge en kort, koncis översikt i ett stycke. Fokusera på:
-1. Huvudsakliga hudproblem
-2. Rekommenderade behandlingar:
-   - Fuktbehov
-   - Rengöringsrutin
-   - Exfoliering vid behov
-   - Solskydd
-   - Retinol om lämpligt
+  'de': `Analysiere das Hautfoto und erstelle eine umfassende, aber prägnante Analyse in zwei Abschnitten:
 
-Håll det kort och faktabaserat. Använd ** för betoning.`
+1. **Hautanalyse**:
+   - Hauptprobleme und Hautzustand
+   - Aktueller Hautzustand
+   - Bereiche, die Aufmerksamkeit benötigen
+
+2. **Empfohlene Routine**:
+   Beschreibe eine kurze, schrittweise tägliche Routine mit Erklärungen zur Verwendung von:
+   - Reiniger (morgens/abends)
+   - Peeling (Häufigkeit)
+   - Behandlungsprodukte
+   - Feuchtigkeitspflege
+   - Sonnenschutz (morgens)
+   - Retinol (abends, falls geeignet)
+
+Halte die Analyse sachlich und prägnant. Verwende ** für die Betonung wichtiger Punkte.`,
+
+  'sv': `Analysera hudfotot och ge en omfattande men koncis analys i två sektioner:
+
+1. **Hudanalys**:
+   - Huvudsakliga hudproblem och tillstånd
+   - Nuvarande hudtillstånd
+   - Områden som behöver uppmärksamhet
+
+2. **Rekommenderad Rutin**:
+   Ge en kort, steg-för-steg daglig rutin som förklarar när man ska använda:
+   - Rengöring (morgon/kväll)
+   - Exfoliering (frekvens)
+   - Behandlingsprodukter
+   - Fuktighetskräm
+   - Solskydd (morgon)
+   - Retinol (kväll, om lämpligt)
+
+Håll analysen faktabaserad och koncis. Använd ** för betoning av viktiga punkter.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
