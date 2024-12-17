@@ -12,64 +12,63 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const prompts = {
   'en': `Analyze the skin photo and provide a comprehensive analysis in two sections:
 
-1. **Skin Analysis**
-Provide a detailed but concise analysis of the skin's current condition, including:
-- Main skin concerns and conditions
-- Current skin state
-- Areas needing attention
-- Overall skin health assessment
+# Skin Analysis
+**Current Condition**
+Describe the main skin concerns and overall skin health.
 
-2. **Recommended Routine**
-Describe a complete daily skincare routine, including:
-- Morning routine steps with specific product types
-- Evening routine steps with specific product types
-- How often to use specific treatments
-- Important tips for product application
+**Areas of Focus**
+List specific areas needing attention.
 
-Keep the analysis factual and concise. Use ** for emphasis on key points.`,
+# Recommended Care
+**Daily Routine**
+List the recommended morning and evening skincare steps.
+
+**Special Treatments**
+List any specific treatments or products needed.
+
+Keep the analysis factual and concise. Use ** ** for subtitles and important points.`,
 
   'de': `Analysieren Sie das Hautfoto und erstellen Sie eine umfassende Analyse in zwei Abschnitten:
 
-1. **Hautanalyse**
-Erstellen Sie eine detaillierte, aber präzise Analyse des aktuellen Hautzustands, einschließlich:
-- Haupthautprobleme und -zustände
-- Aktueller Hautzustand
-- Bereiche, die Aufmerksamkeit benötigen
-- Allgemeine Beurteilung der Hautgesundheit
+# Hautanalyse
+**Aktueller Zustand**
+Beschreiben Sie die wichtigsten Hautprobleme und die allgemeine Hautgesundheit.
 
-2. **Empfohlene Routine**
-Beschreiben Sie eine vollständige tägliche Hautpflegeroutine, einschließlich:
-- Schritte der Morgenroutine mit spezifischen Produkttypen
-- Schritte der Abendroutine mit spezifischen Produkttypen
-- Wie oft bestimmte Behandlungen anzuwenden sind
-- Wichtige Tipps zur Produktanwendung
+**Fokus Bereiche**
+Listen Sie spezifische Bereiche auf die Aufmerksamkeit benotigen.
 
-Halten Sie die Analyse sachlich und präzise. Verwenden Sie ** für die Betonung wichtiger Punkte.`,
+# Empfohlene Pflege
+**Tagliche Routine**
+Listen Sie die empfohlenen Morgen und Abend Hautpflegeschritte auf.
+
+**Spezielle Behandlungen**
+Listen Sie spezifische Behandlungen oder Produkte auf die benotigt werden.
+
+Halten Sie die Analyse sachlich und prazise. Verwenden Sie ** ** fur Untertitel und wichtige Punkte.`,
 
   'sv': `Analysera hudfotot och ge en omfattande analys i två sektioner:
 
-1. **Hudanalys**
-Ge en detaljerad men koncis analys av hudens nuvarande tillstånd, inklusive:
-- Huvudsakliga hudproblem och tillstånd
-- Nuvarande hudtillstånd
-- Områden som behöver uppmärksamhet
-- Övergripande bedömning av hudhälsan
+# Hudanalys
+**Aktuellt tillstånd**
+Beskriv de huvudsakliga hudproblemen och den allmänna hudhälsan.
 
-2. **Rekommenderad Rutin**
-Beskriv en komplett daglig hudvårdsrutin, inklusive:
-- Morgonrutinens steg med specifika produkttyper
-- Kvällsrutinens steg med specifika produkttyper
-- Hur ofta specifika behandlingar ska användas
-- Viktiga tips för produktapplicering
+**Fokusområden**
+Lista specifika områden som behöver uppmärksamhet.
 
-Håll analysen faktabaserad och koncis. Använd ** för betoning av viktiga punkter.`
+# Rekommenderad vård
+**Daglig rutin**
+Lista rekommenderade morgon och kvällsrutiner för hudvård.
+
+**Särskilda behandlingar**
+Lista specifika behandlingar eller produkter som behövs.
+
+Håll analysen saklig och koncis. Använd ** ** för underrubriker och viktiga punkter.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
   try {
     console.log('Starting Gemini analysis...');
     
-    // Remove data URL prefix if present
     const imageData = base64Image.includes('base64,') 
       ? base64Image.split('base64,')[1] 
       : base64Image;

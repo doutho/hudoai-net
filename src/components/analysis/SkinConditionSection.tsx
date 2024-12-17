@@ -7,17 +7,17 @@ interface SkinConditionSectionProps {
 
 const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, title }) => {
   const formatText = (text: string) => {
-    // Remove any potential Gemini API artifacts from the beginning
-    const cleanedText = text.replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '').trim();
+    // Remove any potential Gemini API artifacts and special characters
+    const cleanedText = text
+      .replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '')
+      .replace(/[^\w\s*#.,()-]/g, '') // Keep only alphanumeric, spaces, and basic punctuation
+      .trim();
     
     // Replace #text with h2 headers (main sections)
     const textWithHeaders = cleanedText.replace(/^#\s*(.*?)$/gm, '<h2 class="text-2xl font-bold text-gray-800 mt-6 mb-4">$1</h2>');
     
-    // Replace single asterisk items with list items
-    const formattedText = textWithHeaders.replace(/\*\s([^*]+)\*/g, '<li class="mb-2">$1</li>');
-    
-    // Replace **text** with bold text
-    const textWithBold = formattedText.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>');
+    // Replace **text** with bold text for subtitles
+    const textWithBold = textWithHeaders.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-xl text-gray-800">$1</strong>');
     
     // Split into sections
     const sections = textWithBold.split('\n\n');
@@ -25,16 +25,6 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
     return sections.map((section, index) => {
       if (!section.trim()) return null;
       
-      // Check if the section starts with a list item
-      if (section.includes('<li')) {
-        return (
-          <ul key={index} className="list-none space-y-2 ml-4 mb-4">
-            <div dangerouslySetInnerHTML={{ __html: section }} />
-          </ul>
-        );
-      }
-      
-      // Return regular sections
       return (
         <div 
           key={index} 
