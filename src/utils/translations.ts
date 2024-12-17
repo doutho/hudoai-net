@@ -42,7 +42,7 @@ export const translations = {
     changedTo: "Geändert zu {language}"
   },
   sv: {
-    uploadText: "Ladda upp upp till 3 bilder för att utvärdera ditt hudtillstånd",
+    uploadText: "Ladda upp max 3 bilder för att utvärdera ditt hudtillstånd",
     analyzeButton: "Analysera bilder",
     analyzing: "Analyserar...",
     analysisTitle: "Hudanalys",
