@@ -41,7 +41,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-gradient-to-br from-pink-200 via-pink-300 to-pink-200 text-foreground antialiased min-h-screen;
   }
 }
 

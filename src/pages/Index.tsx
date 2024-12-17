@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -54,12 +54,10 @@ const Index = () => {
 
       console.log('Analysis response:', data);
       
-      // Ensure we have a properly structured response
       let parsedData;
       try {
         parsedData = typeof data === 'string' ? JSON.parse(data) : data;
         
-        // Validate the structure
         if (!parsedData.condition || !Array.isArray(parsedData.recommendations)) {
           throw new Error('Invalid response structure');
         }
@@ -88,13 +86,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-start mb-12 animate-fade-in">
           <img 
             src="/lovable-uploads/869792b2-0779-487f-a7fc-74c4425c1134.png" 
             alt="hudo" 
-            className="h-16 md:h-20 hover-scale"
+            className="h-12 md:h-16 hover-scale"
           />
         </div>
 
@@ -122,17 +120,19 @@ const Index = () => {
 
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogContent className="sm:max-w-[425px]">
+            <DialogTitle>Skin Analysis</DialogTitle>
+            <DialogDescription>
+              {isAnalyzing ? "Processing your skin analysis..." : "Results"}
+            </DialogDescription>
             {isAnalyzing ? (
               <div className="space-y-4 p-4">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
                 <Skeleton className="h-32 w-full" />
-                <p className="text-center text-gray-600">Analyzing your skin...</p>
               </div>
             ) : (
               analysisResult && (
                 <div className="p-4">
-                  <h2 className="text-2xl font-bold mb-4">Analysis Complete</h2>
                   <p className="text-gray-600 mb-4">{analysisResult.condition}</p>
                   <Button 
                     className="w-full bg-primary hover:bg-primary/90 text-white"
