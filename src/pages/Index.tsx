@@ -4,7 +4,6 @@ import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Heart } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
@@ -54,7 +53,10 @@ const Index = () => {
       }
 
       console.log('Analysis response:', data);
-      setAnalysisResult(data);
+      
+      // Parse the response if it's a string
+      const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+      setAnalysisResult(parsedData);
       
       toast({
         title: "Analysis complete",
@@ -78,12 +80,6 @@ const Index = () => {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-2 mb-12">
           <h1 className="text-4xl font-bold text-purple-600">hudo</h1>
-          <div className="flex items-center gap-1">
-            <Heart className="w-5 h-5 text-purple-500 fill-purple-500" />
-            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-              AI
-            </span>
-          </div>
         </div>
 
         <div className="text-center space-y-4 mb-8">
