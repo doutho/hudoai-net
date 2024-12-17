@@ -25,7 +25,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 }) => {
   if (!products || products.length === 0) return null;
 
-  // Take only the first product as recommended by Gemini API
+  // Take only the first product as recommended
   const recommendedProduct = products[0];
 
   return (

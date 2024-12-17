@@ -2,8 +2,9 @@ export const productDatabase = {
   moisturizers: [
     {
       asin: "4gjuUhU",
-      title: "CeraVe Moisturising Lotion",
-      url: "amzn.to/4gjuUhU",
+      name: "CeraVe Moisturising Lotion",
+      description: "Hydrating moisturizer for dry to very dry skin",
+      link: "https://amzn.to/4gjuUhU",
       image: "",
       price: ""
     }
@@ -11,8 +12,9 @@ export const productDatabase = {
   cleansers: [
     {
       asin: "3ZFWcYG",
-      title: "CeraVe Hydrating Facial Cleanser",
-      url: "amzn.to/3ZFWcYG",
+      name: "CeraVe Hydrating Facial Cleanser",
+      description: "Gentle, non-foaming cleanser for normal to dry skin",
+      link: "https://amzn.to/3ZFWcYG",
       image: "",
       price: ""
     }
@@ -20,8 +22,9 @@ export const productDatabase = {
   exfoliants: [
     {
       asin: "3Dv7cjX",
-      title: "Paula's Choice SKIN PERFECTING 2% BHA",
-      url: "amzn.to/3Dv7cjX",
+      name: "Paula's Choice SKIN PERFECTING 2% BHA",
+      description: "Leave-on exfoliant for unclogging pores and smoothing skin",
+      link: "https://amzn.to/3Dv7cjX",
       image: "",
       price: ""
     }
@@ -29,8 +32,9 @@ export const productDatabase = {
   sunscreens: [
     {
       asin: "4iEWyaE",
-      title: "CeraVe Hydrating Mineral Sunscreen",
-      url: "amzn.to/4iEWyaE",
+      name: "CeraVe Hydrating Mineral Sunscreen",
+      description: "Broad spectrum SPF 30 mineral sunscreen",
+      link: "https://amzn.to/4iEWyaE",
       image: "",
       price: ""
     }
@@ -38,8 +42,9 @@ export const productDatabase = {
   retinols: [
     {
       asin: "4gBDSGU",
-      title: "The Ordinary ORIGINAL Retinol 1%",
-      url: "amzn.to/4gBDSGU",
+      name: "The Ordinary ORIGINAL Retinol 1%",
+      description: "Pure retinol anti-aging serum",
+      link: "https://amzn.to/4gBDSGU",
       image: "",
       price: ""
     }
