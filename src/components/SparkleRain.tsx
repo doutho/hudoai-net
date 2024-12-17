@@ -18,7 +18,7 @@ const SparkleRain = () => {
           color: 'white',
           opacity: 0.6,
           transform: 'scale(0.8)',
-          animation: 'fall 4s linear forwards',
+          animation: 'fall 4s linear infinite',
           pointerEvents: 'none',
           zIndex: 0,
         } as React.CSSProperties,

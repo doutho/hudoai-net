@@ -20,7 +20,6 @@ export default {
 		extend: {
 			fontFamily: {
 				roboto: ['Roboto', 'sans-serif'],
-				serif: ['Playfair Display', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

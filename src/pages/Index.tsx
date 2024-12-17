@@ -128,7 +128,7 @@ const Index = () => {
         />
 
         <div className="text-center space-y-4 mb-8 animate-fade-in">
-          <p className="text-xl text-white font-serif">
+          <p className="text-xl text-white font-roboto font-bold">
             {t.uploadText}
           </p>
         </div>
@@ -143,7 +143,7 @@ const Index = () => {
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing || images.length === 0}
-            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale font-serif"
+            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale font-roboto"
           >
             {isAnalyzing ? t.analyzing : t.analyzeButton}
           </Button>
