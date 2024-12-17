@@ -23,16 +23,21 @@ async function getProductRecommendations(condition: string) {
       retinols: `retinol for ${concerns.join(' ')} skin`
     };
 
-    const recommendations = {
-      moisturizers: await searchAmazonProducts(searchTerms.moisturizers),
-      cleansers: await searchAmazonProducts(searchTerms.cleansers),
-      exfoliants: await searchAmazonProducts(searchTerms.exfoliants),
-      sunscreens: await searchAmazonProducts(searchTerms.sunscreens),
-      retinols: await searchAmazonProducts(searchTerms.retinols)
-    };
+    const [moisturizers, cleansers, exfoliants, sunscreens, retinols] = await Promise.all([
+      searchAmazonProducts(searchTerms.moisturizers),
+      searchAmazonProducts(searchTerms.cleansers),
+      searchAmazonProducts(searchTerms.exfoliants),
+      searchAmazonProducts(searchTerms.sunscreens),
+      searchAmazonProducts(searchTerms.retinols)
+    ]);
 
-    console.log('Found recommendations:', recommendations);
-    return recommendations;
+    return {
+      moisturizers,
+      cleansers,
+      exfoliants,
+      sunscreens,
+      retinols
+    };
   } catch (error) {
     console.error('Error getting product recommendations:', error);
     throw new Error(`Failed to get product recommendations: ${error.message}`);
@@ -65,7 +70,6 @@ function extractSkinConcerns(analysis: string): string[] {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }

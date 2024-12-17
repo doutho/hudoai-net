@@ -15,7 +15,6 @@ export interface ProductRecommendations {
   exfoliants: AmazonProduct[];
   sunscreens: AmazonProduct[];
   retinols: AmazonProduct[];
-  treatments: AmazonProduct[];
 }
 
 export interface AnalysisResponse {
