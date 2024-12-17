@@ -8,13 +8,21 @@ export interface LanguageOption {
   amazonDomain: string;
 }
 
+export interface Product {
+  name: string;
+  description: string;
+  link: string;
+}
+
+export interface ProductRecommendations {
+  moisturizers: Product[];
+  cleansers: Product[];
+  exfoliants: Product[];
+  sunscreens: Product[];
+  retinols: Product[];
+}
+
 export interface AnalysisResponse {
   condition: string;
-  recommendations: Array<{
-    name: string;
-    description: string;
-    link: string;
-    image: string;
-    price: string;
-  }>;
+  recommendations: ProductRecommendations;
 }
