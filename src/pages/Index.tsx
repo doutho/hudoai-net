@@ -54,8 +54,20 @@ const Index = () => {
 
       console.log('Analysis response:', data);
       
-      // Parse the response if it's a string
-      const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+      // Ensure we have a properly structured response
+      let parsedData;
+      try {
+        parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+        
+        // Validate the structure
+        if (!parsedData.condition || !Array.isArray(parsedData.recommendations)) {
+          throw new Error('Invalid response structure');
+        }
+      } catch (parseError) {
+        console.error('Parse error:', parseError);
+        throw new Error('Failed to parse analysis results');
+      }
+      
       setAnalysisResult(parsedData);
       
       toast({
