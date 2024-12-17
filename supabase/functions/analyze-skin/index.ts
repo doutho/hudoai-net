@@ -8,47 +8,56 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
+    console.log('Received request to analyze-skin function')
     const { image } = await req.json()
+    
+    if (!image) {
+      console.error('No image data received')
+      throw new Error('No image data received')
+    }
 
-    // Initialize Gemini API
+    console.log('Initializing Gemini API')
     const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY"))
     const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" })
 
-    // Analyze image with Gemini
     const prompt = `Analyze this skin image and provide:
     1. A brief description of the visible skin condition
     2. List 2-3 specific skincare product types that would help address these concerns
     Format the response as JSON with 'condition' and 'recommendations' fields.
     For recommendations, include product type and brief explanation why it would help.`
 
+    console.log('Analyzing image with Gemini')
     const result = await model.generateContent([
       prompt,
       {
         inlineData: {
           mimeType: "image/jpeg",
-          data: image.split(',')[1]
+          data: image.split(',')[1] // Remove data URL prefix if present
         }
       }
     ])
 
     const response = result.response.text()
+    console.log('Received Gemini response:', response)
+
     let parsedResponse
     try {
       parsedResponse = JSON.parse(response)
-    } catch {
-      // If response isn't valid JSON, create a structured format
+    } catch (e) {
+      console.log('Error parsing Gemini response, creating structured format')
       parsedResponse = {
         condition: response.split('recommendations')[0],
         recommendations: response.split('recommendations:')[1]?.split(',') || []
       }
     }
 
-    // Initialize Amazon PA API
+    console.log('Initializing Amazon API')
     const amazonApi = new ProductAdvertisingAPIv1({
       accessKey: Deno.env.get("AMAZON_ACCESS_KEY_ID"),
       secretKey: Deno.env.get("AMAZON_SECRET_ACCESS_KEY"),
@@ -57,7 +66,7 @@ serve(async (req) => {
       marketplace: "www.amazon.com",
     })
 
-    // Search products for each recommendation
+    console.log('Searching for product recommendations')
     const productPromises = parsedResponse.recommendations.map(async (rec: string) => {
       const searchParams = {
         Keywords: `skincare ${rec}`,
@@ -92,6 +101,7 @@ serve(async (req) => {
     })
 
     const products = (await Promise.all(productPromises)).filter(p => p !== null)
+    console.log('Found products:', products)
 
     // Store recommendations in database
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2")
@@ -100,6 +110,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
+    console.log('Storing recommendations in database')
     const { error: dbError } = await supabase
       .from('product_recommendations')
       .insert(products.map(product => ({
@@ -119,16 +130,24 @@ serve(async (req) => {
         recommendations: products
       }),
       { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { 
+          ...corsHeaders, 
+          "Content-Type": "application/json"
+        },
         status: 200 
       }
     )
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error in analyze-skin function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message || 'An error occurred during analysis'
+      }),
       { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { 
+          ...corsHeaders, 
+          "Content-Type": "application/json"
+        },
         status: 500
       }
     )

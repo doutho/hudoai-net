@@ -33,16 +33,20 @@ const Index = () => {
 
     setIsAnalyzing(true);
     try {
-      // Call the Edge Function directly
+      console.log('Calling analyze-skin function...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { image: images[0] }
       });
 
+      console.log('Response received:', { data, error });
+
       if (error) {
+        console.error('Function error:', error);
         throw error;
       }
 
       if (!data) {
+        console.error('No data received');
         throw new Error('No data received from analysis');
       }
 
@@ -53,10 +57,10 @@ const Index = () => {
         description: "Your skin analysis results are ready",
       });
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error during analysis:', error);
       toast({
         title: "Error",
-        description: "Failed to analyze images. Please try again.",
+        description: error.message || "Failed to analyze images. Please try again.",
         variant: "destructive",
       });
     } finally {
