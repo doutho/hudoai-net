@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AnalysisSection from '@/components/analysis/AnalysisSection';
 import AnalysisResult from '@/components/AnalysisResult';
 import { useToast } from '@/hooks/use-toast';
@@ -19,6 +19,7 @@ const Index = () => {
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
+  const analysisResultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const hasSelectedLanguage = localStorage.getItem('selectedLanguage');
@@ -97,6 +98,15 @@ const Index = () => {
         title: t.analysisComplete,
         description: t.singleImageSuccess,
       });
+
+      // After analysis is complete and dialog is closed, scroll to results
+      setTimeout(() => {
+        analysisResultRef.current?.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
+
     } catch (error) {
       console.error('Error during analysis:', error);
       setShowDialog(false);
@@ -138,7 +148,11 @@ const Index = () => {
         />
 
         {analysisResult && !showDialog && (
-          <section aria-label="Analysis Results" className="mb-8">
+          <section 
+            ref={analysisResultRef}
+            aria-label="Analysis Results" 
+            className="mb-8"
+          >
             <AnalysisResult
               condition={analysisResult.condition}
               recommendations={analysisResult.recommendations}
