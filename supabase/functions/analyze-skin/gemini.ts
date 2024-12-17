@@ -10,47 +10,38 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `You are a friendly skincare advisor analyzing a skin photo. Provide a concise analysis focusing on:
+  'en': `Analyze the skin photo and provide a brief, concise overview in one paragraph. Focus on:
+1. Main skin concerns
+2. Product recommendations, using placeholders:
+   - [MOISTURIZER] for hydration
+   - [CLEANSER] for cleansing
+   - [EXFOLIANT] if needed
+   - [SUNSCREEN] for protection
+   - [RETINOL] if appropriate
 
-1. Overall skin health and main concerns
-2. Product recommendations for:
-   - One moisturizer (mention [MOISTURIZER])
-   - One cleanser (mention [CLEANSER])
-   - One exfoliant if needed (mention [EXFOLIANT])
-   - One sunscreen (mention [SUNSCREEN])
-   - One retinol if needed (mention [RETINOL])
+Keep it brief and factual. Use ** for emphasis. Integrate product recommendations naturally using [PRODUCT] placeholders.`,
 
-Keep it friendly and casual, like chatting with a friend. Format with ** for emphasis. 
-Integrate product recommendations naturally into the analysis, using [PRODUCT] placeholders.
-Don't be too serious or medical - keep it light and supportive.`,
+  'de': `Analysiere das Hautfoto und gib einen kurzen, prägnanten Überblick in einem Absatz. Konzentriere dich auf:
+1. Hauptprobleme der Haut
+2. Produktempfehlungen mit Platzhaltern:
+   - [MOISTURIZER] für Hydration
+   - [CLEANSER] zur Reinigung
+   - [EXFOLIANT] bei Bedarf
+   - [SUNSCREEN] für Schutz
+   - [RETINOL] falls angebracht
 
-  'de': `Du bist ein freundlicher Hautpflege-Berater, der ein Hautfoto analysiert. Gib eine kurze Analyse mit Fokus auf:
+Halte es kurz und sachlich. Verwende ** für Betonung. Integriere Produktempfehlungen natürlich mit [PRODUCT] Platzhaltern.`,
 
-1. Allgemeine Hautgesundheit und Hauptanliegen
-2. Produktempfehlungen für:
-   - Eine Feuchtigkeitscreme (erwähne [MOISTURIZER])
-   - Ein Reinigungsmittel (erwähne [CLEANSER])
-   - Ein Peeling bei Bedarf (erwähne [EXFOLIANT])
-   - Einen Sonnenschutz (erwähne [SUNSCREEN])
-   - Ein Retinol bei Bedarf (erwähne [RETINOL])
+  'sv': `Analysera hudfotot och ge en kort, koncis översikt i ett stycke. Fokusera på:
+1. Huvudsakliga hudproblem
+2. Produktrekommendationer med platshållare:
+   - [MOISTURIZER] för fukt
+   - [CLEANSER] för rengöring
+   - [EXFOLIANT] vid behov
+   - [SUNSCREEN] för skydd
+   - [RETINOL] om lämpligt
 
-Bleib freundlich und locker, wie ein Gespräch unter Freunden. Formatiere mit ** für Betonung.
-Integriere Produktempfehlungen natürlich in die Analyse mit [PRODUCT] Platzhaltern.
-Nicht zu ernst oder medizinisch - halte es leicht und unterstützend.`,
-
-  'sv': `Du är en vänlig hudvårdsrådgivare som analyserar ett hudfoto. Ge en kortfattad analys med fokus på:
-
-1. Övergripande hudhälsa och huvudproblem
-2. Produktrekommendationer för:
-   - En fuktighetskräm (nämn [MOISTURIZER])
-   - Ett rengöringsmedel (nämn [CLEANSER])
-   - En exfoliant vid behov (nämn [EXFOLIANT])
-   - Ett solskydd (nämn [SUNSCREEN])
-   - En retinol vid behov (nämn [RETINOL])
-
-Håll det vänligt och avslappnat, som att prata med en vän. Formatera med ** för betoning.
-Integrera produktrekommendationer naturligt i analysen med [PRODUCT] platshållare.
-Inte för allvarligt eller medicinskt - håll det lätt och stödjande.`
+Håll det kort och faktabaserat. Använd ** för betoning. Integrera produktrekommendationer naturligt med [PRODUCT] platshållare.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
