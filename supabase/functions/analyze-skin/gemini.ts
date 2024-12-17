@@ -31,8 +31,8 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
   try {
     console.log('Starting Gemini analysis...');
     
-    // Initialize the model - using gemini-pro-vision which is the stable version
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    // Initialize the model - using gemini-2.0-flash-exp
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     
     const prompt = prompts[language] || prompts['en'];
     
