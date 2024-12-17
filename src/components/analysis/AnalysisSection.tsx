@@ -24,15 +24,16 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
   return (
     <>
       <div className="text-center space-y-4 mb-8 animate-fade-in">
-        <p className="text-xl text-white font-roboto font-bold">
+        <h1 className="text-xl text-white font-roboto font-bold">
           {t.uploadText}
-        </p>
+        </h1>
       </div>
 
       <ImageUpload
         images={images}
         onImageUpload={onImageUpload}
         className="mt-8 animate-fade-in"
+        aria-label="Upload skin image"
       />
 
       <div className="flex justify-center mt-8 animate-fade-in">
@@ -40,6 +41,7 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
           onClick={handleAnalyze}
           disabled={isAnalyzing || images.length === 0}
           className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale font-roboto"
+          aria-busy={isAnalyzing}
         >
           {isAnalyzing ? t.analyzing : t.analyzeButton}
         </Button>

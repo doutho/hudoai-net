@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+          <article className="p-4 bg-white rounded-lg shadow-sm border border-gray-100">
             <div className="flex flex-col space-y-2">
               <h4 className="text-lg font-semibold text-primary">{product.title}</h4>
               <a
@@ -34,12 +34,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="inline-flex items-center text-sm text-purple-500 hover:text-purple-700 transition-colors"
+                aria-label={`View ${product.title} on Amazon ${country !== 'US' ? `(${country})` : ''}`}
               >
                 {viewOnAmazonText} {country !== 'US' ? `(${country})` : ''} 
-                <ExternalLink className="w-4 h-4 ml-1" />
+                <ExternalLink className="w-4 h-4 ml-1" aria-hidden="true" />
               </a>
             </div>
-          </div>
+          </article>
         </TooltipTrigger>
         <TooltipContent>
           <p>Click to view on Amazon</p>

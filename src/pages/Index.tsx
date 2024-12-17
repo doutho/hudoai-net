@@ -111,7 +111,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <main className="min-h-screen p-4 md:p-8" role="main">
       <SparkleRain />
       <div className="max-w-4xl mx-auto">
         <Header 
@@ -119,13 +119,15 @@ const Index = () => {
           onLanguageChange={handleLanguageSelect}
         />
 
-        <AnalysisSection
-          images={images}
-          onImageUpload={handleImageUpload}
-          isAnalyzing={isAnalyzing}
-          handleAnalyze={handleAnalyze}
-          currentLanguage={currentLanguage}
-        />
+        <section aria-label="Skin Analysis Upload" className="mb-8">
+          <AnalysisSection
+            images={images}
+            onImageUpload={handleImageUpload}
+            isAnalyzing={isAnalyzing}
+            handleAnalyze={handleAnalyze}
+            currentLanguage={currentLanguage}
+          />
+        </section>
 
         <AnalysisDialog
           showDialog={showDialog}
@@ -136,12 +138,14 @@ const Index = () => {
         />
 
         {analysisResult && !showDialog && (
-          <AnalysisResult
-            condition={analysisResult.condition}
-            recommendations={analysisResult.recommendations}
-            country={currentLanguage.country}
-            language={currentLanguage.code}
-          />
+          <section aria-label="Analysis Results" className="mb-8">
+            <AnalysisResult
+              condition={analysisResult.condition}
+              recommendations={analysisResult.recommendations}
+              country={currentLanguage.country}
+              language={currentLanguage.code}
+            />
+          </section>
         )}
 
         <WelcomeDialog
@@ -152,7 +156,7 @@ const Index = () => {
 
         <Footer />
       </div>
-    </div>
+    </main>
   );
 };
 
