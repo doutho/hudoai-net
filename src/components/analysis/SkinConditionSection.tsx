@@ -7,14 +7,21 @@ interface SkinConditionSectionProps {
 
 const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, title }) => {
   const formatText = (text: string) => {
-    // Remove any potential Gemini API artifacts and special characters
-    const cleanedText = text
+    // Decode HTML entities and normalize special characters
+    const decodedText = text
+      .replace(/&auml;/g, 'ä')
+      .replace(/&aring;/g, 'å')
+      .replace(/&ouml;/g, 'ö')
+      .replace(/&Auml;/g, 'Ä')
+      .replace(/&Aring;/g, 'Å')
+      .replace(/&Ouml;/g, 'Ö')
+      // Remove any potential Gemini API artifacts and special characters, but keep Swedish chars
       .replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '')
-      .replace(/[^\w\s*#.,()-]/g, '') // Keep only alphanumeric, spaces, and basic punctuation
+      .replace(/[^\wåäöÅÄÖ\s*#.,()-]/g, '')
       .trim();
     
     // Replace # text with h2 headers (main sections)
-    const textWithHeaders = cleanedText.replace(
+    const textWithHeaders = decodedText.replace(
       /^#\s*(.*?)$/gm, 
       '<h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">$1</h2>'
     );

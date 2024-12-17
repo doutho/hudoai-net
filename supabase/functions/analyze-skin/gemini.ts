@@ -72,8 +72,9 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       throw new Error('No analysis text received from Gemini');
     }
 
+    // Ensure proper encoding of Swedish characters
     const formattedText = text
-      .replace(/^(As an AI language model,|As an AI assistant,)/, '')
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))
       .trim();
 
     console.log('Formatted analysis text:', formattedText);
