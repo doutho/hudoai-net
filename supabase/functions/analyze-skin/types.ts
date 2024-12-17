@@ -2,6 +2,7 @@ export type Language = 'en' | 'de' | 'sv';
 export type Country = 'US' | 'DE' | 'UK' | 'SE';
 
 export interface AmazonProduct {
+  asin?: string;
   name: string;
   description: string;
   link: string;

@@ -27,12 +27,14 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
 }) => {
   const t = translations[language];
 
-  const mapAmazonProductToProduct = (product: AmazonProduct) => {
-    if (!product) return null;
+  const mapAmazonProductToProduct = (product: AmazonProduct | null) => {
+    if (!product?.name) return null;
+    
+    const fallbackAsin = product.name.split(' ')[0];
     
     return {
-      asin: product.asin || product.name?.split(' ')[0] || '',
-      title: product.name || '',
+      asin: product.asin || fallbackAsin || '',
+      title: product.name,
       url: product.link || '',
       image: product.image || '',
       price: product.price || '',
