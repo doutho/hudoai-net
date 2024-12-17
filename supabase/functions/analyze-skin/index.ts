@@ -1,109 +1,13 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.3";
-import { createHmac } from "https://deno.land/std@0.208.0/crypto/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { analyzeSkinImage } from "./gemini.ts";
+import { searchAmazonProducts } from "./amazon.ts";
+import type { AnalysisResponse } from "./types.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-async function searchAmazonProducts(keywords: string) {
-  const accessKeyId = Deno.env.get("AMAZON_ACCESS_KEY_ID");
-  const secretKey = Deno.env.get("AMAZON_SECRET_ACCESS_KEY");
-  const partnerTag = Deno.env.get("AMAZON_PARTNER_TAG");
-  
-  if (!accessKeyId || !secretKey || !partnerTag) {
-    console.error('Missing Amazon API credentials');
-    throw new Error('Amazon API credentials not configured');
-  }
-
-  const endpoint = "webservices.amazon.com";
-  const uri = "/paapi5/searchitems";
-  const region = "us-east-1";
-  const service = "ProductAdvertisingAPI";
-
-  const timestamp = new Date().toISOString().replace(/[:-]|\.\d{3}/g, '');
-  const date = timestamp.substring(0, 8);
-
-  const payload = {
-    "Keywords": keywords,
-    "Resources": [
-      "Images.Primary.Large",
-      "ItemInfo.Title",
-      "Offers.Listings.Price",
-      "ItemInfo.Features"
-    ],
-    "PartnerTag": partnerTag,
-    "PartnerType": "Associates",
-    "Marketplace": "www.amazon.com",
-    "Operation": "SearchItems"
-  };
-
-  const canonicalHeaders = [
-    `content-encoding:amz-1.0`,
-    `content-type:application/json; charset=utf-8`,
-    `host:${endpoint}`,
-    `x-amz-date:${timestamp}`,
-    `x-amz-target:com.amazon.paapi5.v1.ProductAdvertisingAPIv1.SearchItems`,
-  ].join('\n');
-
-  const canonicalRequest = [
-    'POST',
-    uri,
-    '',
-    canonicalHeaders,
-    '',
-    'content-encoding;content-type;host;x-amz-date;x-amz-target',
-    await createHmac('sha256', '')
-      .update(JSON.stringify(payload))
-      .digest('hex'),
-  ].join('\n');
-
-  const stringToSign = [
-    'AWS4-HMAC-SHA256',
-    timestamp,
-    `${date}/${region}/${service}/aws4_request`,
-    await createHmac('sha256', '')
-      .update(canonicalRequest)
-      .digest('hex'),
-  ].join('\n');
-
-  const getSignatureKey = async (key: string, dateStamp: string, regionName: string, serviceName: string) => {
-    const kDate = await createHmac('sha256', `AWS4${key}`).update(dateStamp).digest();
-    const kRegion = await createHmac('sha256', kDate).update(regionName).digest();
-    const kService = await createHmac('sha256', kRegion).update(serviceName).digest();
-    const kSigning = await createHmac('sha256', kService).update('aws4_request').digest();
-    return kSigning;
-  };
-
-  const signatureKey = await getSignatureKey(secretKey, date, region, service);
-  const signature = await createHmac('sha256', signatureKey)
-    .update(stringToSign)
-    .digest('hex');
-
-  const headers = {
-    'content-encoding': 'amz-1.0',
-    'content-type': 'application/json; charset=utf-8',
-    'x-amz-date': timestamp,
-    'x-amz-target': 'com.amazon.paapi5.v1.ProductAdvertisingAPIv1.SearchItems',
-    'authorization': `AWS4-HMAC-SHA256 Credential=${accessKeyId}/${date}/${region}/${service}/aws4_request, SignedHeaders=content-encoding;content-type;host;x-amz-date;x-amz-target, Signature=${signature}`,
-  };
-
-  const response = await fetch(`https://${endpoint}${uri}`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    console.error('Amazon API error:', await response.text());
-    throw new Error('Failed to fetch Amazon products');
-  }
-
-  const data = await response.json();
-  return data.SearchResult?.Items || [];
-}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -121,33 +25,8 @@ serve(async (req) => {
     // Extract base64 data
     const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image;
 
-    console.log('Initializing Gemini API');
-    const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY"));
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const prompt = `
-      Analyze this skin image and provide a detailed analysis in the following format:
-      1. A clear, detailed description of the visible skin condition, concerns, and characteristics (2-3 sentences)
-      2. List 3 specific skincare product types that would address these concerns, focusing on key ingredients needed
-      
-      Format your response as plain text. Start with the skin analysis, followed by product suggestions.
-      Keep it concise and actionable.
-    `;
-
-    const result = await model.generateContent([
-      prompt,
-      {
-        inlineData: {
-          mimeType: "image/jpeg",
-          data: base64Data
-        }
-      }
-    ]);
-
-    console.log('Received response from Gemini');
-    const response = await result.response;
-    const analysisText = response.text();
-    
+    console.log('Analyzing image with Gemini API...');
+    const analysisText = await analyzeSkinImage(base64Data);
     console.log('Analysis text:', analysisText);
 
     // Split the analysis into condition and product suggestions
@@ -178,15 +57,15 @@ serve(async (req) => {
     const recommendations = amazonProducts
       .filter(Boolean)
       .map(product => ({
-        name: product.ItemInfo.Title.DisplayValue,
-        description: product.ItemInfo.Features?.DisplayValues?.[0] || 'Product description not available',
-        link: product.DetailPageURL,
-        image: product.Images.Primary.Large.URL,
-        price: product.Offers?.Listings?.[0]?.Price?.DisplayAmount || 'Price not available'
+        name: product?.ItemInfo?.Title?.DisplayValue || 'Product name not available',
+        description: product?.ItemInfo?.Features?.DisplayValues?.[0] || 'Product description not available',
+        link: product?.DetailPageURL || '#',
+        image: product?.Images?.Primary?.Large?.URL || '',
+        price: product?.Offers?.Listings?.[0]?.Price?.DisplayAmount || 'Price not available'
       }));
 
     // Prepare the final response
-    const finalResponse = {
+    const finalResponse: AnalysisResponse = {
       condition: condition || 'Based on the image analysis, your skin appears healthy with some areas that could benefit from targeted care.',
       recommendations: recommendations.length > 0 ? recommendations : [
         {
