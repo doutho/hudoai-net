@@ -10,6 +10,7 @@ import { translations } from '@/utils/translations';
 import Header from '@/components/Header';
 import WelcomeDialog from '@/components/WelcomeDialog';
 import SparkleRain from '@/components/SparkleRain';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -127,7 +128,7 @@ const Index = () => {
         />
 
         <div className="text-center space-y-4 mb-8 animate-fade-in">
-          <p className="text-xl text-white font-mono">
+          <p className="text-xl text-white font-serif">
             {t.uploadText}
           </p>
         </div>
@@ -142,7 +143,7 @@ const Index = () => {
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing || images.length === 0}
-            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale"
+            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale font-serif"
           >
             {isAnalyzing ? t.analyzing : t.analyzeButton}
           </Button>
@@ -170,6 +171,8 @@ const Index = () => {
           onOpenChange={setShowWelcomeDialog}
           onLanguageSelect={handleLanguageSelect}
         />
+
+        <Footer />
       </div>
     </div>
   );
