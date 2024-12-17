@@ -15,28 +15,37 @@ async function getProductRecommendations(condition: string) {
     const concerns = extractSkinConcerns(condition.toLowerCase());
     console.log('Extracted skin concerns:', concerns);
 
-    const searchTerms = {
-      moisturizers: `moisturizer for ${concerns.join(' ')} skin`,
-      cleansers: `cleanser for ${concerns.join(' ')} skin`,
-      exfoliants: `exfoliant for ${concerns.join(' ')} skin`,
-      sunscreens: `sunscreen for ${concerns.join(' ')} skin`,
-      retinols: `retinol for ${concerns.join(' ')} skin`
-    };
+    // Get one product per category based on the skin concerns
+    const [moisturizer] = await searchAmazonProducts(`moisturizer for ${concerns.join(' ')} skin`);
+    const [cleanser] = await searchAmazonProducts(`cleanser for ${concerns.join(' ')} skin`);
+    const [exfoliant] = await searchAmazonProducts(`exfoliant for ${concerns.join(' ')} skin`);
+    const [sunscreen] = await searchAmazonProducts(`sunscreen for ${concerns.join(' ')} skin`);
+    const [retinol] = await searchAmazonProducts(`retinol for ${concerns.join(' ')} skin`);
 
-    const [moisturizers, cleansers, exfoliants, sunscreens, retinols] = await Promise.all([
-      searchAmazonProducts(searchTerms.moisturizers),
-      searchAmazonProducts(searchTerms.cleansers),
-      searchAmazonProducts(searchTerms.exfoliants),
-      searchAmazonProducts(searchTerms.sunscreens),
-      searchAmazonProducts(searchTerms.retinols)
-    ]);
+    // Replace placeholders in the analysis text with actual product recommendations
+    let analysisText = condition;
+    if (moisturizer) {
+      analysisText = analysisText.replace('[MOISTURIZER]', `${moisturizer.name} (${moisturizer.description})`);
+    }
+    if (cleanser) {
+      analysisText = analysisText.replace('[CLEANSER]', `${cleanser.name} (${cleanser.description})`);
+    }
+    if (exfoliant) {
+      analysisText = analysisText.replace('[EXFOLIANT]', `${exfoliant.name} (${exfoliant.description})`);
+    }
+    if (sunscreen) {
+      analysisText = analysisText.replace('[SUNSCREEN]', `${sunscreen.name} (${sunscreen.description})`);
+    }
+    if (retinol) {
+      analysisText = analysisText.replace('[RETINOL]', `${retinol.name} (${retinol.description})`);
+    }
 
     return {
-      moisturizers,
-      cleansers,
-      exfoliants,
-      sunscreens,
-      retinols
+      moisturizers: moisturizer ? [moisturizer] : [],
+      cleansers: cleanser ? [cleanser] : [],
+      exfoliants: exfoliant ? [exfoliant] : [],
+      sunscreens: sunscreen ? [sunscreen] : [],
+      retinols: retinol ? [retinol] : []
     };
   } catch (error) {
     console.error('Error getting product recommendations:', error);

@@ -10,30 +10,54 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `You are a dermatologist analyzing a skin photo. Provide a detailed analysis of the skin condition, focusing on:
-  1. Overall skin health
-  2. Any visible concerns or conditions
-  3. Specific areas that need attention
-  Format your response with clear sections using ** for emphasis. Keep it concise but informative.`,
-  'de': `Sie sind Dermatologe und analysieren ein Hautfoto. Geben Sie eine detaillierte Analyse des Hautzustands mit Fokus auf:
-  1. Allgemeine Hautgesundheit
-  2. Sichtbare Probleme oder Zustände
-  3. Bereiche, die besondere Aufmerksamkeit benötigen
-  Formatieren Sie Ihre Antwort mit klaren Abschnitten und verwenden Sie ** für Hervorhebungen. Halten Sie es prägnant aber informativ.`,
-  'sv': `Du är en dermatolog som analyserar ett hudfoto. Ge en detaljerad analys av hudens tillstånd med fokus på:
-  1. Övergripande hudhälsa
-  2. Synliga problem eller tillstånd
-  3. Områden som behöver särskild uppmärksamhet
-  Formatera ditt svar med tydliga sektioner och använd ** för betoning. Håll det koncist men informativt.`
+  'en': `You are a friendly skincare advisor analyzing a skin photo. Provide a concise analysis focusing on:
+
+1. Overall skin health and main concerns
+2. Product recommendations for:
+   - One moisturizer (mention [MOISTURIZER])
+   - One cleanser (mention [CLEANSER])
+   - One exfoliant if needed (mention [EXFOLIANT])
+   - One sunscreen (mention [SUNSCREEN])
+   - One retinol if needed (mention [RETINOL])
+
+Keep it friendly and casual, like chatting with a friend. Format with ** for emphasis. 
+Integrate product recommendations naturally into the analysis, using [PRODUCT] placeholders.
+Don't be too serious or medical - keep it light and supportive.`,
+
+  'de': `Du bist ein freundlicher Hautpflege-Berater, der ein Hautfoto analysiert. Gib eine kurze Analyse mit Fokus auf:
+
+1. Allgemeine Hautgesundheit und Hauptanliegen
+2. Produktempfehlungen für:
+   - Eine Feuchtigkeitscreme (erwähne [MOISTURIZER])
+   - Ein Reinigungsmittel (erwähne [CLEANSER])
+   - Ein Peeling bei Bedarf (erwähne [EXFOLIANT])
+   - Einen Sonnenschutz (erwähne [SUNSCREEN])
+   - Ein Retinol bei Bedarf (erwähne [RETINOL])
+
+Bleib freundlich und locker, wie ein Gespräch unter Freunden. Formatiere mit ** für Betonung.
+Integriere Produktempfehlungen natürlich in die Analyse mit [PRODUCT] Platzhaltern.
+Nicht zu ernst oder medizinisch - halte es leicht und unterstützend.`,
+
+  'sv': `Du är en vänlig hudvårdsrådgivare som analyserar ett hudfoto. Ge en kortfattad analys med fokus på:
+
+1. Övergripande hudhälsa och huvudproblem
+2. Produktrekommendationer för:
+   - En fuktighetskräm (nämn [MOISTURIZER])
+   - Ett rengöringsmedel (nämn [CLEANSER])
+   - En exfoliant vid behov (nämn [EXFOLIANT])
+   - Ett solskydd (nämn [SUNSCREEN])
+   - En retinol vid behov (nämn [RETINOL])
+
+Håll det vänligt och avslappnat, som att prata med en vän. Formatera med ** för betoning.
+Integrera produktrekommendationer naturligt i analysen med [PRODUCT] platshållare.
+Inte för allvarligt eller medicinskt - håll det lätt och stödjande.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
   try {
     console.log('Starting Gemini analysis...');
     
-    // Initialize the model - using gemini-1.5-flash
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
     const prompt = prompts[language] || prompts['en'];
     
     console.log('Sending request to Gemini with prompt:', prompt);
@@ -56,7 +80,6 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       throw new Error('No analysis text received from Gemini');
     }
 
-    // Format the response to ensure it's clean and properly structured
     const formattedText = text
       .replace(/^(As an AI language model,|As an AI assistant,)/, '')
       .trim();
