@@ -14,31 +14,70 @@ const prompts = {
 
 # Skin Overview
 **Current Condition**
-Describe the main visible skin characteristics and concerns in simple terms.
+Describe the main visible skin characteristics in detail, including:
+- Main skin concerns and their location
+- Skin texture and tone
+- Any visible inflammation or discoloration
+- Overall skin hydration level
 
 # Care Recommendations
 **Daily Routine**
-List 3-4 key steps for daily skincare.`,
+Morning:
+1. Cleanser: How to use and what type
+2. Treatment: Any specific morning treatments
+3. Moisturizer: Type and application method
+4. Sunscreen: SPF recommendation and importance
+
+Evening:
+1. Cleanser: Double cleansing if needed
+2. Treatment: Specific evening products
+3. Moisturizer: Night cream recommendations`,
 
   'de': `Analysieren Sie das Hautfoto und erstellen Sie eine einfache, klare Analyse:
 
 # Hautübersicht
 **Aktueller Zustand**
-Beschreiben Sie die wichtigsten sichtbaren Hautmerkmale und -probleme in einfachen Worten.
+Beschreiben Sie die wichtigsten sichtbaren Hautmerkmale im Detail:
+- Haupthautprobleme und ihre Position
+- Hautstruktur und -ton
+- Sichtbare Entzündungen oder Verfärbungen
+- Allgemeiner Feuchtigkeitsgehalt der Haut
 
 # Pflegeempfehlungen
 **Tägliche Routine**
-Listen Sie 3-4 wichtige Schritte für die tägliche Hautpflege auf.`,
+Morgens:
+1. Reinigung: Anwendung und Produkttyp
+2. Behandlung: Spezielle Morgenprodukte
+3. Feuchtigkeitspflege: Art und Anwendung
+4. Sonnenschutz: SPF-Empfehlung und Wichtigkeit
+
+Abends:
+1. Reinigung: Bei Bedarf Doppelreinigung
+2. Behandlung: Spezielle Abendprodukte
+3. Feuchtigkeitspflege: Nachtcreme-Empfehlungen`,
 
   'sv': `Analysera hudfotot och ge en enkel, tydlig analys:
 
 # Hudöversikt
 **Aktuellt tillstånd**
-Beskriv de viktigaste synliga hudegenskaperna och problemen med enkla ord.
+Beskriv de viktigaste synliga hudegenskaperna i detalj:
+- Huvudsakliga hudproblem och deras placering
+- Hudstruktur och hudton
+- Synlig inflammation eller missfärgning
+- Övergripande fuktnivå i huden
 
 # Vårdrekommendationer
 **Daglig rutin**
-Lista 3-4 viktiga steg för daglig hudvård.`
+Morgon:
+1. Rengöring: Hur man använder och vilken typ
+2. Behandling: Specifika morgonprodukter
+3. Fuktkräm: Typ och appliceringsmetod
+4. Solskydd: SPF-rekommendation och betydelse
+
+Kväll:
+1. Rengöring: Dubbelrengöring vid behov
+2. Behandling: Specifika kvällsprodukter
+3. Fuktkräm: Nattkrämsrekommendationer`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
