@@ -1,56 +1,42 @@
 import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.3";
-import { Language } from "./types.ts";
+import type { Language } from "./types.ts";
 
-const translations = {
-  en: {
-    prompt: `As a dermatologist, analyze this skin image and provide a concise analysis in the following format:
+const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
 
-    Brief description of visible skin conditions (2-3 sentences max).
+if (!GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY is required');
+}
 
-    Based on your skin condition, I recommend:
-    - **Cleanser**: [specific type needed] - I recommend the CeraVe Hydrating Facial Cleanser because it's gentle, non-stripping, and contains essential ceramides to maintain skin barrier health
-    - **Moisturizer**: [specific type needed] - I recommend the La Roche-Posay Double Repair Face Moisturizer as it provides balanced hydration with ceramides and niacinamide
-    - **Exfoliant**: [specific type needed] - I recommend the Paula's Choice 2% BHA Liquid Exfoliant which gently removes dead skin cells and unclogs pores
-    - **SPF**: [specific type/strength needed] - I recommend the EltaMD UV Clear Facial Sunscreen SPF 46 because it's lightweight, non-comedogenic, and provides excellent protection
-    - **Retinol**: [specific strength needed] - I recommend The Ordinary Retinol 1% in Squalane as it's an effective yet gentle formulation for skin renewal
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-    Please keep the analysis concise and maintain the exact formatting with the bold product categories and specific product recommendations with their benefits.`
-  },
-  de: {
-    prompt: `Analysieren Sie als Dermatologe dieses Hautbild und geben Sie eine prägnante Analyse im folgenden Format:
-
-    Kurze Beschreibung sichtbarer Hautprobleme (maximal 2-3 Sätze).
-
-    Basierend auf Ihrem Hautzustand empfehle ich:
-    - **Reiniger**: [spezifischer Typ benötigt] - Ich empfehle den CeraVe Hydrating Facial Cleanser, da er sanft ist, nicht austrocknet und essenzielle Ceramide für die Hautbarriere enthält
-    - **Feuchtigkeitspflege**: [spezifischer Typ benötigt] - Ich empfehle die La Roche-Posay Double Repair Gesichtspflege, da sie ausgewogene Feuchtigkeit mit Ceramiden und Niacinamid bietet
-    - **Peeling**: [spezifischer Typ benötigt] - Ich empfehle das Paula's Choice 2% BHA Liquid Peeling, das sanft abgestorbene Hautzellen entfernt und Poren reinigt
-    - **Sonnenschutz**: [spezifischer Typ/Stärke benötigt] - Ich empfehle den EltaMD UV Clear Sonnenschutz LSF 46, da er leicht ist, nicht komedogen ist und hervorragenden Schutz bietet
-    - **Retinol**: [spezifische Stärke benötigt] - Ich empfehle The Ordinary Retinol 1% in Squalan, da es eine effektive und sanfte Formulierung für die Hauterneuerung ist`
-  },
-  sv: {
-    prompt: `Som dermatolog, analysera denna hudbild och ge en koncis analys i följande format:
-
-    Kort beskrivning av synliga hudtillstånd (max 2-3 meningar).
-
-    Baserat på ditt hudtillstånd rekommenderar jag:
-    - **Rengöring**: [specifik typ behövs] - Jag rekommenderar CeraVe Hydrating Facial Cleanser eftersom den är mild, inte uttorkande och innehåller essentiella ceramider för hudbarriären
-    - **Fuktkräm**: [specifik typ behövs] - Jag rekommenderar La Roche-Posay Double Repair ansiktskräm eftersom den ger balanserad fukt med ceramider och niacinamid
-    - **Exfoliering**: [specifik typ behövs] - Jag rekommenderar Paula's Choice 2% BHA Liquid Exfoliant som försiktigt tar bort döda hudceller och rensar porer
-    - **Solskydd**: [specifik typ/styrka behövs] - Jag rekommenderar EltaMD UV Clear solskydd SPF 46 eftersom den är lätt, icke-komedogen och ger utmärkt skydd
-    - **Retinol**: [specifik styrka behövs] - Jag rekommenderar The Ordinary Retinol 1% i Squalane eftersom det är en effektiv men mild formulering för hudförnyelse`
-  }
+const prompts = {
+  'en': `You are a dermatologist analyzing a skin photo. Provide a detailed analysis of the skin condition, focusing on:
+  1. Overall skin health
+  2. Any visible concerns or conditions
+  3. Specific areas that need attention
+  Format your response with clear sections using ** for emphasis. Keep it concise but informative.`,
+  'de': `Sie sind Dermatologe und analysieren ein Hautfoto. Geben Sie eine detaillierte Analyse des Hautzustands mit Fokus auf:
+  1. Allgemeine Hautgesundheit
+  2. Sichtbare Probleme oder Zustände
+  3. Bereiche, die besondere Aufmerksamkeit benötigen
+  Formatieren Sie Ihre Antwort mit klaren Abschnitten und verwenden Sie ** für Hervorhebungen. Halten Sie es prägnant aber informativ.`,
+  'sv': `Du är en dermatolog som analyserar ett hudfoto. Ge en detaljerad analys av hudens tillstånd med fokus på:
+  1. Övergripande hudhälsa
+  2. Synliga problem eller tillstånd
+  3. Områden som behöver särskild uppmärksamhet
+  Formatera ditt svar med tydliga sektioner och använd ** för betoning. Håll det koncist men informativt.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
-  const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY") || '');
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
   try {
-    console.log('Calling Gemini API with image...');
+    console.log('Starting Gemini analysis...');
+    
+    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    
+    const prompt = prompts[language] || prompts['en'];
     
     const result = await model.generateContent([
-      translations[language].prompt,
+      prompt,
       {
         inlineData: {
           mimeType: "image/jpeg",
@@ -59,12 +45,24 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       }
     ]);
 
-    const response = await result.response;
+    console.log('Received response from Gemini');
+    const response = result.response;
     const text = response.text();
-    console.log('Gemini API Response:', text);
-    return text;
+    
+    if (!text) {
+      throw new Error('No analysis text received from Gemini');
+    }
+
+    // Format the response to ensure it's clean and properly structured
+    const formattedText = text
+      .replace(/^(As an AI language model,|As an AI assistant,)/, '')
+      .trim();
+
+    console.log('Formatted analysis text:', formattedText);
+    return formattedText;
+
   } catch (error) {
-    console.error('Error analyzing image with Gemini:', error);
+    console.error('Error in Gemini analysis:', error);
     throw new Error(`Failed to analyze image: ${error.message}`);
   }
 }

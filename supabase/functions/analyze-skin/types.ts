@@ -19,10 +19,3 @@ export interface AnalysisResponse {
   condition: string;
   recommendations: ProductRecommendations;
 }
-
-export interface LanguageOption {
-  code: Language;
-  label: string;
-  country: Country;
-  amazonDomain: string;
-}

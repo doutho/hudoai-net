@@ -6,7 +6,6 @@ import type { AnalysisResponse, Language } from "./types.ts";
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 const defaultProducts = {
@@ -68,10 +67,16 @@ serve(async (req) => {
     const analysisText = await analyzeSkinImage(base64Data, language as Language);
     console.log('Gemini API response:', analysisText);
 
+    // Ensure we have a valid response structure
     const response: AnalysisResponse = {
-      condition: analysisText,
+      condition: analysisText || "Unable to analyze skin condition",
       recommendations: defaultProducts
     };
+
+    // Validate response structure before sending
+    if (!response.condition || !response.recommendations) {
+      throw new Error('Invalid response structure');
+    }
 
     console.log('Sending response:', JSON.stringify(response, null, 2));
 
