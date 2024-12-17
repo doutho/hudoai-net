@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            href={getCountrySpecificLink(product.url)}
+            href={product.url}
             target="_blank"
             rel="noopener noreferrer"
             className="block p-4 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-1"
@@ -52,7 +52,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <h5 className="font-medium text-purple-600">{product.title}</h5>
                 <ExternalLink className="w-4 h-4 text-gray-400" />
               </div>
-              <p className="text-sm text-gray-600">{product.price}</p>
               <span className="text-sm text-purple-500 hover:text-purple-700">
                 {viewOnAmazonText} {country !== 'US' ? `(${country})` : ''}
               </span>
