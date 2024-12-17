@@ -10,59 +10,35 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `Analyze the skin photo and provide a comprehensive analysis in two sections:
+  'en': `Analyze the skin photo and provide a simple, clear analysis:
 
-# Skin Analysis
+# Skin Overview
 **Current Condition**
-Describe the main skin concerns and overall skin health.
+Describe the main visible skin characteristics and concerns in simple terms.
 
-**Areas of Focus**
-List specific areas needing attention.
-
-# Recommended Care
+# Care Recommendations
 **Daily Routine**
-List the recommended morning and evening skincare steps.
+List 3-4 key steps for daily skincare.`,
 
-**Special Treatments**
-List any specific treatments or products needed.
+  'de': `Analysieren Sie das Hautfoto und erstellen Sie eine einfache, klare Analyse:
 
-Keep the analysis factual and concise. Use ** ** for subtitles and important points.`,
-
-  'de': `Analysieren Sie das Hautfoto und erstellen Sie eine umfassende Analyse in zwei Abschnitten:
-
-# Hautanalyse
+# Hautübersicht
 **Aktueller Zustand**
-Beschreiben Sie die wichtigsten Hautprobleme und die allgemeine Hautgesundheit.
+Beschreiben Sie die wichtigsten sichtbaren Hautmerkmale und -probleme in einfachen Worten.
 
-**Fokus Bereiche**
-Listen Sie spezifische Bereiche auf die Aufmerksamkeit benotigen.
+# Pflegeempfehlungen
+**Tägliche Routine**
+Listen Sie 3-4 wichtige Schritte für die tägliche Hautpflege auf.`,
 
-# Empfohlene Pflege
-**Tagliche Routine**
-Listen Sie die empfohlenen Morgen und Abend Hautpflegeschritte auf.
+  'sv': `Analysera hudfotot och ge en enkel, tydlig analys:
 
-**Spezielle Behandlungen**
-Listen Sie spezifische Behandlungen oder Produkte auf die benotigt werden.
-
-Halten Sie die Analyse sachlich und prazise. Verwenden Sie ** ** fur Untertitel und wichtige Punkte.`,
-
-  'sv': `Analysera hudfotot och ge en omfattande analys i två sektioner:
-
-# Hudanalys
+# Hudöversikt
 **Aktuellt tillstånd**
-Beskriv de huvudsakliga hudproblemen och den allmänna hudhälsan.
+Beskriv de viktigaste synliga hudegenskaperna och problemen med enkla ord.
 
-**Fokusområden**
-Lista specifika områden som behöver uppmärksamhet.
-
-# Rekommenderad vård
+# Vårdrekommendationer
 **Daglig rutin**
-Lista rekommenderade morgon och kvällsrutiner för hudvård.
-
-**Särskilda behandlingar**
-Lista specifika behandlingar eller produkter som behövs.
-
-Håll analysen saklig och koncis. Använd ** ** för underrubriker och viktiga punkter.`
+Lista 3-4 viktiga steg för daglig hudvård.`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {

@@ -13,13 +13,19 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
       .replace(/[^\w\s*#.,()-]/g, '') // Keep only alphanumeric, spaces, and basic punctuation
       .trim();
     
-    // Replace #text with h2 headers (main sections)
-    const textWithHeaders = cleanedText.replace(/^#\s*(.*?)$/gm, '<h2 class="text-2xl font-bold text-gray-800 mt-6 mb-4">$1</h2>');
+    // Replace # text with h2 headers (main sections)
+    const textWithHeaders = cleanedText.replace(
+      /^#\s*(.*?)$/gm, 
+      '<h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">$1</h2>'
+    );
     
     // Replace **text** with bold text for subtitles
-    const textWithBold = textWithHeaders.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-xl text-gray-800">$1</strong>');
+    const textWithBold = textWithHeaders.replace(
+      /\*\*([^*]+)\*\*/g, 
+      '<h3 class="text-xl font-semibold text-gray-700 mt-4 mb-2">$1</h3>'
+    );
     
-    // Split into sections
+    // Split into paragraphs and format them
     const sections = textWithBold.split('\n\n');
     
     return sections.map((section, index) => {
@@ -28,7 +34,7 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
       return (
         <div 
           key={index} 
-          className="text-gray-700 mb-4" 
+          className="text-gray-700 mb-4 leading-relaxed" 
           dangerouslySetInnerHTML={{ __html: section }}
         />
       );
