@@ -4,10 +4,9 @@ import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import LanguageSelector, { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
-import { CheckCircle2 } from 'lucide-react';
+import AnalysisDialog from '@/components/AnalysisDialog';
+import { translations } from '@/utils/translations';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -23,7 +22,6 @@ const Index = () => {
         const response = await fetch('https://api.ipapi.com/api/check?access_key=YOUR_IPAPI_KEY');
         const data = await response.json();
         
-        // Map country code to language option
         const countryToLanguage: { [key: string]: LanguageOption } = {
           'US': languageOptions[0], // English (US)
           'GB': languageOptions[1], // English (UK)
@@ -34,13 +32,13 @@ const Index = () => {
         const detectedLanguage = countryToLanguage[data.country_code] || languageOptions[0];
         setCurrentLanguage(detectedLanguage);
         
+        const t = translations[detectedLanguage.code];
         toast({
-          title: "Location Detected",
-          description: `Set to ${detectedLanguage.label} based on your location`,
+          title: t.locationDetected,
+          description: t.locationSetTo.replace('{language}', detectedLanguage.label),
         });
       } catch (error) {
         console.error('Error detecting location:', error);
-        // Fallback to default language (English US)
         setCurrentLanguage(languageOptions[0]);
       }
     };
@@ -60,17 +58,20 @@ const Index = () => {
 
   const handleLanguageChange = (option: LanguageOption) => {
     setCurrentLanguage(option);
+    const t = translations[option.code];
     toast({
-      title: "Language Changed",
-      description: `Changed to ${option.label}`,
+      title: t.languageChanged,
+      description: t.changedTo.replace('{language}', option.label),
     });
   };
 
   const handleAnalyze = async () => {
+    const t = translations[currentLanguage.code];
+    
     if (images.length === 0) {
       toast({
-        title: "No images selected",
-        description: "Please upload at least one image to analyze",
+        title: "Error",
+        description: t.noImagesError,
         variant: "destructive",
       });
       return;
@@ -114,21 +115,23 @@ const Index = () => {
       setAnalysisResult(parsedData);
       
       toast({
-        title: "Analysis complete",
-        description: "Your skin analysis results are ready",
+        title: t.analysisComplete,
+        description: t.singleImageSuccess,
       });
     } catch (error) {
       console.error('Error during analysis:', error);
       setShowDialog(false);
       toast({
         title: "Error",
-        description: error.message || "Failed to analyze images. Please try again.",
+        description: error.message || t.analysisError,
         variant: "destructive",
       });
     } finally {
       setIsAnalyzing(false);
     }
   };
+
+  const t = translations[currentLanguage.code];
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -147,7 +150,7 @@ const Index = () => {
 
         <div className="text-center space-y-4 mb-8 animate-fade-in">
           <p className="text-xl text-white font-mono">
-            Upload up to 3 images to evaluate your skin condition
+            {t.uploadText}
           </p>
         </div>
 
@@ -163,48 +166,24 @@ const Index = () => {
             disabled={isAnalyzing || images.length === 0}
             className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale"
           >
-            {isAnalyzing ? "Analyzing..." : "Analyze Images"}
+            {isAnalyzing ? t.analyzing : t.analyzeButton}
           </Button>
         </div>
 
-        <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Skin Analysis</DialogTitle>
-              <DialogDescription>
-                {isAnalyzing ? "Processing your skin analysis..." : "Analysis Complete"}
-              </DialogDescription>
-            </DialogHeader>
-            {isAnalyzing ? (
-              <div className="space-y-4 p-4">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-32 w-full" />
-              </div>
-            ) : (
-              <div className="p-4 text-center">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-green-500 mb-4" />
-                <p className="text-gray-600 mb-4">
-                  {images.length > 1 
-                    ? "Your images have been analyzed successfully!" 
-                    : "Your image has been analyzed successfully!"}
-                </p>
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  onClick={() => setShowDialog(false)}
-                >
-                  View Detailed Results
-                </Button>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
+        <AnalysisDialog
+          showDialog={showDialog}
+          setShowDialog={setShowDialog}
+          isAnalyzing={isAnalyzing}
+          imagesCount={images.length}
+          currentLanguage={currentLanguage}
+        />
 
         {analysisResult && !showDialog && (
           <AnalysisResult
             condition={analysisResult.condition}
             recommendations={analysisResult.recommendations}
             country={currentLanguage.country}
+            language={currentLanguage.code}
           />
         )}
       </div>

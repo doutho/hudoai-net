@@ -3,24 +3,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type Country } from './LanguageSelector';
+import { translations } from '@/utils/translations';
 
 interface Product {
   name: string;
   description: string;
   link: string;
-  image: string;
-  price: string;
 }
 
 interface AnalysisResultProps {
   condition: string;
   recommendations: Product[];
   country: Country;
+  language: string;
 }
 
-const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendations, country }) => {
+const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendations, country, language }) => {
+  const t = translations[language];
+
   const formatText = (text: string) => {
-    return text.split('\n').map((line, index) => {
+    // Remove the initial explanation text in Swedish
+    const cleanedText = text.replace(/^Ja.*ser\.\n\n/, '');
+    
+    return cleanedText.split('\n').map((line, index) => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const formattedParts = parts.map((part, i) => {
         if (part.startsWith('**') && part.endsWith('**')) {
@@ -55,17 +60,17 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendati
   return (
     <Card className="w-full mt-8 overflow-hidden font-roboto">
       <CardHeader className="bg-gradient-to-r from-purple-100 to-pink-100">
-        <CardTitle className="text-2xl">Your Skin Analysis Results</CardTitle>
+        <CardTitle className="text-2xl">{t.skinAnalysisResults}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
         <div>
-          <h3 className="text-xl font-semibold mb-3">Skin Condition</h3>
+          <h3 className="text-xl font-semibold mb-3">{t.skinCondition}</h3>
           <div className="text-gray-700 leading-relaxed">
             {formatText(condition)}
           </div>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-3">Recommended Products</h3>
+          <h3 className="text-xl font-semibold mb-3">{t.recommendedProducts}</h3>
           <div className="grid gap-6 md:grid-cols-2">
             {recommendations.map((product, index) => (
               <TooltipProvider key={index}>
@@ -82,23 +87,10 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ condition, recommendati
                           <h4 className="font-medium text-purple-600 text-lg">{product.name}</h4>
                           <ExternalLink className="w-4 h-4 text-gray-400" />
                         </div>
-                        {product.image && (
-                          <div className="relative h-48">
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              className="absolute inset-0 w-full h-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                        )}
                         <p className="text-sm text-gray-600">{product.description}</p>
-                        <div className="flex justify-between items-center pt-2">
-                          <span className="text-sm text-purple-500 hover:text-purple-700">
-                            View on Amazon {country !== 'US' ? `(${country})` : ''}
-                          </span>
-                          <span className="text-sm font-semibold text-gray-700">{product.price}</span>
-                        </div>
+                        <span className="text-sm text-purple-500 hover:text-purple-700">
+                          {t.viewOnAmazon} {country !== 'US' ? `(${country})` : ''}
+                        </span>
                       </div>
                     </a>
                   </TooltipTrigger>
