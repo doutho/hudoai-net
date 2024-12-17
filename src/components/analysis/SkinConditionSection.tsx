@@ -10,38 +10,24 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
     // Remove any potential Gemini API artifacts from the beginning
     const cleanedText = text.replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '').trim();
     
-    // Replace *text* with proper bold formatting
-    const formattedText = cleanedText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-800">$1</strong>');
+    // Replace #text with h3 headers
+    const textWithHeaders = cleanedText.replace(/^#\s*(.*?)$/gm, '<h3 class="text-xl font-semibold text-gray-800 mt-4 mb-2">$1</h3>');
     
-    // Split into sections (Analysis, AM Routine, PM Routine)
+    // Replace *text* with italics, but not **text**
+    const formattedText = textWithHeaders.replace(/(?<!\*)\*([^\*]+)\*(?!\*)/g, '<em class="text-gray-700 italic">$1</em>');
+    
+    // Split into sections
     const sections = formattedText.split('\n\n');
     return sections.map((section, index) => {
       if (!section.trim()) return null;
       
-      const lines = section.split('\n');
-      const sectionTitle = lines[0]?.toLowerCase() || '';
-      
-      // Format based on section type
-      if (sectionTitle.includes('routine')) {
-        const routineType = sectionTitle.includes('morning') || sectionTitle.includes('am') ? 'AM Routine:' : 'PM Routine:';
-        return (
-          <div key={index} className="mb-4">
-            <h4 className="font-semibold text-gray-800 mb-2">{routineType}</h4>
-            <ul className="list-disc pl-4 space-y-1">
-              {lines.slice(1).map((line, i) => (
-                <li key={i} className="text-gray-700" 
-                    dangerouslySetInnerHTML={{ __html: line.trim() }} />
-              ))}
-            </ul>
-          </div>
-        );
-      }
-      
-      // Regular paragraph for analysis
+      // Return a div containing the formatted HTML
       return (
-        <p key={index} 
-           className="text-gray-700 mb-4" 
-           dangerouslySetInnerHTML={{ __html: lines.join(' ') }} />
+        <div 
+          key={index} 
+          className="text-gray-700 mb-4" 
+          dangerouslySetInnerHTML={{ __html: section }}
+        />
       );
     });
   };
