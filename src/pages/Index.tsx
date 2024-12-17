@@ -90,9 +90,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-center mb-12">
+        <div className="flex items-center justify-start mb-12">
           <img 
-            src="/lovable-uploads/fb83d490-188b-4d23-9f66-e60149e0e1b2.png" 
+            src="/lovable-uploads/869792b2-0779-487f-a7fc-74c4425c1134.png" 
             alt="hudo" 
             className="h-24 md:h-32"
           />
