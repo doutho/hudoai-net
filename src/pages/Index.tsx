@@ -4,30 +4,25 @@ import AnalysisResult from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import LanguageSelector, { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
+import { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
 import AnalysisDialog from '@/components/AnalysisDialog';
 import { translations } from '@/utils/translations';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import Header from '@/components/Header';
+import WelcomeDialog from '@/components/WelcomeDialog';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [showDialog, setShowDialog] = useState(false);
-  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
 
   useEffect(() => {
     const hasSelectedLanguage = localStorage.getItem('selectedLanguage');
     if (!hasSelectedLanguage) {
-      setShowLanguageDialog(true);
+      setShowWelcomeDialog(true);
     } else {
       const savedLanguage = JSON.parse(hasSelectedLanguage);
       const foundLanguage = languageOptions.find(
@@ -42,7 +37,6 @@ const Index = () => {
   const handleLanguageSelect = (option: LanguageOption) => {
     setCurrentLanguage(option);
     localStorage.setItem('selectedLanguage', JSON.stringify(option));
-    setShowLanguageDialog(false);
     const t = translations[option.code];
     toast({
       title: t.languageChanged,
@@ -125,17 +119,10 @@ const Index = () => {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-12 animate-fade-in">
-          <img 
-            src="/lovable-uploads/869792b2-0779-487f-a7fc-74c4425c1134.png" 
-            alt="hudo" 
-            className="h-12 md:h-16 hover-scale"
-          />
-          <LanguageSelector
-            currentLanguage={currentLanguage}
-            onLanguageChange={handleLanguageSelect}
-          />
-        </div>
+        <Header 
+          currentLanguage={currentLanguage}
+          onLanguageChange={handleLanguageSelect}
+        />
 
         <div className="text-center space-y-4 mb-8 animate-fade-in">
           <p className="text-xl text-white font-mono">
@@ -176,28 +163,11 @@ const Index = () => {
           />
         )}
 
-        <Dialog open={showLanguageDialog} onOpenChange={setShowLanguageDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Select Your Location</DialogTitle>
-              <DialogDescription>
-                Please select your location to get personalized recommendations
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              {languageOptions.map((option) => (
-                <Button
-                  key={`${option.code}-${option.country}`}
-                  onClick={() => handleLanguageSelect(option)}
-                  variant="outline"
-                  className="w-full"
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
+        <WelcomeDialog
+          open={showWelcomeDialog}
+          onOpenChange={setShowWelcomeDialog}
+          onLanguageSelect={handleLanguageSelect}
+        />
       </div>
     </div>
   );
