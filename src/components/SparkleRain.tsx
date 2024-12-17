@@ -18,7 +18,7 @@ const SparkleRain = () => {
           color: 'white',
           opacity: 0.6,
           transform: 'scale(0.8)',
-          animation: 'fall 4s linear infinite',
+          animation: 'fall 8s linear infinite', // Changed from 4s to 8s
           pointerEvents: 'none',
           zIndex: 0,
         } as React.CSSProperties,
@@ -29,11 +29,11 @@ const SparkleRain = () => {
       // Remove sparkle after animation completes
       setTimeout(() => {
         setSparkles((prev) => prev.filter((s) => s !== sparkle));
-      }, 4000);
+      }, 8000); // Changed from 4000 to 8000 to match animation duration
     };
 
-    // Create new sparkle every 500ms
-    const interval = setInterval(createSparkle, 500);
+    // Create new sparkle every 2000ms instead of 500ms
+    const interval = setInterval(createSparkle, 2000);
 
     return () => clearInterval(interval);
   }, []);
