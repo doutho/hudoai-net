@@ -7,23 +7,37 @@ import type { AnalysisResponse } from "./types.ts";
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
+    if (req.method !== 'POST') {
+      throw new Error('Method not allowed');
+    }
+
     const { image } = await req.json();
     
     if (!image) {
       throw new Error('No image data received');
     }
 
-    // Extract base64 data
+    console.log('Received request with image data');
+
+    // Extract base64 data and validate size
     const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image;
+    const sizeInBytes = (base64Data.length * 3) / 4;
+    if (sizeInBytes > 10 * 1024 * 1024) { // 10MB limit
+      throw new Error('Image size too large. Please use an image under 10MB.');
+    }
 
     console.log('Analyzing image with Gemini API...');
     const analysisText = await analyzeSkinImage(base64Data);
@@ -32,7 +46,7 @@ serve(async (req) => {
     // Split the analysis into condition and product suggestions
     const [condition, productSuggestions] = analysisText.split('\n\n').filter(Boolean);
 
-    // Extract product keywords from suggestions and search Amazon
+    // Extract product keywords from suggestions
     const productKeywords = productSuggestions
       .split('\n')
       .map(suggestion => suggestion.replace(/^\d+\.\s*/, ''))
@@ -107,13 +121,16 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in analyze-skin function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message || 'An unexpected error occurred',
+        details: error.stack || 'No stack trace available'
+      }),
       { 
         headers: { 
           ...corsHeaders,
           "Content-Type": "application/json"
         },
-        status: 500
+        status: error.message === 'Method not allowed' ? 405 : 500
       }
     );
   }
