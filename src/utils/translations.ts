@@ -15,8 +15,6 @@ export const translations = {
     skinCondition: "Skin Condition",
     recommendedProducts: "Recommended Products",
     viewOnAmazon: "View on Amazon",
-    locationDetected: "Location Detected",
-    locationSetTo: "Set to {language} based on your location",
     languageChanged: "Language Changed",
     changedTo: "Changed to {language}"
   },
@@ -36,8 +34,6 @@ export const translations = {
     skinCondition: "Hautzustand",
     recommendedProducts: "Empfohlene Produkte",
     viewOnAmazon: "Auf Amazon ansehen",
-    locationDetected: "Standort erkannt",
-    locationSetTo: "Auf {language} basierend auf Ihrem Standort eingestellt",
     languageChanged: "Sprache geändert",
     changedTo: "Geändert zu {language}"
   },
@@ -57,9 +53,26 @@ export const translations = {
     skinCondition: "Hudtillstånd",
     recommendedProducts: "Rekommenderade produkter",
     viewOnAmazon: "Visa på Amazon",
-    locationDetected: "Plats upptäckt",
-    locationSetTo: "Inställd på {language} baserat på din plats",
     languageChanged: "Språk ändrat",
     changedTo: "Ändrat till {language}"
+  },
+  fr: {
+    uploadText: "Téléchargez jusqu'à 3 images pour évaluer l'état de votre peau avec l'IA",
+    analyzeButton: "Analyser les images",
+    analyzing: "Analyse en cours...",
+    analysisTitle: "Analyse de la peau",
+    analysisProcessing: "Traitement de votre analyse de peau...",
+    analysisComplete: "Analyse terminée",
+    singleImageSuccess: "Votre image a été analysée avec succès !",
+    multipleImagesSuccess: "Vos images ont été analysées avec succès !",
+    viewResults: "Voir les résultats détaillés",
+    noImagesError: "Veuillez télécharger au moins une image",
+    analysisError: "Échec de l'analyse des images. Veuillez réessayer.",
+    skinAnalysisResults: "Résultats de votre analyse de peau",
+    skinCondition: "État de la peau",
+    recommendedProducts: "Produits recommandés",
+    viewOnAmazon: "Voir sur Amazon",
+    languageChanged: "Langue modifiée",
+    changedTo: "Changé en {language}"
   }
 };
