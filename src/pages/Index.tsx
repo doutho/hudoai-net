@@ -101,10 +101,16 @@ const Index = () => {
 
       // After analysis is complete and dialog is closed, scroll to results
       setTimeout(() => {
-        analysisResultRef.current?.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
+        if (analysisResultRef.current) {
+          const yOffset = -20; // Adjust this value to fine-tune the scroll position
+          const element = analysisResultRef.current;
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          
+          window.scrollTo({
+            top: y,
+            behavior: 'smooth'
+          });
+        }
       }, 100);
 
     } catch (error) {
