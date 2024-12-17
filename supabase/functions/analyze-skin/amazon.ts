@@ -1,4 +1,4 @@
-import { createHmac } from "crypto";
+import { crypto } from "https://deno.land/std@0.168.0/crypto/mod.ts";
 
 interface AmazonProduct {
   name: string;
@@ -10,10 +10,10 @@ interface AmazonProduct {
 
 // AWS SigV4 signing utility
 function getSignatureKey(key: string, dateStamp: string, regionName: string, serviceName: string) {
-  const kDate = createHmac('sha256', `AWS4${key}`).update(dateStamp).digest();
-  const kRegion = createHmac('sha256', kDate).update(regionName).digest();
-  const kService = createHmac('sha256', kRegion).update(serviceName).digest();
-  const kSigning = createHmac('sha256', kService).update('aws4_request').digest();
+  const kDate = crypto.subtle.sign('HMAC', new TextEncoder().encode(`AWS4${key}`), new TextEncoder().encode(dateStamp));
+  const kRegion = crypto.subtle.sign('HMAC', kDate, new TextEncoder().encode(regionName));
+  const kService = crypto.subtle.sign('HMAC', kRegion, new TextEncoder().encode(serviceName));
+  const kSigning = crypto.subtle.sign('HMAC', kService, new TextEncoder().encode('aws4_request'));
   return kSigning;
 }
 
