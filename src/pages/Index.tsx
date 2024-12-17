@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import AnalysisSection from '@/components/analysis/AnalysisSection';
-import AnalysisResult from '@/components/AnalysisResult';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import AnalysisContainer from '@/components/analysis/AnalysisContainer';
 import { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
 import AnalysisDialog from '@/components/AnalysisDialog';
-import { translations } from '@/utils/translations';
 import Header from '@/components/Header';
 import WelcomeDialog from '@/components/WelcomeDialog';
 import SparkleRain from '@/components/SparkleRain';
 import Footer from '@/components/Footer';
+import AnalysisHandler from '@/components/analysis/AnalysisHandler';
+import { useToast } from '@/hooks/use-toast';
+import { translations } from '@/utils/translations';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -19,7 +19,6 @@ const Index = () => {
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(languageOptions[0]);
   const { toast } = useToast();
-  const analysisResultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const hasSelectedLanguage = localStorage.getItem('selectedLanguage');
@@ -56,75 +55,13 @@ const Index = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleAnalyze = async () => {
-    const t = translations[currentLanguage.code];
-    
-    if (images.length === 0) {
-      toast({
-        title: "Error",
-        description: t.noImagesError,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsAnalyzing(true);
-    setShowDialog(true);
-    
-    try {
-      const imageData = images[0].includes('base64,') 
-        ? images[0]
-        : `data:image/jpeg;base64,${images[0]}`;
-
-      const { data, error } = await supabase.functions.invoke('analyze-skin', {
-        body: { 
-          image: imageData,
-          language: currentLanguage.code
-        }
-      });
-
-      if (error) throw error;
-      if (!data) throw new Error('No data received from analysis');
-
-      console.log('Raw response from Edge Function:', data);
-
-      if (!data.condition || !data.recommendations) {
-        throw new Error('Invalid response structure');
-      }
-
-      setAnalysisResult(data);
-      
-      toast({
-        title: t.analysisComplete,
-        description: t.singleImageSuccess,
-      });
-
-      // After analysis is complete and dialog is closed, scroll to results
-      setTimeout(() => {
-        if (analysisResultRef.current) {
-          const yOffset = -20; // Adjust this value to fine-tune the scroll position
-          const element = analysisResultRef.current;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          
-          window.scrollTo({
-            top: y,
-            behavior: 'smooth'
-          });
-        }
-      }, 100);
-
-    } catch (error) {
-      console.error('Error during analysis:', error);
-      setShowDialog(false);
-      toast({
-        title: "Error",
-        description: error.message || t.analysisError,
-        variant: "destructive",
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
+  const { handleAnalyze } = AnalysisHandler({
+    images,
+    currentLanguage,
+    setIsAnalyzing,
+    setShowDialog,
+    setAnalysisResult,
+  });
 
   return (
     <main className="min-h-screen p-4 md:p-8" role="main">
@@ -153,20 +90,11 @@ const Index = () => {
           currentLanguage={currentLanguage}
         />
 
-        {analysisResult && !showDialog && (
-          <section 
-            ref={analysisResultRef}
-            aria-label="Analysis Results" 
-            className="mb-8"
-          >
-            <AnalysisResult
-              condition={analysisResult.condition}
-              recommendations={analysisResult.recommendations}
-              country={currentLanguage.country}
-              language={currentLanguage.code}
-            />
-          </section>
-        )}
+        <AnalysisContainer 
+          analysisResult={analysisResult}
+          showDialog={showDialog}
+          currentLanguage={currentLanguage}
+        />
 
         <WelcomeDialog
           open={showWelcomeDialog}
