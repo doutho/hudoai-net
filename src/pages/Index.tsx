@@ -9,6 +9,7 @@ import AnalysisDialog from '@/components/AnalysisDialog';
 import { translations } from '@/utils/translations';
 import Header from '@/components/Header';
 import WelcomeDialog from '@/components/WelcomeDialog';
+import SparkleRain from '@/components/SparkleRain';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -118,6 +119,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen p-4 md:p-8">
+      <SparkleRain />
       <div className="max-w-4xl mx-auto">
         <Header 
           currentLanguage={currentLanguage}
