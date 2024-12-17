@@ -10,87 +10,57 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `Analyze the skin photo and provide a comprehensive yet concise analysis in three sections:
+  'en': `Analyze the skin photo and provide a comprehensive analysis in two sections:
 
-1. **Skin Analysis**:
-   - Main skin concerns and conditions
-   - Current skin state
-   - Areas needing attention
+1. **Skin Analysis**
+Provide a detailed but concise analysis of the skin's current condition, including:
+- Main skin concerns and conditions
+- Current skin state
+- Areas needing attention
+- Overall skin health assessment
 
-2. **Recommended Routine**:
-   Provide a clear, step-by-step daily routine explaining:
-   - Morning routine (AM):
-     * Cleanser
-     * Treatment products (if needed)
-     * Moisturizer
-     * Sunscreen
-   - Evening routine (PM):
-     * Cleanser
-     * Exfoliant (specify frequency)
-     * Treatment products
-     * Moisturizer
-     * Retinol (if appropriate)
-
-3. **Product Usage Tips**:
-   - How to layer products correctly
-   - Frequency of use for active ingredients
-   - Any specific application techniques
+2. **Recommended Routine**
+Describe a complete daily skincare routine, including:
+- Morning routine steps with specific product types
+- Evening routine steps with specific product types
+- How often to use specific treatments
+- Important tips for product application
 
 Keep the analysis factual and concise. Use ** for emphasis on key points.`,
 
-  'de': `Analysiere das Hautfoto und erstelle eine umfassende, aber prägnante Analyse in drei Abschnitten:
+  'de': `Analysieren Sie das Hautfoto und erstellen Sie eine umfassende Analyse in zwei Abschnitten:
 
-1. **Hautanalyse**:
-   - Hauptprobleme und Hautzustand
-   - Aktueller Hautzustand
-   - Bereiche, die Aufmerksamkeit benötigen
+1. **Hautanalyse**
+Erstellen Sie eine detaillierte, aber präzise Analyse des aktuellen Hautzustands, einschließlich:
+- Haupthautprobleme und -zustände
+- Aktueller Hautzustand
+- Bereiche, die Aufmerksamkeit benötigen
+- Allgemeine Beurteilung der Hautgesundheit
 
-2. **Empfohlene Routine**:
-   Beschreibe eine klare, schrittweise tägliche Routine:
-   - Morgenroutine (AM):
-     * Reiniger
-     * Behandlungsprodukte (falls nötig)
-     * Feuchtigkeitspflege
-     * Sonnenschutz
-   - Abendroutine (PM):
-     * Reiniger
-     * Peeling (Häufigkeit angeben)
-     * Behandlungsprodukte
-     * Feuchtigkeitspflege
-     * Retinol (falls geeignet)
+2. **Empfohlene Routine**
+Beschreiben Sie eine vollständige tägliche Hautpflegeroutine, einschließlich:
+- Schritte der Morgenroutine mit spezifischen Produkttypen
+- Schritte der Abendroutine mit spezifischen Produkttypen
+- Wie oft bestimmte Behandlungen anzuwenden sind
+- Wichtige Tipps zur Produktanwendung
 
-3. **Anwendungstipps**:
-   - Wie die Produkte richtig geschichtet werden
-   - Anwendungshäufigkeit aktiver Inhaltsstoffe
-   - Spezielle Anwendungstechniken
+Halten Sie die Analyse sachlich und präzise. Verwenden Sie ** für die Betonung wichtiger Punkte.`,
 
-Halte die Analyse sachlich und prägnant. Verwende ** für die Betonung wichtiger Punkte.`,
+  'sv': `Analysera hudfotot och ge en omfattande analys i två sektioner:
 
-  'sv': `Analysera hudfotot och ge en omfattande men koncis analys i tre sektioner:
+1. **Hudanalys**
+Ge en detaljerad men koncis analys av hudens nuvarande tillstånd, inklusive:
+- Huvudsakliga hudproblem och tillstånd
+- Nuvarande hudtillstånd
+- Områden som behöver uppmärksamhet
+- Övergripande bedömning av hudhälsan
 
-1. **Hudanalys**:
-   - Huvudsakliga hudproblem och tillstånd
-   - Nuvarande hudtillstånd
-   - Områden som behöver uppmärksamhet
-
-2. **Rekommenderad Rutin**:
-   Ge en tydlig, steg-för-steg daglig rutin:
-   - Morgonrutin (AM):
-     * Rengöring
-     * Behandlingsprodukter (vid behov)
-     * Fuktighetskräm
-     * Solskydd
-   - Kvällsrutin (PM):
-     * Rengöring
-     * Exfoliering (ange frekvens)
-     * Behandlingsprodukter
-     * Fuktighetskräm
-     * Retinol (om lämpligt)
-
-3. **Användningstips**:
-   - Hur produkterna ska läggas i rätt ordning
-   - Användningsfrekvens för aktiva ingredienser
-   - Särskilda appliceringsmetoder
+2. **Rekommenderad Rutin**
+Beskriv en komplett daglig hudvårdsrutin, inklusive:
+- Morgonrutinens steg med specifika produkttyper
+- Kvällsrutinens steg med specifika produkttyper
+- Hur ofta specifika behandlingar ska användas
+- Viktiga tips för produktapplicering
 
 Håll analysen faktabaserad och koncis. Använd ** för betoning av viktiga punkter.`
 };
