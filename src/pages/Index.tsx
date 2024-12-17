@@ -33,25 +33,20 @@ const Index = () => {
 
     setIsAnalyzing(true);
     try {
-      const { data: { url: functionUrl } } = await supabase.functions.invoke('analyze-skin', {
+      // Call the Edge Function directly
+      const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { image: images[0] }
       });
 
-      const response = await fetch(functionUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({ image: images[0] })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to analyze image');
+      if (error) {
+        throw error;
       }
 
-      const result = await response.json();
-      setAnalysisResult(result);
+      if (!data) {
+        throw new Error('No data received from analysis');
+      }
+
+      setAnalysisResult(data);
       
       toast({
         title: "Analysis complete",
