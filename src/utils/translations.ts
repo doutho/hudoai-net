@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    uploadText: "Upload up to 3 images to evaluate your skin condition using AI",
+    uploadText: "Upload an image to receive a personalized skincare routine and product recommendations powered by AI",
     analyzeButton: "Analyze Images",
     analyzing: "Analyzing...",
     analysisTitle: "Skin Analysis",
@@ -19,7 +19,7 @@ export const translations = {
     changedTo: "Changed to {language}"
   },
   de: {
-    uploadText: "Laden Sie bis zu 3 Bilder hoch, um Ihren Hautzustand mit KI zu bewerten",
+    uploadText: "Laden Sie ein Bild hoch, um eine personalisierte Hautpflegeroutine und Produktempfehlungen mit KI zu erhalten",
     analyzeButton: "Bilder analysieren",
     analyzing: "Analysiere...",
     analysisTitle: "Hautanalyse",
@@ -38,7 +38,7 @@ export const translations = {
     changedTo: "Geändert zu {language}"
   },
   sv: {
-    uploadText: "Ladda upp max 3 bilder för att utvärdera ditt hudtillstånd med AI",
+    uploadText: "Ladda upp en bild för att få en personlig hudvårdsrutin och produktrekommendationer med hjälp av AI",
     analyzeButton: "Analysera bilder",
     analyzing: "Analyserar...",
     analysisTitle: "Hudanalys",
@@ -57,7 +57,7 @@ export const translations = {
     changedTo: "Ändrat till {language}"
   },
   fr: {
-    uploadText: "Téléchargez jusqu'à 3 images pour évaluer l'état de votre peau avec l'IA",
+    uploadText: "Téléchargez une image pour recevoir une routine de soins personnalisée et des recommandations de produits alimentées par l'IA",
     analyzeButton: "Analyser les images",
     analyzing: "Analyse en cours...",
     analysisTitle: "Analyse de la peau",
