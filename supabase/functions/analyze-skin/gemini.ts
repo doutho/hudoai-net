@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.3";
+import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.2.1";
 import type { Language } from "./types.ts";
 
 const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
@@ -31,10 +31,13 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
   try {
     console.log('Starting Gemini analysis...');
     
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    // Initialize the model - now using gemini-1.5-pro-vision
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-vision" });
     
     const prompt = prompts[language] || prompts['en'];
     
+    console.log('Sending request to Gemini with prompt:', prompt);
+
     const result = await model.generateContent([
       prompt,
       {
