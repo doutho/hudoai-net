@@ -27,7 +27,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       {Array.from({ length: maxImages }).map((_, index) => (
         <div
           key={index}
-          className="relative aspect-square rounded-2xl border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors"
+          className="relative aspect-square rounded-2xl border-2 border-dashed border-white hover:border-primary transition-all duration-300 transform hover:scale-105 animate-fade-in"
         >
           <input
             type="file"
@@ -43,7 +43,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
-              <Plus className="w-8 h-8 text-gray-400" />
+              <Plus className="w-8 h-8 text-white" />
             </div>
           )}
         </div>

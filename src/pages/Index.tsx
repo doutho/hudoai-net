@@ -90,16 +90,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-start mb-12">
+        <div className="flex items-center justify-start mb-12 animate-fade-in">
           <img 
             src="/lovable-uploads/869792b2-0779-487f-a7fc-74c4425c1134.png" 
             alt="hudo" 
-            className="h-24 md:h-32"
+            className="h-16 md:h-20 hover-scale"
           />
         </div>
 
-        <div className="text-center space-y-4 mb-8">
-          <p className="text-xl text-gray-600 font-mono">
+        <div className="text-center space-y-4 mb-8 animate-fade-in">
+          <p className="text-xl text-white font-mono">
             Upload up to 3 images to evaluate your skin condition
           </p>
         </div>
@@ -107,14 +107,14 @@ const Index = () => {
         <ImageUpload
           images={images}
           onImageUpload={handleImageUpload}
-          className="mt-8"
+          className="mt-8 animate-fade-in"
         />
 
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 animate-fade-in">
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing || images.length === 0}
-            className="px-8 bg-primary hover:bg-primary/90 text-white"
+            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale"
           >
             {isAnalyzing ? "Analyzing..." : "Analyze Images"}
           </Button>
