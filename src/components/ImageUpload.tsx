@@ -12,7 +12,6 @@ interface ImageUploadProps {
 const ImageUpload: React.FC<ImageUploadProps> = ({
   images,
   onImageUpload,
-  maxImages = 3,
   className
 }) => {
   const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,31 +22,28 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   };
 
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-4", className)}>
-      {Array.from({ length: maxImages }).map((_, index) => (
-        <div
-          key={index}
-          className="relative aspect-square rounded-2xl border-2 border-dashed border-white hover:border-primary transition-all duration-300 transform hover:scale-105 animate-fade-in"
-        >
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(index, e)}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+    <div className={cn("flex justify-center w-full max-w-2xl mx-auto", className)}>
+      <div
+        className="relative aspect-square w-full max-w-md rounded-2xl border-2 border-dashed border-white hover:border-primary transition-all duration-300 transform hover:scale-105 animate-fade-in"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileChange(0, e)}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+        />
+        {images[0] ? (
+          <img
+            src={images[0]}
+            alt="Uploaded"
+            className="w-full h-full object-cover rounded-2xl"
           />
-          {images[index] ? (
-            <img
-              src={images[index]}
-              alt={`Uploaded ${index + 1}`}
-              className="w-full h-full object-cover rounded-2xl"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Plus className="w-8 h-8 text-white" />
-            </div>
-          )}
-        </div>
-      ))}
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Plus className="w-8 h-8 text-white" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
