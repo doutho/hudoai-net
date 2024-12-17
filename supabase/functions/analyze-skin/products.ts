@@ -1,28 +1,28 @@
 export const productDatabase = {
   moisturizers: [
     {
-      name: "CeraVe Moisturizing Cream",
-      description: "Rich, non-greasy moisturizer with 3 essential ceramides and hyaluronic acid",
+      name: "CeraVe Moisturising Lotion",
+      description: "Lightweight, oil-free moisturizer with 3 essential ceramides and hyaluronic acid",
       link: "https://amzn.to/4iHMCxa"
     },
     {
-      name: "La Roche-Posay Cicaplast Baume B5",
-      description: "Multi-purpose balm with panthenol and madecassoside for dry, irritated skin",
+      name: "CeraVe Facial Moisturising Lotion",
+      description: "Daily facial moisturizer with SPF protection and essential ceramides",
       link: "https://amzn.to/4gjgQ85"
     },
     {
-      name: "Neutrogena Hydro Boost Water Gel",
-      description: "Oil-free gel moisturizer with hyaluronic acid for instant hydration",
+      name: "Atoderm Intensive Gel-Creme",
+      description: "Intensive moisturizing gel-cream for dry, sensitive skin",
       link: "https://amzn.to/4fqC1Uv"
     },
     {
-      name: "Vanicream Moisturizing Cream",
-      description: "Gentle, non-comedogenic moisturizer ideal for sensitive skin",
+      name: "CLINIQUE Moisture Surge",
+      description: "72-hour auto-replenishing hydrator for all skin types",
       link: "https://amzn.to/3BKNdgJ"
     },
     {
-      name: "First Aid Beauty Ultra Repair Cream",
-      description: "Rich moisturizer with colloidal oatmeal for dry, distressed skin",
+      name: "Avene Cicalfate+",
+      description: "Restorative protective cream for sensitive, irritated skin",
       link: "https://amzn.to/4gFEsDK"
     }
   ],
@@ -33,59 +33,59 @@ export const productDatabase = {
       link: "https://amzn.to/49ICVdG"
     },
     {
-      name: "La Roche-Posay Toleriane Hydrating Cleanser",
-      description: "Mild, creamy face wash for sensitive skin with niacinamide",
+      name: "Cetaphil Gentle Skin Cleanser",
+      description: "Mild, non-irritating cleanser for all skin types",
       link: "https://amzn.to/41yfdPk"
     },
     {
-      name: "Vanicream Gentle Facial Cleanser",
-      description: "Non-irritating, soap-free cleanser for sensitive skin",
+      name: "Paula's Choice CLEAR",
+      description: "Pore normalizing cleanser for acne-prone skin",
       link: "https://amzn.to/3BpGmtc"
     }
   ],
   exfoliants: [
     {
-      name: "Paula's Choice 2% BHA Liquid Exfoliant",
+      name: "Paula's Choice SKIN PERFECTING 2% BHA",
       description: "Leave-on exfoliant with salicylic acid for unclogging pores",
       link: "https://amzn.to/49GbroS"
     }
   ],
   sunscreens: [
     {
-      name: "La Roche-Posay Anthelios Melt-In Sunscreen SPF 60",
-      description: "Fast-absorbing, broad-spectrum protection with Cell-Ox Shield technology",
+      name: "La Roche-Posay Anthelios",
+      description: "Broad spectrum SPF protection with advanced UVA/UVB filters",
       link: "https://amzn.to/4fqoLiq"
     },
     {
-      name: "EltaMD UV Clear Facial Sunscreen SPF 46",
-      description: "Oil-free sunscreen with niacinamide, ideal for sensitive skin",
+      name: "Bioré UV Biore Aqua Rich Watery Essence",
+      description: "Lightweight, water-based sunscreen with SPF50+ PA++++",
       link: "https://amzn.to/3ZXI667"
     },
     {
-      name: "Neutrogena Invisible Daily Defense SPF 60+",
-      description: "Lightweight, broad-spectrum protection for daily use",
+      name: "La Roche-Posay Anthelios UVmune",
+      description: "Advanced sun protection with innovative UVmune technology",
       link: "https://amzn.to/41Fs4Pz"
     },
     {
-      name: "Black Girl Sunscreen SPF 30",
-      description: "No white cast, moisturizing sunscreen with natural ingredients",
+      name: "Missha Sun Milk",
+      description: "Lightweight, fast-absorbing sunscreen with broad spectrum protection",
       link: "https://amzn.to/49GdvNE"
     }
   ],
   retinols: [
     {
-      name: "CeraVe Resurfacing Retinol Serum",
-      description: "Gentle retinol serum with niacinamide and ceramides",
+      name: "The Ordinary Hyaluronic Acid 2%",
+      description: "Multi-molecular hyaluronic acid formula for deep hydration",
       link: "https://amzn.to/3ZD0HmR"
     },
     {
-      name: "La Roche-Posay Retinol B3 Serum",
-      description: "Pure retinol with vitamin B3 for visible signs of aging",
+      name: "The Ordinary ORIGINAL Retinol 1%",
+      description: "Pure retinol solution for targeting signs of aging",
       link: "https://amzn.to/4gw9IVK"
     },
     {
-      name: "The Ordinary Retinol 1% in Squalane",
-      description: "Stable retinol solution in moisturizing squalane",
+      name: "CeraVe Resurfacing RETINOL Serum",
+      description: "Gentle retinol serum with ceramides for skin resurfacing",
       link: "https://amzn.to/3DkjJGZ"
     }
   ]
