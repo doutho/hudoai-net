@@ -67,18 +67,14 @@ serve(async (req) => {
     const analysisText = await analyzeSkinImage(base64Data, language as Language);
     console.log('Gemini API response:', analysisText);
 
-    // Ensure we have a valid response structure
+    // Create a properly structured response
     const response: AnalysisResponse = {
       condition: analysisText || "Unable to analyze skin condition",
       recommendations: defaultProducts
     };
 
-    // Validate response structure before sending
-    if (!response.condition || !response.recommendations) {
-      throw new Error('Invalid response structure');
-    }
-
-    console.log('Sending response:', JSON.stringify(response, null, 2));
+    // Log the final response for debugging
+    console.log('Final response structure:', JSON.stringify(response, null, 2));
 
     return new Response(
       JSON.stringify(response),

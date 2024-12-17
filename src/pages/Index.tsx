@@ -92,19 +92,16 @@ const Index = () => {
         throw new Error('No data received from analysis');
       }
 
-      let parsedData;
-      try {
-        parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-        
-        if (!parsedData.condition || !Array.isArray(parsedData.recommendations)) {
-          throw new Error('Invalid response structure');
-        }
-      } catch (parseError) {
-        console.error('Parse error:', parseError);
-        throw new Error('Failed to parse analysis results');
+      // Log the raw response for debugging
+      console.log('Raw response from Edge Function:', data);
+
+      // Ensure we have a valid response structure
+      if (!data.condition || !data.recommendations) {
+        console.error('Invalid response structure:', data);
+        throw new Error('Invalid response structure');
       }
-      
-      setAnalysisResult(parsedData);
+
+      setAnalysisResult(data);
       
       toast({
         title: t.analysisComplete,
