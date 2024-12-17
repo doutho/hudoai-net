@@ -88,10 +88,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-2 mb-12">
-          <h1 className="text-4xl font-bold text-purple-600">hudo</h1>
+        <div className="flex items-center justify-center mb-12">
+          <img 
+            src="/lovable-uploads/fb83d490-188b-4d23-9f66-e60149e0e1b2.png" 
+            alt="hudo" 
+            className="h-24 md:h-32"
+          />
         </div>
 
         <div className="text-center space-y-4 mb-8">
@@ -110,7 +114,7 @@ const Index = () => {
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing || images.length === 0}
-            className="px-8 bg-purple-600 hover:bg-purple-700"
+            className="px-8 bg-primary hover:bg-primary/90 text-white"
           >
             {isAnalyzing ? "Analyzing..." : "Analyze Images"}
           </Button>
@@ -131,7 +135,7 @@ const Index = () => {
                   <h2 className="text-2xl font-bold mb-4">Analysis Complete</h2>
                   <p className="text-gray-600 mb-4">{analysisResult.condition}</p>
                   <Button 
-                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    className="w-full bg-primary hover:bg-primary/90 text-white"
                     onClick={() => setShowDialog(false)}
                   >
                     View Detailed Results
