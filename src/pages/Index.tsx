@@ -72,9 +72,14 @@ const Index = () => {
     setShowDialog(true);
     
     try {
+      // Remove data URL prefix if present
+      const imageData = images[0].includes('base64,') 
+        ? images[0]
+        : `data:image/jpeg;base64,${images[0]}`;
+
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { 
-          image: images[0],
+          image: imageData,
           language: currentLanguage.code
         }
       });

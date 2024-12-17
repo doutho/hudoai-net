@@ -99,7 +99,12 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
   try {
     console.log('Starting Gemini analysis...');
     
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Remove data URL prefix if present
+    const imageData = base64Image.includes('base64,') 
+      ? base64Image.split('base64,')[1] 
+      : base64Image;
+    
+    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
     const prompt = prompts[language] || prompts['en'];
     
     console.log('Sending request to Gemini with prompt:', prompt);
@@ -109,7 +114,7 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       {
         inlineData: {
           mimeType: "image/jpeg",
-          data: base64Image
+          data: imageData
         }
       }
     ]);
