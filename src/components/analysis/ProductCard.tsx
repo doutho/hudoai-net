@@ -3,18 +3,22 @@ import { ExternalLink } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type Country } from '../LanguageSelector';
 
+interface Product {
+  asin: string;
+  title: string;
+  url: string;
+  image: string;
+  price: string;
+}
+
 interface ProductCardProps {
-  name: string;
-  description: string;
-  link: string;
+  product: Product;
   country: Country;
   viewOnAmazonText: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ 
-  name, 
-  description, 
-  link, 
+  product,
   country, 
   viewOnAmazonText 
 }) => {
@@ -38,17 +42,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            href={getCountrySpecificLink(link)}
+            href={getCountrySpecificLink(product.url)}
             target="_blank"
             rel="noopener noreferrer"
             className="block p-4 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-1"
           >
             <div className="flex flex-col space-y-2">
               <div className="flex justify-between items-start">
-                <h5 className="font-medium text-purple-600">{name}</h5>
+                <h5 className="font-medium text-purple-600">{product.title}</h5>
                 <ExternalLink className="w-4 h-4 text-gray-400" />
               </div>
-              <p className="text-sm text-gray-600">{description}</p>
+              <p className="text-sm text-gray-600">{product.price}</p>
               <span className="text-sm text-purple-500 hover:text-purple-700">
                 {viewOnAmazonText} {country !== 'US' ? `(${country})` : ''}
               </span>

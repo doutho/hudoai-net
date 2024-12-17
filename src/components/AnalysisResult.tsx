@@ -2,13 +2,19 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { type Country } from './LanguageSelector';
 import { translations } from '@/utils/translations';
-import { type ProductRecommendations } from '../../supabase/functions/analyze-skin/types';
+import { type AmazonProduct } from '../../supabase/functions/analyze-skin/types';
 import ProductSection from './analysis/ProductSection';
 import SkinConditionSection from './analysis/SkinConditionSection';
 
 interface AnalysisResultProps {
   condition: string;
-  recommendations: ProductRecommendations;
+  recommendations: {
+    moisturizers: AmazonProduct[];
+    cleansers: AmazonProduct[];
+    exfoliants: AmazonProduct[];
+    sunscreens: AmazonProduct[];
+    retinols: AmazonProduct[];
+  };
   country: Country;
   language: string;
 }
@@ -20,6 +26,14 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
   language 
 }) => {
   const t = translations[language];
+
+  const mapAmazonProductToProduct = (product: AmazonProduct) => ({
+    asin: product.name.split(' ')[0], // Assuming first word is ASIN
+    title: product.name,
+    url: product.link,
+    image: '',  // Add image URL if available
+    price: '',  // Add price if available
+  });
 
   return (
     <Card className="w-full mt-8 overflow-hidden font-roboto">
@@ -37,31 +51,31 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
           <div className="space-y-6">
             <ProductSection
               title="Moisturizers"
-              products={recommendations.moisturizers}
+              products={recommendations.moisturizers.map(mapAmazonProductToProduct)}
               country={country}
               viewOnAmazonText={t.viewOnAmazon}
             />
             <ProductSection
               title="Cleansers"
-              products={recommendations.cleansers}
+              products={recommendations.cleansers.map(mapAmazonProductToProduct)}
               country={country}
               viewOnAmazonText={t.viewOnAmazon}
             />
             <ProductSection
               title="Exfoliants"
-              products={recommendations.exfoliants}
+              products={recommendations.exfoliants.map(mapAmazonProductToProduct)}
               country={country}
               viewOnAmazonText={t.viewOnAmazon}
             />
             <ProductSection
               title="Sunscreens"
-              products={recommendations.sunscreens}
+              products={recommendations.sunscreens.map(mapAmazonProductToProduct)}
               country={country}
               viewOnAmazonText={t.viewOnAmazon}
             />
             <ProductSection
               title="Retinols"
-              products={recommendations.retinols}
+              products={recommendations.retinols.map(mapAmazonProductToProduct)}
               country={country}
               viewOnAmazonText={t.viewOnAmazon}
             />
