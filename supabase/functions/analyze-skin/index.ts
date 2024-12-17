@@ -22,6 +22,9 @@ serve(async (req) => {
       throw new Error('No image data received')
     }
 
+    // Extract base64 data
+    const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image
+
     console.log('Initializing Gemini API')
     const genAI = new GoogleGenerativeAI(Deno.env.get("GEMINI_API_KEY"))
     const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" })
@@ -38,7 +41,7 @@ serve(async (req) => {
       {
         inlineData: {
           mimeType: "image/jpeg",
-          data: image.split(',')[1] // Remove data URL prefix if present
+          data: base64Data
         }
       }
     ])
@@ -131,7 +134,7 @@ serve(async (req) => {
       }),
       { 
         headers: { 
-          ...corsHeaders, 
+          ...corsHeaders,
           "Content-Type": "application/json"
         },
         status: 200 
@@ -145,7 +148,7 @@ serve(async (req) => {
       }),
       { 
         headers: { 
-          ...corsHeaders, 
+          ...corsHeaders,
           "Content-Type": "application/json"
         },
         status: 500
