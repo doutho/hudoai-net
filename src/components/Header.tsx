@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { QuestionMark } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import LanguageSelector, { type LanguageOption } from './LanguageSelector';
 
 interface HeaderProps {
@@ -18,12 +20,18 @@ const Header = ({ currentLanguage, onLanguageChange }: HeaderProps) => {
         />
       </Link>
       <div className="flex items-center gap-4">
-        <Link 
-          to="/how-it-works"
-          className="text-white hover:text-primary transition-colors"
-        >
-          How It Works
-        </Link>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link to="/how-it-works">
+                <QuestionMark className="w-5 h-5 text-white hover:text-primary transition-colors" />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>How does it work?</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <div className="bg-white rounded-full p-1">
           <LanguageSelector
             currentLanguage={currentLanguage}

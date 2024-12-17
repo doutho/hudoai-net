@@ -60,7 +60,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
             <div className="grid gap-6">
               {recommendations.moisturizers?.length > 0 && (
                 <ProductSection
-                  title="Moisturizers"
+                  title="Moisturizer"
                   products={recommendations.moisturizers.map(mapAmazonProductToProduct).filter(Boolean)}
                   country={country}
                   viewOnAmazonText={t.viewOnAmazon}
@@ -68,7 +68,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
               )}
               {recommendations.cleansers?.length > 0 && (
                 <ProductSection
-                  title="Cleansers"
+                  title="Cleanser"
                   products={recommendations.cleansers.map(mapAmazonProductToProduct).filter(Boolean)}
                   country={country}
                   viewOnAmazonText={t.viewOnAmazon}
@@ -76,7 +76,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
               )}
               {recommendations.exfoliants?.length > 0 && (
                 <ProductSection
-                  title="Exfoliants"
+                  title="Exfoliant"
                   products={recommendations.exfoliants.map(mapAmazonProductToProduct).filter(Boolean)}
                   country={country}
                   viewOnAmazonText={t.viewOnAmazon}
@@ -84,7 +84,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
               )}
               {recommendations.sunscreens?.length > 0 && (
                 <ProductSection
-                  title="Sunscreens"
+                  title="Sunscreen"
                   products={recommendations.sunscreens.map(mapAmazonProductToProduct).filter(Boolean)}
                   country={country}
                   viewOnAmazonText={t.viewOnAmazon}
@@ -92,7 +92,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
               )}
               {recommendations.retinols?.length > 0 && (
                 <ProductSection
-                  title="Retinols"
+                  title="Retinol"
                   products={recommendations.retinols.map(mapAmazonProductToProduct).filter(Boolean)}
                   country={country}
                   viewOnAmazonText={t.viewOnAmazon}
