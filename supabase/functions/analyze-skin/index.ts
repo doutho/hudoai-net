@@ -13,11 +13,9 @@ async function getProductRecommendations(condition: string) {
   console.log('Getting product recommendations for condition:', condition);
   
   try {
-    // Extract key skin concerns from the analysis
     const concerns = extractSkinConcerns(condition.toLowerCase());
     console.log('Extracted skin concerns:', concerns);
 
-    // Search for products based on concerns
     const recommendations = {
       moisturizers: await searchAmazonProducts(`moisturizer for ${concerns.join(' ')} skin`),
       cleansers: await searchAmazonProducts(`cleanser for ${concerns.join(' ')} skin`),
@@ -31,14 +29,13 @@ async function getProductRecommendations(condition: string) {
     return recommendations;
   } catch (error) {
     console.error('Error getting product recommendations:', error);
-    throw error;
+    throw new Error(`Failed to get product recommendations: ${error.message}`);
   }
 }
 
 function extractSkinConcerns(analysis: string): string[] {
   const concerns = new Set<string>();
   
-  // Common skin conditions to look for
   const conditionMap = {
     'acne': ['acne', 'pimples', 'breakouts'],
     'dry': ['dry', 'dehydrated', 'flaky'],
@@ -50,14 +47,12 @@ function extractSkinConcerns(analysis: string): string[] {
     'combination': ['combination'],
   };
 
-  // Check for each condition in the analysis
   for (const [condition, keywords] of Object.entries(conditionMap)) {
     if (keywords.some(keyword => analysis.includes(keyword))) {
       concerns.add(condition);
     }
   }
 
-  // If no specific concerns found, default to 'normal'
   if (concerns.size === 0) {
     concerns.add('normal');
   }
@@ -66,10 +61,11 @@ function extractSkinConcerns(analysis: string): string[] {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
       headers: corsHeaders,
-      status: 204
+      status: 204 
     });
   }
 
@@ -94,20 +90,25 @@ serve(async (req) => {
     
     console.log('Calling Gemini API...');
     const analysisText = await analyzeSkinImage(base64Data, language as Language);
+    
+    if (!analysisText) {
+      throw new Error('Failed to get analysis from Gemini API');
+    }
     console.log('Gemini API response:', analysisText);
 
-    // Get personalized product recommendations based on the analysis
     console.log('Getting product recommendations...');
     const recommendations = await getProductRecommendations(analysisText);
 
-    // Create response
+    if (!recommendations) {
+      throw new Error('Failed to get product recommendations');
+    }
+
     const response: AnalysisResponse = {
       condition: analysisText,
       recommendations
     };
 
-    console.log('Final response structure:', JSON.stringify(response, null, 2));
-
+    console.log('Sending successful response');
     return new Response(
       JSON.stringify(response),
       { 
@@ -120,6 +121,8 @@ serve(async (req) => {
     );
   } catch (error) {
     console.error('Error in analyze-skin function:', error);
+    
+    // Return a proper error response with CORS headers
     return new Response(
       JSON.stringify({ 
         error: error.message || 'An unexpected error occurred',
