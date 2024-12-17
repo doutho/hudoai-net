@@ -39,12 +39,10 @@ const Index = () => {
     setShowDialog(true);
     
     try {
-      console.log('Calling analyze-skin function...');
+      console.log('Calling analyze-skin function with image data...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { image: images[0] }
       });
-
-      console.log('Response received:', { data, error });
 
       if (error) {
         console.error('Function error:', error);
@@ -52,10 +50,10 @@ const Index = () => {
       }
 
       if (!data) {
-        console.error('No data received');
         throw new Error('No data received from analysis');
       }
 
+      console.log('Analysis response:', data);
       setAnalysisResult(data);
       
       toast({
@@ -82,11 +80,8 @@ const Index = () => {
           <h1 className="text-4xl font-bold text-purple-600">hudo</h1>
           <div className="flex items-center gap-1">
             <Heart className="w-5 h-5 text-purple-500 fill-purple-500" />
-            <span className="font-bold">
+            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
               AI
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-                AI
-              </span>
             </span>
           </div>
         </div>
