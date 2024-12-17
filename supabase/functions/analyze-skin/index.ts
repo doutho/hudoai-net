@@ -8,19 +8,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-function getRandomProduct(category: keyof typeof productDatabase) {
-  const products = productDatabase[category];
-  const randomIndex = Math.floor(Math.random() * products.length);
-  return products[randomIndex];
-}
-
 function getProductRecommendations() {
   return {
-    moisturizers: [getRandomProduct('moisturizers')],
-    cleansers: [getRandomProduct('cleansers')],
-    exfoliants: [getRandomProduct('exfoliants')],
-    sunscreens: [getRandomProduct('sunscreens')],
-    retinols: [getRandomProduct('retinols')]
+    moisturizers: productDatabase.moisturizers,
+    cleansers: productDatabase.cleansers,
+    exfoliants: productDatabase.exfoliants,
+    sunscreens: productDatabase.sunscreens,
+    retinols: productDatabase.retinols
   };
 }
 
