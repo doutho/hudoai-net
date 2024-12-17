@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { QuestionMarkCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import LanguageSelector, { type LanguageOption } from './LanguageSelector';
 
@@ -24,7 +24,7 @@ const Header = ({ currentLanguage, onLanguageChange }: HeaderProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link to="/how-it-works">
-                <QuestionMarkCircle className="w-5 h-5 text-white hover:text-primary transition-colors" />
+                <HelpCircle className="w-5 h-5 text-white hover:text-primary transition-colors" />
               </Link>
             </TooltipTrigger>
             <TooltipContent>
