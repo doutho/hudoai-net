@@ -1,99 +1,131 @@
 export const productDatabase = {
   moisturizers: [
     {
-      name: "CeraVe Moisturising Lotion",
-      description: "Lightweight, oil-free moisturizer with 3 essential ceramides and hyaluronic acid",
-      link: "https://amzn.to/4gjuUhU"
+      asin: "4gjuUhU",
+      title: "CeraVe Moisturising Lotion",
+      url: "https://amzn.to/4gjuUhU",
+      image: "cerave-moisturising-lotion.jpg",
+      price: "$15.99"
     },
     {
-      name: "CeraVe Facial Moisturising Lotion",
-      description: "Daily facial moisturizer with SPF protection and essential ceramides",
-      link: "https://amzn.to/49GC11g"
+      asin: "49GC11g",
+      title: "CeraVe Facial Moisturising Lotion",
+      url: "https://amzn.to/49GC11g",
+      image: "cerave-facial-moisturising-lotion.jpg",
+      price: "$16.99"
     },
     {
-      name: "Atoderm Intensive Gel-Creme",
-      description: "Intensive moisturizing gel-cream for dry, sensitive skin",
-      link: "https://amzn.to/4fECse5"
+      asin: "4fECse5",
+      title: "Atoderm Intensive Gel-Creme",
+      url: "https://amzn.to/4fECse5",
+      image: "atoderm-intensive-gel-creme.jpg",
+      price: "$19.99"
     },
     {
-      name: "Neutrogena Hydro Boost Face Moisturizer",
-      description: "Lightweight gel-cream moisturizer with hyaluronic acid",
-      link: "https://amzn.to/4iIUeze"
+      asin: "4iIUeze",
+      title: "Neutrogena Hydro Boost Face Moisturizer",
+      url: "https://amzn.to/4iIUeze",
+      image: "neutrogena-hydro-boost.jpg",
+      price: "$17.99"
     },
     {
-      name: "Avene Cicalfate+",
-      description: "Restorative protective cream for sensitive, irritated skin",
-      link: "https://amzn.to/4gCS3vq"
+      asin: "4gCS3vq",
+      title: "Avene Cicalfate+",
+      url: "https://amzn.to/4gCS3vq",
+      image: "avene-cicalfate.jpg",
+      price: "$28.99"
     }
   ],
   cleansers: [
     {
-      name: "CeraVe Hydrating Facial Cleanser",
-      description: "Gentle, non-foaming cleanser with ceramides and hyaluronic acid",
-      link: "https://amzn.to/3ZFWcYG"
+      asin: "3ZFWcYG",
+      title: "CeraVe Hydrating Facial Cleanser",
+      url: "https://amzn.to/3ZFWcYG",
+      image: "cerave-hydrating-cleanser.jpg",
+      price: "$14.99"
     },
     {
-      name: "Cetaphil Gentle Skin Cleanser",
-      description: "Mild, non-irritating cleanser for all skin types",
-      link: "https://amzn.to/3P0SL9W"
+      asin: "3P0SL9W",
+      title: "Cetaphil Gentle Skin Cleanser",
+      url: "https://amzn.to/3P0SL9W",
+      image: "cetaphil-gentle-cleanser.jpg",
+      price: "$13.99"
     },
     {
-      name: "Paula's Choice CLEAR",
-      description: "Pore normalizing cleanser for acne-prone skin",
-      link: "https://amzn.to/3ZDjDBX"
+      asin: "3ZDjDBX",
+      title: "Paula's Choice CLEAR",
+      url: "https://amzn.to/3ZDjDBX",
+      image: "paulas-choice-clear.jpg",
+      price: "$29.99"
     }
   ],
   exfoliants: [
     {
-      name: "Paula's Choice SKIN PERFECTING 2% BHA",
-      description: "Leave-on exfoliant with salicylic acid for unclogging pores",
-      link: "https://amzn.to/3Dv7cjX"
+      asin: "3Dv7cjX",
+      title: "Paula's Choice SKIN PERFECTING 2% BHA",
+      url: "https://amzn.to/3Dv7cjX",
+      image: "paulas-choice-bha.jpg",
+      price: "$32.99"
     }
   ],
   sunscreens: [
     {
-      name: "CeraVe Hydrating Mineral Sunscreen",
-      description: "Broad-spectrum mineral sunscreen with ceramides",
-      link: "https://amzn.to/4iEWyaE"
+      asin: "4iEWyaE",
+      title: "CeraVe Hydrating Mineral Sunscreen",
+      url: "https://amzn.to/4iEWyaE",
+      image: "cerave-mineral-sunscreen.jpg",
+      price: "$15.99"
     },
     {
-      name: "Bioré UV Biore Aqua Rich Watery Essence",
-      description: "Lightweight, water-based sunscreen with SPF50+ PA++++",
-      link: "https://amzn.to/3VJiIyI"
+      asin: "3VJiIyI",
+      title: "Bioré UV Biore Aqua Rich Watery Essence",
+      url: "https://amzn.to/3VJiIyI",
+      image: "biore-uv.jpg",
+      price: "$14.99"
     },
     {
-      name: "Neutrogena Face Sunscreen",
-      description: "Oil-free daily facial sunscreen",
-      link: "https://amzn.to/4flxlPz"
+      asin: "4flxlPz",
+      title: "Neutrogena Face Sunscreen",
+      url: "https://amzn.to/4flxlPz",
+      image: "neutrogena-sunscreen.jpg",
+      price: "$12.99"
     },
     {
-      name: "EltaMD UV Clear Face Sunscreen",
-      description: "Oil-free facial sunscreen for sensitive and acne-prone skin",
-      link: "https://amzn.to/3ZFDAba"
+      asin: "3ZFDAba",
+      title: "EltaMD UV Clear Face Sunscreen",
+      url: "https://amzn.to/3ZFDAba",
+      image: "eltamd-sunscreen.jpg",
+      price: "$37.99"
     },
     {
-      name: "La Roche-Posay Anthelios",
-      description: "Advanced sun protection with innovative technology",
-      link: "https://amzn.to/4fqUgJt"
+      asin: "4fqUgJt",
+      title: "La Roche-Posay Anthelios",
+      url: "https://amzn.to/4fqUgJt",
+      image: "laroche-anthelios.jpg",
+      price: "$33.99"
     }
   ],
   retinols: [
     {
-      name: "Hyaluronic Acid 2%",
-      description: "Multi-molecular hyaluronic acid formula for deep hydration",
-      link: "https://amzn.to/3P3dDxo"
+      asin: "3P3dDxo",
+      title: "Hyaluronic Acid 2%",
+      url: "https://amzn.to/3P3dDxo",
+      image: "hyaluronic-acid.jpg",
+      price: "$7.99"
     },
     {
-      name: "The Ordinary ORIGINAL Retinol 1%",
-      description: "Pure retinol solution for targeting signs of aging",
-      link: "https://amzn.to/4gBDSGU"
+      asin: "4gBDSGU",
+      title: "The Ordinary ORIGINAL Retinol 1%",
+      url: "https://amzn.to/4gBDSGU",
+      image: "ordinary-retinol.jpg",
+      price: "$12.99"
     },
     {
-      name: "CeraVe Resurfacing RETINOL Serum",
-      description: "Gentle retinol serum with ceramides for skin resurfacing",
-      link: "https://amzn.to/4gb8grT"
+      asin: "4gb8grT",
+      title: "CeraVe Resurfacing RETINOL Serum",
+      url: "https://amzn.to/4gb8grT",
+      image: "cerave-retinol.jpg",
+      price: "$19.99"
     }
   ]
 };
-
-export type ProductCategory = keyof typeof productDatabase;

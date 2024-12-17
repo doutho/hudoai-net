@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import ImageUpload from '@/components/ImageUpload';
+import AnalysisSection from '@/components/analysis/AnalysisSection';
 import AnalysisResult from '@/components/AnalysisResult';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { type LanguageOption, languageOptions } from '@/components/LanguageSelector';
@@ -28,7 +27,7 @@ const Index = () => {
     } else {
       const savedLanguage = JSON.parse(hasSelectedLanguage);
       const foundLanguage = languageOptions.find(
-        option => option.code === savedLanguage.code && option.country === savedLanguage.country
+        option => option.code === savedLanguage.code
       );
       if (foundLanguage) {
         setCurrentLanguage(foundLanguage);
@@ -83,19 +82,12 @@ const Index = () => {
         }
       });
 
-      if (error) {
-        console.error('Function error:', error);
-        throw error;
-      }
-
-      if (!data) {
-        throw new Error('No data received from analysis');
-      }
+      if (error) throw error;
+      if (!data) throw new Error('No data received from analysis');
 
       console.log('Raw response from Edge Function:', data);
 
       if (!data.condition || !data.recommendations) {
-        console.error('Invalid response structure:', data);
         throw new Error('Invalid response structure');
       }
 
@@ -118,8 +110,6 @@ const Index = () => {
     }
   };
 
-  const t = translations[currentLanguage.code];
-
   return (
     <div className="min-h-screen p-4 md:p-8">
       <SparkleRain />
@@ -129,27 +119,13 @@ const Index = () => {
           onLanguageChange={handleLanguageSelect}
         />
 
-        <div className="text-center space-y-4 mb-8 animate-fade-in">
-          <p className="text-xl text-white font-roboto font-bold">
-            {t.uploadText}
-          </p>
-        </div>
-
-        <ImageUpload
+        <AnalysisSection
           images={images}
           onImageUpload={handleImageUpload}
-          className="mt-8 animate-fade-in"
+          isAnalyzing={isAnalyzing}
+          handleAnalyze={handleAnalyze}
+          currentLanguage={currentLanguage}
         />
-
-        <div className="flex justify-center mt-8 animate-fade-in">
-          <Button
-            onClick={handleAnalyze}
-            disabled={isAnalyzing || images.length === 0}
-            className="px-8 bg-primary hover:bg-primary/90 text-white hover-scale font-roboto"
-          >
-            {isAnalyzing ? t.analyzing : t.analyzeButton}
-          </Button>
-        </div>
 
         <AnalysisDialog
           showDialog={showDialog}
