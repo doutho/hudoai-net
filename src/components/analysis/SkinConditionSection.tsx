@@ -17,11 +17,14 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
       .replace(/&Ouml;/g, 'Ö')
       // Remove any potential Gemini API artifacts and special characters, but keep Swedish chars
       .replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '')
-      .replace(/[^\wåäöÅÄÖ\s*#.,()-]/g, '')
+      .replace(/[^\wåäöÅÄÖ\s.,()-]/g, '')
       .trim();
     
+    // Fix the number formatting by ensuring numbers are next to their headers
+    const fixedNumbers = decodedText.replace(/(\d+)\.\s*\n([A-ZÅÄÖa-zåäö])/g, '$1. $2');
+    
     // Replace # text with h2 headers (main sections)
-    const textWithHeaders = decodedText.replace(
+    const textWithHeaders = fixedNumbers.replace(
       /^#\s*(.*?)$/gm, 
       '<h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">$1</h2>'
     );

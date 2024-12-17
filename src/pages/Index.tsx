@@ -52,6 +52,14 @@ const Index = () => {
       const newImages = [...images];
       newImages[index] = e.target?.result as string;
       setImages(newImages);
+      
+      // Show toast when images are uploaded
+      if (newImages.filter(Boolean).length > 0) {
+        toast({
+          title: "Images Added",
+          description: "Add up to 3 images to evaluate your skin condition using the latest AI technologies",
+        });
+      }
     };
     reader.readAsDataURL(file);
   };
