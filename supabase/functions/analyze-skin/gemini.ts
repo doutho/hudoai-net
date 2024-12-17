@@ -104,7 +104,7 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       ? base64Image.split('base64,')[1] 
       : base64Image;
     
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = prompts[language] || prompts['en'];
     
     console.log('Sending request to Gemini with prompt:', prompt);
