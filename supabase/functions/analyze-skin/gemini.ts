@@ -14,7 +14,7 @@ const prompts = {
 
 # Skin Overview
 **Current Condition**
-Describe the main visible skin characteristics in detail, including:
+Describe the main visible skin characteristics in detail:
 - Main skin concerns and their location
 - Skin texture and tone
 - Any visible inflammation or discoloration
@@ -77,7 +77,30 @@ Morgon:
 Kväll:
 1. Rengöring: Dubbelrengöring vid behov
 2. Behandling: Specifika kvällsprodukter
-3. Fuktkräm: Nattkrämsrekommendationer`
+3. Fuktkräm: Nattkrämsrekommendationer`,
+
+  'fr': `Analysez la photo de la peau et fournissez une analyse simple et claire:
+
+# Aperçu de la peau
+**État actuel**
+Décrivez en détail les principales caractéristiques visibles de la peau:
+- Principaux problèmes de peau et leur localisation
+- Texture et ton de la peau
+- Toute inflammation ou décoloration visible
+- Niveau d'hydratation global de la peau
+
+# Recommandations de soins
+**Routine quotidienne**
+Matin:
+1. Nettoyant: Comment utiliser et quel type
+2. Traitement: Traitements spécifiques du matin
+3. Hydratant: Type et méthode d'application
+4. Protection solaire: Recommandation SPF et importance
+
+Soir:
+1. Nettoyant: Double nettoyage si nécessaire
+2. Traitement: Produits spécifiques du soir
+3. Hydratant: Recommandations de crème de nuit`
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
