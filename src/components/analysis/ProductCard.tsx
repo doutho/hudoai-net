@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <a
                 href={`https://${product.url}`}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="inline-flex items-center text-sm text-purple-500 hover:text-purple-700 transition-colors"
               >
                 {viewOnAmazonText} {country !== 'US' ? `(${country})` : ''} 
