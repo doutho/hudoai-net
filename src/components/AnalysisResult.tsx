@@ -28,11 +28,11 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
   const t = translations[language];
 
   const mapAmazonProductToProduct = (product: AmazonProduct) => ({
-    asin: product.name.split(' ')[0], // Assuming first word is ASIN
+    asin: product.name.split(' ')[0],
     title: product.name,
     url: product.link,
-    image: '',  // Add image URL if available
-    price: '',  // Add price if available
+    image: '',
+    price: '',
   });
 
   return (
@@ -40,45 +40,51 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({
       <CardHeader className="bg-gradient-to-r from-purple-100 to-pink-100">
         <CardTitle className="text-2xl">{t.skinAnalysisResults}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6 p-6">
-        <SkinConditionSection 
-          condition={condition} 
-          title={t.skinCondition} 
-        />
-        
-        <div>
-          <h3 className="text-xl font-semibold mb-3">{t.recommendedProducts}</h3>
-          <div className="space-y-6">
-            <ProductSection
-              title="Moisturizers"
-              products={recommendations.moisturizers.map(mapAmazonProductToProduct)}
-              country={country}
-              viewOnAmazonText={t.viewOnAmazon}
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left column: Skin Analysis */}
+          <div>
+            <SkinConditionSection 
+              condition={condition} 
+              title={t.skinCondition} 
             />
-            <ProductSection
-              title="Cleansers"
-              products={recommendations.cleansers.map(mapAmazonProductToProduct)}
-              country={country}
-              viewOnAmazonText={t.viewOnAmazon}
-            />
-            <ProductSection
-              title="Exfoliants"
-              products={recommendations.exfoliants.map(mapAmazonProductToProduct)}
-              country={country}
-              viewOnAmazonText={t.viewOnAmazon}
-            />
-            <ProductSection
-              title="Sunscreens"
-              products={recommendations.sunscreens.map(mapAmazonProductToProduct)}
-              country={country}
-              viewOnAmazonText={t.viewOnAmazon}
-            />
-            <ProductSection
-              title="Retinols"
-              products={recommendations.retinols.map(mapAmazonProductToProduct)}
-              country={country}
-              viewOnAmazonText={t.viewOnAmazon}
-            />
+          </div>
+          
+          {/* Right column: Product Recommendations */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-primary">{t.recommendedProducts}</h3>
+            <div className="space-y-4">
+              <ProductSection
+                title="Moisturizers"
+                products={recommendations.moisturizers.map(mapAmazonProductToProduct)}
+                country={country}
+                viewOnAmazonText={t.viewOnAmazon}
+              />
+              <ProductSection
+                title="Cleansers"
+                products={recommendations.cleansers.map(mapAmazonProductToProduct)}
+                country={country}
+                viewOnAmazonText={t.viewOnAmazon}
+              />
+              <ProductSection
+                title="Exfoliants"
+                products={recommendations.exfoliants.map(mapAmazonProductToProduct)}
+                country={country}
+                viewOnAmazonText={t.viewOnAmazon}
+              />
+              <ProductSection
+                title="Sunscreens"
+                products={recommendations.sunscreens.map(mapAmazonProductToProduct)}
+                country={country}
+                viewOnAmazonText={t.viewOnAmazon}
+              />
+              <ProductSection
+                title="Retinols"
+                products={recommendations.retinols.map(mapAmazonProductToProduct)}
+                country={country}
+                viewOnAmazonText={t.viewOnAmazon}
+              />
+            </div>
           </div>
         </div>
       </CardContent>

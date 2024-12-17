@@ -26,9 +26,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   if (!products || products.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm">
-      <h4 className="text-lg font-roboto font-semibold mb-4 text-primary">{title}</h4>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-white rounded-lg p-4 shadow-sm">
+      <h4 className="text-md font-roboto font-semibold mb-3 text-primary">{title}</h4>
+      <div className="space-y-2">
         {products.map((product, index) => (
           <ProductCard
             key={index}

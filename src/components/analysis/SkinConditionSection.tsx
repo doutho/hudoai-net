@@ -1,5 +1,4 @@
 import React from 'react';
-import { List, Sun, Moon, Droplet } from 'lucide-react';
 
 interface SkinConditionSectionProps {
   condition: string;
@@ -11,44 +10,36 @@ const SkinConditionSection: React.FC<SkinConditionSectionProps> = ({ condition, 
     // Remove any potential Gemini API artifacts from the beginning
     const cleanedText = text.replace(/^(As a dermatologist,|Based on the image,|Looking at the image,)/, '').trim();
     
+    // Split into sections (Analysis, AM Routine, PM Routine)
     const sections = cleanedText.split('\n\n');
-    return sections.map((section, sectionIndex) => {
+    return sections.map((section, index) => {
       if (!section.trim()) return null;
       
       const lines = section.split('\n');
+      const sectionTitle = lines[0]?.toLowerCase() || '';
+      
+      // Format based on section type
+      if (sectionTitle.includes('routine')) {
+        const routineType = sectionTitle.includes('morning') || sectionTitle.includes('am') ? 'AM Routine:' : 'PM Routine:';
+        return (
+          <div key={index} className="mb-4">
+            <h4 className="font-semibold text-primary mb-2">{routineType}</h4>
+            <ul className="list-disc pl-4 space-y-1">
+              {lines.slice(1).map((line, i) => (
+                <li key={i} className="text-gray-700">{line.trim()}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+      
+      // Regular paragraph for analysis
       return (
-        <div key={sectionIndex} className="mb-6">
-          {lines.map((line, lineIndex) => {
-            if (!line.trim()) return null;
-            
-            // Determine which icon to use based on content
-            let icon = <List className="inline-block mr-2 text-primary" size={20} />;
-            if (line.toLowerCase().includes('morning') || line.toLowerCase().includes('day')) {
-              icon = <Sun className="inline-block mr-2 text-primary" size={20} />;
-            } else if (line.toLowerCase().includes('night') || line.toLowerCase().includes('evening')) {
-              icon = <Moon className="inline-block mr-2 text-primary" size={20} />;
-            } else if (line.toLowerCase().includes('hydrat') || line.toLowerCase().includes('moistur')) {
-              icon = <Droplet className="inline-block mr-2 text-primary" size={20} />;
-            }
-
-            const parts = line.split(/(\*\*.*?\*\*)/g);
-            const formattedParts = parts.map((part, i) => {
-              if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={i} className="text-primary font-medium">{part.slice(2, -2)}</strong>;
-              }
-              return part;
-            });
-            
-            return (
-              <p key={lineIndex} className="mb-3 flex items-start font-roboto text-gray-700 leading-relaxed">
-                <span className="mt-1 shrink-0">{icon}</span>
-                <span>{formattedParts}</span>
-              </p>
-            );
-          }).filter(Boolean)}
-        </div>
+        <p key={index} className="text-gray-700 mb-4">
+          {lines.join(' ')}
+        </p>
       );
-    }).filter(Boolean);
+    });
   };
 
   return (
