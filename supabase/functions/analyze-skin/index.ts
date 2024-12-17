@@ -131,8 +131,16 @@ serve(async (req) => {
 
     const response: AnalysisResponse = {
       condition: analysisText,
-      recommendations: defaultProducts
+      recommendations: {
+        moisturizers: defaultProducts.moisturizers,
+        cleansers: defaultProducts.cleansers,
+        exfoliants: defaultProducts.exfoliants,
+        sunscreens: defaultProducts.sunscreens,
+        retinols: defaultProducts.retinols
+      }
     };
+
+    console.log('Sending response:', JSON.stringify(response, null, 2));
 
     return new Response(
       JSON.stringify(response),
