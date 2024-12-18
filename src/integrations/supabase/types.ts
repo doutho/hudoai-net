@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      analysis_counter: {
+        Row: {
+          created_at: string | null
+          id: string
+          total_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          total_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          total_count?: number | null
+        }
+        Relationships: []
+      }
       product_recommendations: {
         Row: {
           created_at: string | null
@@ -71,7 +89,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_analysis_counter: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
