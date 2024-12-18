@@ -10,7 +10,6 @@ import Footer from '@/components/Footer';
 import AnalysisHandler from '@/components/analysis/AnalysisHandler';
 import { useToast } from '@/hooks/use-toast';
 import { translations } from '@/utils/translations';
-import AnalysisCounter from '@/components/AnalysisCounter';
 
 const Index = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -72,8 +71,6 @@ const Index = () => {
           currentLanguage={currentLanguage}
           onLanguageChange={handleLanguageSelect}
         />
-
-        <AnalysisCounter currentLanguage={currentLanguage} />
 
         <section aria-label="Skin Analysis Upload" className="mb-8">
           <AnalysisSection

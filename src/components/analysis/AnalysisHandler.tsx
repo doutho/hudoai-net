@@ -3,7 +3,6 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { translations } from '@/utils/translations';
 import { type LanguageOption } from '../LanguageSelector';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface AnalysisHandlerProps {
   images: string[];
@@ -22,7 +21,6 @@ const AnalysisHandler = ({
 }: AnalysisHandlerProps) => {
   const { toast } = useToast();
   const t = translations[currentLanguage.code];
-  const queryClient = useQueryClient();
 
   const handleAnalyze = async () => {
     if (images.length === 0) {
@@ -59,11 +57,6 @@ const AnalysisHandler = ({
       }
 
       setAnalysisResult(data);
-
-      // Increment the counter
-      await supabase.rpc('increment_analysis_counter');
-      // Invalidate the counter query to trigger a refetch
-      queryClient.invalidateQueries({ queryKey: ['analysisCounter'] });
       
       toast({
         title: t.analysisComplete,
