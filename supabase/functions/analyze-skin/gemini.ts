@@ -27,15 +27,9 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
   try {
     console.log('Starting Gemini analysis...');
     
-    // Safely handle the base64 string
-    let imageData = base64Image;
-    if (typeof base64Image === 'string' && base64Image.includes('base64,')) {
-      imageData = base64Image.split('base64,')[1];
-    }
-    
-    if (!imageData) {
-      throw new Error('Invalid image data format');
-    }
+    const imageData = base64Image.includes('base64,') 
+      ? base64Image.split('base64,')[1] 
+      : base64Image;
     
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     

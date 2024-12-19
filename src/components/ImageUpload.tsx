@@ -2,7 +2,6 @@ import React from 'react';
 import { Plus, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { useToast } from '@/hooks/use-toast';
 
 interface ImageUploadProps {
   images: string[];
@@ -16,8 +15,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onImageUpload,
   className
 }) => {
-  const { toast } = useToast();
-
   const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -27,44 +24,25 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   const handleCameraCapture = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: 'environment',
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
-        } 
-      });
-
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       const video = document.createElement('video');
       video.srcObject = stream;
       await video.play();
 
-      // Wait for 1 second to let the camera initialize and adjust
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      
-      if (ctx) {
-        ctx.drawImage(video, 0, 0);
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
-            onImageUpload(0, file);
-          }
-          // Always clean up the camera stream
-          stream.getTracks().forEach(track => track.stop());
-        }, 'image/jpeg', 0.95);
-      }
+      canvas.getContext('2d')?.drawImage(video, 0, 0);
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+          onImageUpload(0, file);
+        }
+        stream.getTracks().forEach(track => track.stop());
+      }, 'image/jpeg');
     } catch (error) {
       console.error('Error accessing camera:', error);
-      toast({
-        title: "Camera Error",
-        description: "Could not access the camera. Please make sure you've granted camera permissions.",
-        variant: "destructive"
-      });
     }
   };
 
