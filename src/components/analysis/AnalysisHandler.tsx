@@ -41,6 +41,8 @@ const AnalysisHandler = ({
         ? images[0]
         : `data:image/jpeg;base64,${images[0]}`;
 
+      console.log('Sending request to analyze-skin function...');
+      
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { 
