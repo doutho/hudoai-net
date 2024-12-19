@@ -1,6 +1,7 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 interface ImageUploadProps {
   images: string[];
@@ -21,8 +22,32 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
+  const handleCameraCapture = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      await video.play();
+
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d')?.drawImage(video, 0, 0);
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+          onImageUpload(0, file);
+        }
+        stream.getTracks().forEach(track => track.stop());
+      }, 'image/jpeg');
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  };
+
   return (
-    <div className={cn("flex justify-center w-full max-w-2xl mx-auto", className)}>
+    <div className={cn("flex flex-col items-center gap-4 w-full max-w-2xl mx-auto", className)}>
       <div
         className="relative aspect-square w-full max-w-md rounded-2xl border-2 border-dashed border-white hover:border-primary transition-all duration-300 transform hover:scale-105 animate-fade-in"
       >
@@ -44,6 +69,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         )}
       </div>
+      <Button
+        onClick={handleCameraCapture}
+        className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
+      >
+        <Camera className="w-5 h-5" />
+        Take Photo
+      </Button>
     </div>
   );
 };
