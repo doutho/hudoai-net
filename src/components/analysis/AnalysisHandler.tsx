@@ -36,23 +36,34 @@ const AnalysisHandler = ({
     setShowDialog(true);
     
     try {
-      const imageData = images[0].includes('base64,') 
-        ? images[0]
-        : `data:image/jpeg;base64,${images[0]}`;
+      // Extract base64 data properly
+      const base64Data = images[0].split(';base64,').pop();
+      if (!base64Data) {
+        throw new Error('Invalid image data');
+      }
 
+      console.log('Sending analysis request...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { 
-          image: imageData,
+          image: base64Data,
           language: currentLanguage.code
         }
       });
 
-      if (error) throw error;
-      if (!data) throw new Error('No data received from analysis');
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+      
+      if (!data) {
+        console.error('No data received from analysis');
+        throw new Error('No data received from analysis');
+      }
 
-      console.log('Raw response from Edge Function:', data);
+      console.log('Analysis response:', data);
 
       if (!data.condition || !data.recommendations) {
+        console.error('Invalid response structure:', data);
         throw new Error('Invalid response structure');
       }
 
