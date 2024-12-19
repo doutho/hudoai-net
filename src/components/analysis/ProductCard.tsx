@@ -1,7 +1,13 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipProvider, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { type Country } from '../LanguageSelector';
+import { Button } from '@/components/ui/button';
 
 interface Product {
   asin: string;
@@ -9,6 +15,7 @@ interface Product {
   url: string;
   image: string;
   price: string;
+  description: string;
 }
 
 interface ProductCardProps {
@@ -26,24 +33,34 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <article className="p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-            <div className="flex flex-col space-y-2">
-              <h4 className="text-lg font-semibold text-primary">{product.title}</h4>
+          <article className="h-full flex flex-col p-6 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex-1 space-y-4">
+              <h4 className="text-lg font-semibold text-primary line-clamp-2">{product.title}</h4>
+              <p className="text-sm text-gray-600 line-clamp-3">{product.description}</p>
+              {product.price && (
+                <p className="text-lg font-semibold text-primary">{product.price}</p>
+              )}
+            </div>
+            <div className="mt-4">
               <a
                 href={product.url}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center text-sm text-purple-500 hover:text-purple-700 transition-colors"
-                aria-label={`View ${product.title} on Amazon ${country}`}
+                className="w-full"
               >
-                {viewOnAmazonText} ({country})
-                <ExternalLink className="w-4 h-4 ml-1" aria-hidden="true" />
+                <Button 
+                  className="w-full"
+                  variant="default"
+                >
+                  {viewOnAmazonText} ({country})
+                  <ExternalLink className="w-4 h-4 ml-2" aria-hidden="true" />
+                </Button>
               </a>
             </div>
           </article>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Click to view on Amazon</p>
+          <p>Klicka för att visa på Amazon</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

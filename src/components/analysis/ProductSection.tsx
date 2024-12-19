@@ -8,6 +8,7 @@ interface Product {
   url: string;
   image: string;
   price: string;
+  description: string;
 }
 
 interface ProductSectionProps {
@@ -25,17 +26,27 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 }) => {
   if (!products || products.length === 0) return null;
 
-  // Take only the first product as recommended
-  const recommendedProduct = products[0];
-
   return (
-    <div className="bg-white/50 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-gray-100">
-      <h4 className="text-lg font-roboto font-semibold mb-4 text-primary">{title}</h4>
-      <ProductCard
-        product={recommendedProduct}
-        country={country}
-        viewOnAmazonText={viewOnAmazonText}
-      />
+    <div className="space-y-6 animate-fade-in">
+      <h4 className="text-xl font-roboto font-semibold mb-4 text-primary">{title}</h4>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((product, index) => (
+          <div 
+            key={product.asin}
+            className="opacity-0 animate-fade-in"
+            style={{ 
+              animationDelay: `${index * 0.2}s`,
+              animationFillMode: 'forwards'
+            }}
+          >
+            <ProductCard
+              product={product}
+              country={country}
+              viewOnAmazonText={viewOnAmazonText}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

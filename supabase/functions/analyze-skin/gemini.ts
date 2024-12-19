@@ -9,12 +9,18 @@ if (!GEMINI_API_KEY) {
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-const prompts = {
-  'sv': `Vänligen svara endast med svaren separerade med kommatecken:
+const basePrompt = `Vänligen svara endast med svaren separerade med kommatecken:
 Är personens hud i bilden Oljig, kombinerad, torr eller normal?
 Är hudtonen blek vit, vit, olivfärgad, måttligt brun, mörkbrun, svart?
 Vad är personens ungefärliga ålder?
-Har personen akne? Nej, mild, måttlig, svår.`
+Har personen akne? Nej, mild, måttlig, svår.`;
+
+const productPrompts = {
+  moisturizer: "Baserat på denna hudanalys, vilken av följande produkter är bäst som fuktighetskräm? Svara endast med produktnamnet exakt som det står: CeraVe Fuktgivande Lotion, La Roche-Posay Effaclar Mat",
+  cleanser: "Baserat på denna hudanalys, vilken av följande produkter är bäst som rengöring? Svara endast med produktnamnet exakt som det står: CeraVe Hydrerande Ansiktsrengöring, Cetaphil Gentle Skin Cleanser",
+  exfoliant: "Baserat på denna hudanalys, vilken av följande produkter är bäst som exfoliant? Svara endast med produktnamnet exakt som det står: Paula's Choice 2% BHA",
+  sunscreen: "Baserat på denna hudanalys, vilken av följande produkter är bäst som solskydd? Svara endast med produktnamnet exakt som det står: La Roche-Posay Anthelios, EVY Technology Solskydd",
+  retinol: "Baserat på denna hudanalys, vilken av följande produkter är bäst som retinol? Svara endast med produktnamnet exakt som det står: The Ordinary Retinol 1%"
 };
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'sv'): Promise<string> {
@@ -26,12 +32,10 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       : base64Image;
     
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const prompt = prompts[language] || prompts['sv'];
     
-    console.log('Sending request to Gemini with prompt:', prompt);
-
-    const result = await model.generateContent([
-      prompt,
+    // Get base analysis
+    const baseResult = await model.generateContent([
+      basePrompt,
       {
         inlineData: {
           mimeType: "image/jpeg",
@@ -40,21 +44,25 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       }
     ]);
 
-    console.log('Received response from Gemini');
-    const response = result.response;
-    const text = response.text();
+    const baseAnalysis = baseResult.response.text();
     
-    if (!text) {
-      throw new Error('No analysis text received from Gemini');
+    // Get product recommendations
+    const recommendations = {};
+    for (const [category, prompt] of Object.entries(productPrompts)) {
+      const result = await model.generateContent([
+        `${baseAnalysis}\n\n${prompt}`,
+        {
+          inlineData: {
+            mimeType: "image/jpeg",
+            data: imageData
+          }
+        }
+      ]);
+      recommendations[category] = result.response.text().trim();
     }
 
-    // Ensure proper encoding of Swedish characters
-    const formattedText = text
-      .replace(/\\u([0-9a-fA-F]{4})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))
-      .trim();
-
-    console.log('Formatted analysis text:', formattedText);
-    return formattedText;
+    console.log('Analysis complete:', { baseAnalysis, recommendations });
+    return baseAnalysis;
 
   } catch (error) {
     console.error('Error in Gemini analysis:', error);
