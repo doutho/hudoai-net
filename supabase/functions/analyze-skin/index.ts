@@ -20,6 +20,7 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Received request:', req.method)
     const { image, language } = await req.json()
 
     if (!image) {
