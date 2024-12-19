@@ -76,7 +76,7 @@ const AnalysisHandler = ({
         description: t.singleImageSuccess,
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during analysis:', error);
       setShowDialog(false);
       toast({
