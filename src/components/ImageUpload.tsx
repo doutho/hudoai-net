@@ -69,13 +69,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         )}
       </div>
-      <Button
-        onClick={handleCameraCapture}
-        className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
-      >
-        <Camera className="w-5 h-5" />
-        Take Photo
-      </Button>
     </div>
   );
 };
