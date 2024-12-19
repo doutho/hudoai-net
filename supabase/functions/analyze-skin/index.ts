@@ -31,9 +31,10 @@ serve(async (req) => {
     }
 
     console.log('Processing image analysis...');
+    const base64Data = image.split('base64,')[1];
     
     console.log('Calling Gemini API...');
-    const analysisText = await analyzeSkinImage(image, language);
+    const analysisText = await analyzeSkinImage(base64Data, language);
     
     if (!analysisText) {
       throw new Error('Failed to get analysis from Gemini API');

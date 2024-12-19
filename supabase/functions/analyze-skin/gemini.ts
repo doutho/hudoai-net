@@ -27,13 +27,8 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
   try {
     console.log('Starting Gemini analysis...');
     
-    if (!base64Image) {
-      throw new Error('No image data provided');
-    }
-
-    // Ensure we have a valid base64 string
-    const imageData = base64Image.startsWith('data:image')
-      ? base64Image.split('base64,')[1]
+    const imageData = base64Image.includes('base64,') 
+      ? base64Image.split('base64,')[1] 
       : base64Image;
     
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
