@@ -10,100 +10,14 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const prompts = {
-  'en': `Analyze the skin photo and provide a simple, clear analysis:
-
-# Skin Overview
-**Current Condition**
-Describe the main visible skin characteristics in detail:
-- Main skin concerns and their location
-- Skin texture and tone
-- Any visible inflammation or discoloration
-- Overall skin hydration level
-
-# Care Recommendations
-**Daily Routine**
-Morning:
-1. Cleanser: How to use and what type
-2. Treatment: Any specific morning treatments
-3. Moisturizer: Type and application method
-4. Sunscreen: SPF recommendation and importance
-
-Evening:
-1. Cleanser: Double cleansing if needed
-2. Treatment: Specific evening products
-3. Moisturizer: Night cream recommendations`,
-
-  'de': `Analysieren Sie das Hautfoto und erstellen Sie eine einfache, klare Analyse:
-
-# Hautübersicht
-**Aktueller Zustand**
-Beschreiben Sie die wichtigsten sichtbaren Hautmerkmale im Detail:
-- Haupthautprobleme und ihre Position
-- Hautstruktur und -ton
-- Sichtbare Entzündungen oder Verfärbungen
-- Allgemeiner Feuchtigkeitsgehalt der Haut
-
-# Pflegeempfehlungen
-**Tägliche Routine**
-Morgens:
-1. Reinigung: Anwendung und Produkttyp
-2. Behandlung: Spezielle Morgenprodukte
-3. Feuchtigkeitspflege: Art und Anwendung
-4. Sonnenschutz: SPF-Empfehlung und Wichtigkeit
-
-Abends:
-1. Reinigung: Bei Bedarf Doppelreinigung
-2. Behandlung: Spezielle Abendprodukte
-3. Feuchtigkeitspflege: Nachtcreme-Empfehlungen`,
-
-  'sv': `Analysera hudfotot och ge en enkel, tydlig analys:
-
-# Hudöversikt
-**Aktuellt tillstånd**
-Beskriv de viktigaste synliga hudegenskaperna i detalj:
-- Huvudsakliga hudproblem och deras placering
-- Hudstruktur och hudton
-- Synlig inflammation eller missfärgning
-- Övergripande fuktnivå i huden
-
-# Vårdrekommendationer
-**Daglig rutin**
-Morgon:
-1. Rengöring: Hur man använder och vilken typ
-2. Behandling: Specifika morgonprodukter
-3. Fuktkräm: Typ och appliceringsmetod
-4. Solskydd: SPF-rekommendation och betydelse
-
-Kväll:
-1. Rengöring: Dubbelrengöring vid behov
-2. Behandling: Specifika kvällsprodukter
-3. Fuktkräm: Nattkrämsrekommendationer`,
-
-  'fr': `Analysez la photo de la peau et fournissez une analyse simple et claire:
-
-# Aperçu de la peau
-**État actuel**
-Décrivez en détail les principales caractéristiques visibles de la peau:
-- Principaux problèmes de peau et leur localisation
-- Texture et ton de la peau
-- Toute inflammation ou décoloration visible
-- Niveau d'hydratation global de la peau
-
-# Recommandations de soins
-**Routine quotidienne**
-Matin:
-1. Nettoyant: Comment utiliser et quel type
-2. Traitement: Traitements spécifiques du matin
-3. Hydratant: Type et méthode d'application
-4. Protection solaire: Recommandation SPF et importance
-
-Soir:
-1. Nettoyant: Double nettoyage si nécessaire
-2. Traitement: Produits spécifiques du soir
-3. Hydratant: Recommandations de crème de nuit`
+  'sv': `Vänligen svara endast med svaren separerade med kommatecken:
+Är personens hud i bilden Oljig, kombinerad, torr eller normal?
+Är hudtonen blek vit, vit, olivfärgad, måttligt brun, mörkbrun, svart?
+Vad är personens ungefärliga ålder?
+Har personen akne? Nej, mild, måttlig, svår.`
 };
 
-export async function analyzeSkinImage(base64Image: string, language: Language = 'en'): Promise<string> {
+export async function analyzeSkinImage(base64Image: string, language: Language = 'sv'): Promise<string> {
   try {
     console.log('Starting Gemini analysis...');
     
@@ -112,7 +26,7 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       : base64Image;
     
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const prompt = prompts[language] || prompts['en'];
+    const prompt = prompts[language] || prompts['sv'];
     
     console.log('Sending request to Gemini with prompt:', prompt);
 

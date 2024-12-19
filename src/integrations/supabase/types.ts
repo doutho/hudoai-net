@@ -9,6 +9,136 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      analysis_counter: {
+        Row: {
+          created_at: string | null
+          id: string
+          total_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          total_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          total_count?: number | null
+        }
+        Relationships: []
+      }
+      blog_post_drafts: {
+        Row: {
+          author_id: string | null
+          created_at: string
+          id: string
+          rich_content: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          created_at?: string
+          id?: string
+          rich_content?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          created_at?: string
+          id?: string
+          rich_content?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_drafts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          content: string
+          created_at: string
+          id: string
+          rich_content: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          rich_content?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          rich_content?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gambling_sites: {
+        Row: {
+          created_at: string
+          features: string[]
+          id: string
+          logo: string | null
+          min_payout: string
+          name: string
+          payment_methods: string[]
+          rakeback: string
+          referral_url: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          features?: string[]
+          id?: string
+          logo?: string | null
+          min_payout: string
+          name: string
+          payment_methods?: string[]
+          rakeback: string
+          referral_url: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          features?: string[]
+          id?: string
+          logo?: string | null
+          min_payout?: string
+          name?: string
+          payment_methods?: string[]
+          rakeback?: string
+          referral_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       product_recommendations: {
         Row: {
           created_at: string | null
@@ -42,6 +172,101 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          is_admin: boolean | null
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          is_admin?: boolean | null
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_admin?: boolean | null
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      referral_codes: {
+        Row: {
+          bonus_percentage: number | null
+          code: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          bonus_percentage?: number | null
+          code: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          bonus_percentage?: number | null
+          code?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_codes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referred_users: {
+        Row: {
+          created_at: string
+          has_met_spend: boolean | null
+          id: string
+          referred_user_id: string
+          referrer_id: string
+        }
+        Insert: {
+          created_at?: string
+          has_met_spend?: boolean | null
+          id?: string
+          referred_user_id: string
+          referrer_id: string
+        }
+        Update: {
+          created_at?: string
+          has_met_spend?: boolean | null
+          id?: string
+          referred_user_id?: string
+          referrer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referred_users_referred_user_id_fkey"
+            columns: ["referred_user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referred_users_referrer_id_fkey"
+            columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       skin_quiz_responses: {
         Row: {
           answer: string | null
@@ -66,12 +291,54 @@ export type Database = {
         }
         Relationships: []
       }
+      user_site_connections: {
+        Row: {
+          created_at: string
+          id: string
+          site_id: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          site_id: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          site_id?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_site_connections_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "gambling_sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_site_connections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_analysis_counter: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never

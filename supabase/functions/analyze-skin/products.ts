@@ -2,164 +2,83 @@ export const productDatabase = {
   moisturizers: [
     {
       asin: "4gjuUhU",
-      name: "CeraVe Moisturising Lotion",
-      description: "Hydrating moisturizer for dry to very dry skin",
+      name: "CeraVe Fuktgivande Lotion",
+      description: "En lätt och snabbabsorberande fuktighetskräm för normal till torr hud. Innehåller ceramider och hyaluronsyra för optimal fuktbalans.",
       link: "https://amzn.to/4gjuUhU",
       image: "",
       price: "",
-      conditions: ["dry", "very dry", "dehydrated"]
+      conditions: ["torr", "normal"]
     },
     {
       asin: "49GC11g",
-      name: "CeraVe Facial Moisturising Lotion",
-      description: "Light moisturizer for normal to combination skin",
+      name: "La Roche-Posay Effaclar Mat",
+      description: "Mattifierande fuktighetskräm speciellt utvecklad för fet och kombinerad hud. Hjälper till att kontrollera överskott av talg.",
       link: "https://amzn.to/49GC11g",
       image: "",
       price: "",
-      conditions: ["normal", "combination"]
-    },
-    {
-      asin: "4fECse5",
-      name: "Atoderm Intensive Gel-Creme",
-      description: "Intensive moisturizer for sensitive skin",
-      link: "https://amzn.to/4fECse5",
-      image: "",
-      price: "",
-      conditions: ["sensitive", "irritated"]
-    },
-    {
-      asin: "4iIUeze",
-      name: "Neutrogena Hydro Boost Face Moisturizer",
-      description: "Lightweight gel moisturizer for oily skin",
-      link: "https://amzn.to/4iIUeze",
-      image: "",
-      price: "",
-      conditions: ["oily", "combination"]
-    },
-    {
-      asin: "4gCS3vq",
-      name: "Avene Cicalfate+",
-      description: "Restorative moisturizer for damaged skin",
-      link: "https://amzn.to/4gCS3vq",
-      image: "",
-      price: "",
-      conditions: ["damaged", "irritated", "sensitive"]
+      conditions: ["oljig", "kombinerad"]
     }
   ],
   cleansers: [
     {
       asin: "3ZFWcYG",
-      name: "CeraVe Hydrating Facial Cleanser",
-      description: "Gentle cleanser for dry to normal skin",
+      name: "CeraVe Hydrerande Ansiktsrengöring",
+      description: "Mild och skonsam rengöring som bevarar hudens naturliga skyddsbarriär. Perfekt för alla hudtyper.",
       link: "https://amzn.to/3ZFWcYG",
       image: "",
       price: "",
-      conditions: ["dry", "normal", "sensitive"]
+      conditions: ["torr", "normal", "känslig"]
     },
     {
       asin: "3P0SL9W",
       name: "Cetaphil Gentle Skin Cleanser",
-      description: "Mild cleanser for sensitive skin",
+      description: "Extra mild rengöring som passar även den känsligaste huden. Parfymfri och dermatologiskt testad.",
       link: "https://amzn.to/3P0SL9W",
       image: "",
       price: "",
-      conditions: ["sensitive", "dry"]
-    },
-    {
-      asin: "3ZDjDBX",
-      name: "Paula's Choice CLEAR",
-      description: "Pore-clearing cleanser for oily and acne-prone skin",
-      link: "https://amzn.to/3ZDjDBX",
-      image: "",
-      price: "",
-      conditions: ["oily", "acne-prone"]
+      conditions: ["känslig", "torr"]
     }
   ],
   exfoliants: [
     {
       asin: "3Dv7cjX",
-      name: "Paula's Choice SKIN PERFECTING 2% BHA",
-      description: "Gentle exfoliant for all skin types",
+      name: "Paula's Choice 2% BHA",
+      description: "Mild kemisk exfoliering med salicylsyra som rensar porerna på djupet. Passar alla hudtyper.",
       link: "https://amzn.to/3Dv7cjX",
       image: "",
       price: "",
-      conditions: ["all", "oily", "combination", "normal"]
+      conditions: ["alla", "oljig", "kombinerad", "normal"]
     }
   ],
   sunscreens: [
     {
       asin: "4iEWyaE",
-      name: "CeraVe Hydrating Mineral Sunscreen",
-      description: "Mineral sunscreen for sensitive skin",
+      name: "La Roche-Posay Anthelios",
+      description: "Högeffektivt solskydd med SPF50+ som passar alla hudtyper. Lätt formula som inte känns klibbig.",
       link: "https://amzn.to/4iEWyaE",
       image: "",
       price: "",
-      conditions: ["sensitive", "dry"]
+      conditions: ["alla"]
     },
     {
       asin: "3VJiIyI",
-      name: "Bioré UV Biore Aqua Rich Watery Essence",
-      description: "Lightweight sunscreen for oily skin",
+      name: "EVY Technology Solskydd",
+      description: "Innovativt svenskt solskydd som tränger in i hudens övre lager för långvarigt skydd.",
       link: "https://amzn.to/3VJiIyI",
       image: "",
       price: "",
-      conditions: ["oily", "combination"]
-    },
-    {
-      asin: "4flxlPz",
-      name: "Neutrogena Face Sunscreen",
-      description: "Daily sunscreen for normal skin",
-      link: "https://amzn.to/4flxlPz",
-      image: "",
-      price: "",
-      conditions: ["normal", "combination"]
-    },
-    {
-      asin: "3ZFDAba",
-      name: "EltaMD UV Clear Face Sunscreen",
-      description: "Non-comedogenic sunscreen for acne-prone skin",
-      link: "https://amzn.to/3ZFDAba",
-      image: "",
-      price: "",
-      conditions: ["acne-prone", "sensitive"]
-    },
-    {
-      asin: "4fqUgJt",
-      name: "La Roche-Posay Anthelios",
-      description: "High protection sunscreen for all skin types",
-      link: "https://amzn.to/4fqUgJt",
-      image: "",
-      price: "",
-      conditions: ["all"]
+      conditions: ["oljig", "kombinerad"]
     }
   ],
   retinols: [
     {
       asin: "3P3dDxo",
-      name: "Hyaluronic Acid 2%",
-      description: "Hydrating serum for all skin types",
+      name: "The Ordinary Retinol 1%",
+      description: "Effektiv retinolbehandling för erfarna användare. Hjälper till att förbättra hudens struktur och ton.",
       link: "https://amzn.to/3P3dDxo",
       image: "",
       price: "",
-      conditions: ["all", "dehydrated"]
-    },
-    {
-      asin: "4gBDSGU",
-      name: "The Ordinary ORIGINAL Retinol 1%",
-      description: "Strong retinol for experienced users",
-      link: "https://amzn.to/4gBDSGU",
-      image: "",
-      price: "",
-      conditions: ["aging", "mature"]
-    },
-    {
-      asin: "4gb8grT",
-      name: "CeraVe Resurfacing RETINOL Serum",
-      description: "Gentle retinol for beginners",
-      link: "https://amzn.to/4gb8grT",
-      image: "",
-      price: "",
-      conditions: ["sensitive", "normal"]
+      conditions: ["alla", "åldrande"]
     }
   ]
 };
@@ -186,7 +105,7 @@ export const findBestProductMatch = (products: any[], condition: string): any =>
   // If no matches found, return the first product with "all" condition or the first product
   const bestMatch = scoredProducts.sort((a, b) => b.score - a.score)[0];
   if (bestMatch.score === 0) {
-    return products.find(p => p.conditions.includes("all")) || products[0];
+    return products.find(p => p.conditions.includes("alla")) || products[0];
   }
   return bestMatch;
 };

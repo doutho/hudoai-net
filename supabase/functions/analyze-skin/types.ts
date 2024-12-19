@@ -1,5 +1,5 @@
-export type Language = 'en' | 'de' | 'sv';
-export type Country = 'US' | 'DE' | 'UK' | 'SE';
+export type Language = 'sv';
+export type Country = 'SE';
 
 export interface AmazonProduct {
   asin?: string;
