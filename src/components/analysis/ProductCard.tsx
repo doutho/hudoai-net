@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <article className="flex flex-col p-8 bg-gradient-to-br from-pink-200 via-pink-300 to-pink-200 rounded-xl shadow-lg border border-pink-300 hover:shadow-xl transition-all duration-300 min-h-[500px] w-full max-w-4xl mx-auto">
+          <article className="flex flex-col p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 min-h-[500px] w-full max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-8">
               <div className="w-64 h-64 shrink-0 mx-auto md:mx-0 overflow-hidden rounded-lg bg-white p-4">
                 {product.image && (
