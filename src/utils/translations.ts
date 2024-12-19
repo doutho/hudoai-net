@@ -16,15 +16,7 @@ export const translations = {
     recommendedProducts: "Recommended Products",
     viewOnAmazon: "View on Amazon",
     languageChanged: "Language Changed",
-    changedTo: "Changed to {language}",
-    howItWorks: "How It Works",
-    uploadImages: "Upload Your Images",
-    uploadDescription: "Take clear photos of your skin concerns and upload them to our platform.",
-    aiAnalysis: "AI Analysis",
-    aiDescription: "Our advanced AI technology analyzes your skin condition and identifies potential concerns.",
-    recommendations: "Get Personalized Recommendations",
-    recommendationsDescription: "Receive tailored product recommendations and skincare advice based on your analysis.",
-    tryItNow: "Try It Now"
+    changedTo: "Changed to {language}"
   },
   de: {
     uploadText: "Laden Sie ein Bild hoch, um eine personalisierte Hautpflegeroutine mit KI zu erhalten",
@@ -43,15 +35,7 @@ export const translations = {
     recommendedProducts: "Empfohlene Produkte",
     viewOnAmazon: "Auf Amazon ansehen",
     languageChanged: "Sprache geändert",
-    changedTo: "Geändert zu {language}",
-    howItWorks: "So funktioniert's",
-    uploadImages: "Laden Sie Ihre Bilder hoch",
-    uploadDescription: "Machen Sie klare Fotos Ihrer Hautprobleme und laden Sie sie auf unsere Plattform hoch.",
-    aiAnalysis: "KI-Analyse",
-    aiDescription: "Unsere fortschrittliche KI-Technologie analysiert Ihren Hautzustand und identifiziert mögliche Probleme.",
-    recommendations: "Erhalten Sie personalisierte Empfehlungen",
-    recommendationsDescription: "Erhalten Sie maßgeschneiderte Produktempfehlungen und Hautpflegeberatung basierend auf Ihrer Analyse.",
-    tryItNow: "Jetzt ausprobieren"
+    changedTo: "Geändert zu {language}"
   },
   sv: {
     uploadText: "Ladda upp en bild för att få en personlig hudvårdsrutin med hjälp av AI",
@@ -70,15 +54,7 @@ export const translations = {
     recommendedProducts: "Rekommenderade produkter",
     viewOnAmazon: "Visa på Amazon",
     languageChanged: "Språk ändrat",
-    changedTo: "Ändrat till {language}",
-    howItWorks: "Hur det fungerar",
-    uploadImages: "Ladda upp dina bilder",
-    uploadDescription: "Ta tydliga foton av dina hudproblem och ladda upp dem till vår plattform.",
-    aiAnalysis: "AI-analys",
-    aiDescription: "Vår avancerade AI-teknik analyserar ditt hudtillstånd och identifierar potentiella problem.",
-    recommendations: "Få personliga rekommendationer",
-    recommendationsDescription: "Få skräddarsydda produktrekommendationer och hudvårdsråd baserat på din analys.",
-    tryItNow: "Prova nu"
+    changedTo: "Ändrat till {language}"
   },
   fr: {
     uploadText: "Téléchargez une image pour recevoir une routine de soins personnalisée alimentée par l'IA",
@@ -97,14 +73,6 @@ export const translations = {
     recommendedProducts: "Produits recommandés",
     viewOnAmazon: "Voir sur Amazon",
     languageChanged: "Langue modifiée",
-    changedTo: "Changé en {language}",
-    howItWorks: "Comment ça marche",
-    uploadImages: "Téléchargez vos images",
-    uploadDescription: "Prenez des photos claires de vos problèmes de peau et téléchargez-les sur notre plateforme.",
-    aiAnalysis: "Analyse IA",
-    aiDescription: "Notre technologie IA avancée analyse l'état de votre peau et identifie les problèmes potentiels.",
-    recommendations: "Obtenez des recommandations personnalisées",
-    recommendationsDescription: "Recevez des recommandations de produits sur mesure et des conseils de soin de la peau basés sur votre analyse.",
-    tryItNow: "Essayez maintenant"
+    changedTo: "Changé en {language}"
   }
 };
