@@ -27,10 +27,11 @@ serve(async (req) => {
   try {
     console.log('Received request to analyze-skin function');
     
-    // Parse request body
     let body;
     try {
-      body = await req.json();
+      const text = await req.text();
+      console.log('Raw request body:', text);
+      body = JSON.parse(text);
     } catch (error) {
       console.error('Error parsing request body:', error);
       return new Response(

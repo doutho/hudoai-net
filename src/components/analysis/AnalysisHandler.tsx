@@ -37,21 +37,16 @@ const AnalysisHandler = ({
     
     try {
       // Ensure we have a valid base64 image
-      const imageData = images[0].startsWith('data:') 
-        ? images[0]
-        : `data:image/jpeg;base64,${images[0]}`;
-
-      console.log('Sending request to analyze-skin function...');
+      const imageData = images[0];
+      console.log('Image data type:', typeof imageData);
+      console.log('Image data starts with:', imageData.substring(0, 50));
       
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
-        body: { 
+        body: JSON.stringify({ 
           image: imageData,
           language: currentLanguage.code
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        })
       });
 
       console.log('Response from Edge Function:', { data, error });
