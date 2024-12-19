@@ -34,9 +34,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="inline-flex items-center text-sm text-purple-500 hover:text-purple-700 transition-colors"
-                aria-label={`View ${product.title} on Amazon ${country !== 'US' ? `(${country})` : ''}`}
+                aria-label={`View ${product.title} on Amazon ${country}`}
               >
-                {viewOnAmazonText} {country !== 'US' ? `(${country})` : ''} 
+                {viewOnAmazonText} ({country})
                 <ExternalLink className="w-4 h-4 ml-1" aria-hidden="true" />
               </a>
             </div>
