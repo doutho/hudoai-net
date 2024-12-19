@@ -36,16 +36,10 @@ const AnalysisHandler = ({
     setShowDialog(true);
     
     try {
-      // Extract base64 data properly
-      const base64Data = images[0].split(';base64,').pop();
-      if (!base64Data) {
-        throw new Error('Invalid image data');
-      }
-
-      console.log('Sending analysis request...');
+      console.log('Sending image data to analyze-skin function...');
       const { data, error } = await supabase.functions.invoke('analyze-skin', {
         body: { 
-          image: base64Data,
+          image: images[0],
           language: currentLanguage.code
         }
       });
