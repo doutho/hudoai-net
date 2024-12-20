@@ -29,7 +29,8 @@ const ProductSectionsContainer: React.FC<ProductSectionsContainerProps> = ({
       url: product.link || '',
       image: product.image || '',
       price: product.price || '',
-      description: product.description || 'Ingen beskrivning tillgänglig', // Added description with Swedish default
+      description: product.description || 'Ingen beskrivning tillgänglig',
+      personalizedDescription: product.personalizedDescription || '',
     };
   };
 
