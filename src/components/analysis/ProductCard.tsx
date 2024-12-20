@@ -16,6 +16,7 @@ interface Product {
   image: string;
   price: string;
   description: string;
+  personalizedDescription?: string;
 }
 
 interface ProductCardProps {
@@ -46,7 +47,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </div>
               <div className="flex-1 space-y-6">
                 <h4 className="text-xl font-semibold text-primary line-clamp-2">{product.title}</h4>
-                <p className="text-gray-700 line-clamp-3">{product.description}</p>
+                {product.personalizedDescription ? (
+                  <div className="space-y-4">
+                    <p className="text-gray-700">{product.personalizedDescription}</p>
+                    <p className="text-gray-600 text-sm">{product.description}</p>
+                  </div>
+                ) : (
+                  <p className="text-gray-700 line-clamp-3">{product.description}</p>
+                )}
                 {product.price && (
                   <p className="text-xl font-semibold text-primary">{product.price}</p>
                 )}

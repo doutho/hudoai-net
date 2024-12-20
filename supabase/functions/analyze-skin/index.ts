@@ -8,18 +8,65 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-function getProductRecommendations(condition: string) {
+function parseGeminiResponse(response: string) {
+  const parts = response.split(';').map(part => part.trim());
+  const [
+    skinType, skinTone, age, acne,
+    moisturizerName, moisturizerDesc,
+    cleanserName, cleanserDesc,
+    exfoliantName, exfoliantDesc,
+    sunscreenName, sunscreenDesc,
+    retinolName, retinolDesc
+  ] = parts;
+
   return {
-    moisturizers: [findBestProductMatch(productDatabase.moisturizers, condition)],
-    cleansers: [findBestProductMatch(productDatabase.cleansers, condition)],
-    exfoliants: [findBestProductMatch(productDatabase.exfoliants, condition)],
-    sunscreens: [findBestProductMatch(productDatabase.sunscreens, condition)],
-    retinols: [findBestProductMatch(productDatabase.retinols, condition)]
+    condition: `${skinType}; ${skinTone}; ${age}; ${acne}`,
+    productDescriptions: {
+      moisturizer: { name: moisturizerName, description: moisturizerDesc },
+      cleanser: { name: cleanserName, description: cleanserDesc },
+      exfoliant: { name: exfoliantName, description: exfoliantDesc },
+      sunscreen: { name: sunscreenName, description: sunscreenDesc },
+      retinol: { name: retinolName, description: retinolDesc }
+    }
+  };
+}
+
+function getProductRecommendations(condition: string, productDescriptions: any) {
+  return {
+    moisturizers: [
+      {
+        ...findBestProductMatch(productDatabase.moisturizers, condition),
+        personalizedDescription: productDescriptions.moisturizer.description
+      }
+    ],
+    cleansers: [
+      {
+        ...findBestProductMatch(productDatabase.cleansers, condition),
+        personalizedDescription: productDescriptions.cleanser.description
+      }
+    ],
+    exfoliants: [
+      {
+        ...findBestProductMatch(productDatabase.exfoliants, condition),
+        personalizedDescription: productDescriptions.exfoliant.description
+      }
+    ],
+    sunscreens: [
+      {
+        ...findBestProductMatch(productDatabase.sunscreens, condition),
+        personalizedDescription: productDescriptions.sunscreen.description
+      }
+    ],
+    retinols: [
+      {
+        ...findBestProductMatch(productDatabase.retinols, condition),
+        personalizedDescription: productDescriptions.retinol.description
+      }
+    ]
   };
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -57,7 +104,6 @@ serve(async (req) => {
     }
 
     console.log('Processing image analysis...');
-    // Extract base64 data after the comma if it includes the data URI scheme
     const base64Data = image.includes('base64,') ? image.split('base64,')[1] : image;
     
     console.log('Calling Gemini API...');
@@ -75,11 +121,12 @@ serve(async (req) => {
     }
     console.log('Gemini API response:', analysisText);
 
+    const { condition, productDescriptions } = parseGeminiResponse(analysisText);
     console.log('Getting product recommendations based on skin condition...');
-    const recommendations = getProductRecommendations(analysisText);
+    const recommendations = getProductRecommendations(condition, productDescriptions);
 
     const response: AnalysisResponse = {
-      condition: analysisText,
+      condition,
       recommendations
     };
 

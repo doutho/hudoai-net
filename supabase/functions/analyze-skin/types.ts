@@ -5,6 +5,7 @@ export interface AmazonProduct {
   asin?: string;
   name: string;
   description: string;
+  personalizedDescription?: string;
   link: string;
   image: string;
   price: string;
@@ -29,10 +30,25 @@ export interface GeminiResponse {
   age: number;
   acnePresence: string;
   recommendedProducts: {
-    moisturizer: string;
-    cleanser: string;
-    exfoliant: string;
-    sunscreen: string;
-    retinol: string;
+    moisturizer: {
+      name: string;
+      description: string;
+    };
+    cleanser: {
+      name: string;
+      description: string;
+    };
+    exfoliant: {
+      name: string;
+      description: string;
+    };
+    sunscreen: {
+      name: string;
+      description: string;
+    };
+    retinol: {
+      name: string;
+      description: string;
+    };
   };
 }
