@@ -18,7 +18,7 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       ? base64Image.split('base64,')[1] 
       : base64Image;
     
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp" });
     
     const result = await model.generateContent([
       geminiPrompts[language],
