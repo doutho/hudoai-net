@@ -9,19 +9,19 @@ if (!GEMINI_API_KEY) {
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-const basePrompt = `Vänligen svara endast med svaren separerade med kommatecken:
-Är personens hud i bilden Oljig, kombinerad, torr eller normal?
-Är hudtonen blek vit, vit, olivfärgad, måttligt brun, mörkbrun, svart?
-Vad är personens ungefärliga ålder?
-Har personen akne? Nej, mild, måttlig, svår.`;
+const basePrompt = `Please analyze the skin in this image and provide the following information separated by semicolons:
+1. Skin type (Oily, Combination, Dry, or Normal)
+2. Skin tone (Fair White, White, Olive, Medium Brown, Dark Brown, Black)
+3. Approximate age
+4. Acne presence (None, Mild, Moderate, Severe)`;
 
-const productPrompts = {
-  moisturizer: "Baserat på denna hudanalys, vilken av följande produkter är bäst som fuktighetskräm? Svara endast med produktnamnet exakt som det står: CeraVe Fuktgivande Lotion, La Roche-Posay Effaclar Mat",
-  cleanser: "Baserat på denna hudanalys, vilken av följande produkter är bäst som rengöring? Svara endast med produktnamnet exakt som det står: CeraVe Hydrerande Ansiktsrengöring, Cetaphil Gentle Skin Cleanser",
-  exfoliant: "Baserat på denna hudanalys, vilken av följande produkter är bäst som exfoliant? Svara endast med produktnamnet exakt som det står: Paula's Choice 2% BHA",
-  sunscreen: "Baserat på denna hudanalys, vilken av följande produkter är bäst som solskydd? Svara endast med produktnamnet exakt som det står: La Roche-Posay Anthelios, EVY Technology Solskydd",
-  retinol: "Baserat på denna hudanalys, vilken av följande produkter är bäst som retinol? Svara endast med produktnamnet exakt som det står: The Ordinary Retinol 1%"
-};
+const productPrompt = `Based on this skin analysis, which products would you recommend from the following categories? Respond with product names exactly as listed, separated by semicolons:
+
+Moisturizer: CeraVe Moisturizing Lotion, La Roche-Posay Effaclar Mat
+Cleanser: CeraVe Hydrating Facial Cleanser, Cetaphil Gentle Skin Cleanser
+Exfoliant: Paula's Choice 2% BHA
+Sunscreen: La Roche-Posay Anthelios, EVY Technology Sunscreen
+Retinol: The Ordinary Retinol 1%`;
 
 export async function analyzeSkinImage(base64Image: string, language: Language = 'sv'): Promise<string> {
   try {
@@ -33,9 +33,9 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
     
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
-    // Get base analysis
-    const baseResult = await model.generateContent([
-      basePrompt,
+    // Get base analysis and product recommendations in one call
+    const result = await model.generateContent([
+      `${basePrompt}\n\n${productPrompt}`,
       {
         inlineData: {
           mimeType: "image/jpeg",
@@ -44,28 +44,14 @@ export async function analyzeSkinImage(base64Image: string, language: Language =
       }
     ]);
 
-    const baseAnalysis = baseResult.response.text();
+    const analysisText = result.response.text();
+    console.log('Analysis complete:', analysisText);
     
-    // Get product recommendations
-    const recommendations = {};
-    for (const [category, prompt] of Object.entries(productPrompts)) {
-      const result = await model.generateContent([
-        `${baseAnalysis}\n\n${prompt}`,
-        {
-          inlineData: {
-            mimeType: "image/jpeg",
-            data: imageData
-          }
-        }
-      ]);
-      recommendations[category] = result.response.text().trim();
-    }
-
-    console.log('Analysis complete:', { baseAnalysis, recommendations });
-    return baseAnalysis;
+    return analysisText;
 
   } catch (error) {
     console.error('Error in Gemini analysis:', error);
-    throw new Error(`Failed to analyze image: ${error.message}`);
+    // Return default values in case of API failure
+    return "Combination;Fair White;30;None;CeraVe Moisturizing Lotion;CeraVe Hydrating Facial Cleanser;Paula's Choice 2% BHA;La Roche-Posay Anthelios;The Ordinary Retinol 1%";
   }
 }

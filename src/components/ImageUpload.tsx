@@ -1,7 +1,6 @@
 import React from 'react';
-import { Plus, Camera } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
 
 interface ImageUploadProps {
   images: string[];
@@ -19,30 +18,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     const file = e.target.files?.[0];
     if (file) {
       onImageUpload(index, file);
-    }
-  };
-
-  const handleCameraCapture = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const video = document.createElement('video');
-      video.srcObject = stream;
-      await video.play();
-
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d')?.drawImage(video, 0, 0);
-
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
-          onImageUpload(0, file);
-        }
-        stream.getTracks().forEach(track => track.stop());
-      }, 'image/jpeg');
-    } catch (error) {
-      console.error('Error accessing camera:', error);
     }
   };
 

@@ -1,5 +1,5 @@
-export type Language = 'sv';
-export type Country = 'SE';
+export type Language = 'en' | 'sv';
+export type Country = 'US' | 'SE';
 
 export interface AmazonProduct {
   asin?: string;
@@ -21,4 +21,18 @@ export interface ProductRecommendations {
 export interface AnalysisResponse {
   condition: string;
   recommendations: ProductRecommendations;
+}
+
+export interface GeminiResponse {
+  skinType: string;
+  skinTone: string;
+  age: number;
+  acnePresence: string;
+  recommendedProducts: {
+    moisturizer: string;
+    cleanser: string;
+    exfoliant: string;
+    sunscreen: string;
+    retinol: string;
+  };
 }

@@ -1,4 +1,23 @@
 export const translations = {
+  en: {
+    uploadText: "Upload a photo to get AI-powered personalized skincare recommendations",
+    analyzeButton: "Analyze photo",
+    analyzing: "Analyzing...",
+    analysisTitle: "Skin Analysis",
+    analysisProcessing: "Processing your skin analysis...",
+    analysisComplete: "Analysis Complete",
+    singleImageSuccess: "Your image has been successfully analyzed!",
+    multipleImagesSuccess: "Your images have been successfully analyzed!",
+    viewResults: "View detailed results",
+    noImagesError: "Please upload at least one image",
+    analysisError: "Failed to analyze images. Please try again.",
+    skinAnalysisResults: "Your Skin Analysis Results",
+    skinCondition: "Skin Condition",
+    recommendedProducts: "Recommended Products",
+    viewOnAmazon: "View on Amazon",
+    languageChanged: "Language Changed",
+    changedTo: "Changed to {language}"
+  },
   sv: {
     uploadText: "Ladda upp en bild för att få en personlig hudvårdsrutin med hjälp av AI",
     analyzeButton: "Analysera bild",

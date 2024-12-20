@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import ImageUpload from '@/components/ImageUpload';
 import { type LanguageOption } from '@/components/LanguageSelector';
 import { translations } from '@/utils/translations';
-import { Camera } from 'lucide-react';
 
 interface AnalysisSectionProps {
   images: string[];
@@ -37,7 +36,7 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
         aria-label="Upload skin image"
       />
 
-      <div className="flex justify-center gap-2 mt-8 animate-fade-in">
+      <div className="flex justify-center mt-8 animate-fade-in">
         <Button
           onClick={handleAnalyze}
           disabled={isAnalyzing || images.length === 0}
@@ -45,20 +44,6 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
           aria-busy={isAnalyzing}
         >
           {isAnalyzing ? t.analyzing : t.analyzeButton}
-        </Button>
-        <Button
-          onClick={() => {
-            const imageUpload = document.querySelector('input[type="file"]');
-            if (imageUpload instanceof HTMLElement) {
-              imageUpload.click();
-            }
-          }}
-          variant="ghost"
-          size="icon"
-          className="bg-primary hover:bg-primary/90 text-white"
-          aria-label="Take photo"
-        >
-          <Camera className="w-5 h-5" />
         </Button>
       </div>
     </>

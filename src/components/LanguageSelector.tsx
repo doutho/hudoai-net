@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 
-export type Language = 'sv';
-export type Country = 'SE';
+export type Language = 'en' | 'sv';
+export type Country = 'US' | 'SE';
 
 export interface LanguageOption {
   code: Language;
@@ -19,6 +19,7 @@ export interface LanguageOption {
 }
 
 export const languageOptions: LanguageOption[] = [
+  { code: 'en', label: 'English', country: 'US', amazonDomain: 'amazon.com' },
   { code: 'sv', label: 'Svenska', country: 'SE', amazonDomain: 'amazon.se' },
 ];
 
@@ -36,7 +37,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="hover:bg-primary/10">
           <Globe className="h-5 w-5" />
-          <span className="sr-only">Växla språk</span>
+          <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
